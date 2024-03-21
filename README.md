@@ -22,4 +22,4 @@ chmod +x pre_install_<os>.sh
 python3 calista.py
 ```
 
-NOTE: The <os> refers to the OS you are trying to install this on. Unix includes Mas OS and Linux. Windows is only for Windows OS.
+NOTE: The os refers to the OS you are trying to install this on. Unix includes Mas OS and Linux. Windows is only for Windows OS.
