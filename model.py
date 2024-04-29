@@ -59,8 +59,8 @@ class NeuralNetwork:
     
 # Define network Parameters
 input_size = 5
-hidden_size = 20
-output_size = 4
+hidden_size = 25
+output_size = 5
 learning_rate = 0.1
 
 model = NeuralNetwork(input_size, hidden_size, output_size)
@@ -69,8 +69,8 @@ model = NeuralNetwork(input_size, hidden_size, output_size)
 #    Training data (will be loaded using a json script or something)   |
 #-----------------------------------------------------------------------
 
-X = np.array([[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [1, 1, 1, 1, 0], [0, 0, 0, 0, 0]])
-y = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1], [1, 1, 1, 1], [0, 0, 0, 0]])
+X = np.array([[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [1, 1, 1, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1]])
+y = np.array([[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [1, 1, 1, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1]])
 
 #------------------------
 #   Train the network   |
