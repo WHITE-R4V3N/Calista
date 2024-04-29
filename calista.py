@@ -45,7 +45,7 @@ while True:
         data = np.array([int(i) for i in usr_prompt.split(' ')]) # Temp parsing of data
 
         # Scan a device, Scan a network, scrape website, dirb
-        tasks = np.array([1, 1, 1, 1])
+        tasks = np.array([1, 1, 1, 1, 1]) # This can be changed. To a dictionary rather than a list. Maybe....
         prediction = model.predict(data)
 
         for pred in prediction.round():
@@ -100,3 +100,9 @@ while True:
                     pass
                 #find_webpages(base_url, wordlist_file)
                 print('')
+
+            if pred[4] == tasks[4]:
+                #
+                #
+                #
+                pass

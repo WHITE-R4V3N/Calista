@@ -31,6 +31,9 @@ def open_local_html_file(html_file):
     webbrowser.open(f'file://{os.path.abspath(html_file)}')
 
 # What the webscrapper will be switched to potentially.
+# This will also be used to submit flags to the webpage for the CTF
+# The find element by ID will be done systematically by the program so the user doesn't
+# need to enter any data into the program
 def interact_with_webpage():
     driver = webdriver.Chrome() # Define the web browsers
 
