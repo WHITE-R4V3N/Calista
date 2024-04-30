@@ -32,6 +32,9 @@ for file_path in file_paths:
         print(f'Port: {port}')
         print(f'Flag: {flags}\n----------------------------------------------\n')
 
+        tokens = list(map(int, text_token.encode('utf-8')))
+        print(tokens)
+
 
 # Create a bunch of files based on Cyber security blog posts and along with many CTF challenges. This will fill out the
 # possible tokens that can appear. We will then use this to make a corpus based on inputs. We can then send data to be
