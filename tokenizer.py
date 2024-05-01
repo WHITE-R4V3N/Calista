@@ -11,34 +11,73 @@ import regex as re
 
 from datasets import load_dataset
 
+#-----------------------------------
+#   The training data to be used   |
+#-----------------------------------
 file_paths = ["data/test1.txt", "data/test2.txt", "data/test3.txt", "data/test4.txt", "data/test5.txt"]
 
+ip_pattern = r'\b(?:\d{1,3}\.){3}\d{1,3}\b'
+port_pattern = r'\b\d{1,5}\b'
+flag_pattern = r"\w+'?\w*\{[a-zA-Z0-9_'-]+\}"
+
+tokens = set()
+
+#----------------------------------------------------------------
+#   Functions to tokenize the text or data and create a corpus  |
+#----------------------------------------------------------------
+def tokenize_data(text):
+    # Tokenize the ip, port and flags within the data
+    matches = re.findall(ip_pattern + '|' + flag_pattern + '|' + port_pattern, text)
+    for match in matches:
+        tokens.add(match)
+        text = re.sub(ip_pattern, '<IP>', text)
+        text = re.sub(flag_pattern, '<FLAG>', text)
+        text = re.sub(port_pattern, '<PORT>', text)
+
+    # Tokenize the other words in the document
+    words = re.findall(r'\b\w+\b', text)
+    tokens.update(words)
+
+    return tokens
+
+def create_corpus(tokens):
+    corpus = {}
+
+    for i, token in enumerate(tokens):
+        corpus[token] = (i, token)
+
+    return corpus
+
+def create_bin_array(corpus, text):
+    binary_array = [0] * len(corpus) # Initialize array with zeros
+
+    tokens = tokenize_data(text)     # Tokenize the text
+
+    # Set array values to 1 for tokens found in the corpus
+    for token in list(tokens):
+        if token in corpus:
+            index = corpus[token][0]
+            binary_array[index] = 1
+
+    return binary_array
+
+# To be run at the start of the program to create a list of predefined words.
 for file_path in file_paths:
     with open(file_path, "r", encoding="utf-8") as file:
         text = file.read()
+        tokens = tokenize_data(text)
 
-        # Create specific tokens for flags, ip_address, ports
-        ip_addresses = re.findall(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', text)
-        text_token = re.sub(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', '<IP>', text)
+corpus = create_corpus(tokens)  # Generated from all the data files to create a corpus to use
 
-        flags = re.findall(r"\w+'?\w*\{[a-zA-Z0-9_'-]+\}", text_token)
-        text_token = re.sub(r"\w+'?\w*\{[a-zA-Z0-9_'-]+\}", '<FLAG>', text_token)
+with open("data/test5.txt", 'r', encoding='utf-8') as file:
+    text = file.read()
 
-        port = re.findall(r'\b\d{1,5}\b', text_token)
-        text_token = re.sub(r'\b\d{1,5}\b', '<PORT>', text_token)
+    print(f'Tokens:\n{tokens}\n')
+    tokens = set()
 
-        print(text_token)
-        print(f'IP: {ip_addresses}')
-        print(f'Port: {port}')
-        print(f'Flag: {flags}\n----------------------------------------------\n')
+    binary_array = create_bin_array(corpus, text) # This will be the text from the user
 
-        tokens = list(map(int, text_token.encode('utf-8')))
-        print(tokens)
-
-
-# Create a bunch of files based on Cyber security blog posts and along with many CTF challenges. This will fill out the
-# possible tokens that can appear. We will then use this to make a corpus based on inputs. We can then send data to be
-# tokenized and compared to the corpus. From there we can use this information tp get desired results from the server.
-# We can do this by running the test data through the tokenizer and saving the corpus created. We can then use that
-# to train the AI model and set the expected output. (ie. Scan and dirb, [1,0,0,0,0,0,1,...]).
+    print(f'Corpus:\n{corpus}\n')
+    print(f'Binary Array:\n{binary_array}\n')
+    print(f'Text:\n{text}\n')
 

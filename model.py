@@ -69,6 +69,7 @@ model = NeuralNetwork(input_size, hidden_size, output_size)
 #    Training data (will be loaded using a json script or something)   |
 #-----------------------------------------------------------------------
 
+# These will be changed to reflect the data and binary arrays of the testing data rather than the hard coded values here
 X = np.array([[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [1, 1, 1, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1]])
 y = np.array([[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [1, 1, 1, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1]])
 
@@ -82,29 +83,3 @@ printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 
 for epoch in range(epochs):
     model.backwards_prop(X, y, learning_rate)
     printProgressBar(epoch + 1, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
-
-
-#--------------------------------------------------
-#   This will be in calista or another backend    |
-#--------------------------------------------------
-
-#predictions = model.predict(np.array([[0, 1, 1, 0, 0], [1, 1, 1, 1, 1], [0, 0, 0, 0, 1], [1, 0, 0, 1, 1]])) # These would be the corpus of the text
-#print(f'Predicted values: {predictions.round()}')
-
-# Define tasks
-#tasks = ['Write a poem', 'Write an Article', 'Translate a sentence']
-#task_array = np.array([1, 1, 1])
-
-# Match each prediction to the task_array and execute that task
-#for pred in predictions.round():
-#    print(f'Tasks for prediction {pred}:')
-#    if pred[0] == task_array[0]:
-#        print(f'{tasks[0]}')
-#    if pred[1] == task_array[1]:
-#        print(f'{tasks[1]}')
-#    if pred[2] == task_array[2]:
-#        print(f'{tasks[2]}')
-
-#    print('') # Makes output look cleaner
-    #else:
-        #print(f'Input does not satisfy task list!')

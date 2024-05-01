@@ -10,6 +10,7 @@
 
 from settings import *
 from model import *
+from tokenizer import *
 from scripts.scan_ports import *
 from scripts.network_map import *
 from scripts.scrape_website import *
@@ -42,6 +43,7 @@ while True:
     else:
         print(f'\n{CAL_COL}Calista{RESET}> Let me see what I can do based on your input.\n')
 
+        # This will be changed to create the binary array based on user input and the corpus
         data = np.array([int(i) for i in usr_prompt.split(' ')]) # Temp parsing of data
 
         # Scan a device, Scan a network, scrape website, dirb
