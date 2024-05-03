@@ -20,16 +20,19 @@ ip_pattern = r'\b(?:\d{1,3}\.){3}\d{1,3}\b'
 port_pattern = r'\b\d{1,5}\b'
 flag_pattern = r"\w+'?\w*\{[a-zA-Z0-9_'-]+\}"
 
+tokens = set()
+
 #----------------------------------------------------------------
 #   Functions to tokenize the text or data and create a corpus  |
 #----------------------------------------------------------------
-tokens = set()
 def tokenize_data(text):
-    
     # Tokenize the ip, port and flags within the data
     matches = re.findall(ip_pattern + '|' + flag_pattern + '|' + port_pattern, text)
     for match in matches:
         tokens.add(match)
+        text = re.sub(ip_pattern, '<IP>', text)
+        text = re.sub(flag_pattern, '<FLAG>', text)
+        text = re.sub(port_pattern, '<PORT>', text)
 
     # Tokenize the other words in the document
     words = re.findall(r'\b\w+\b', text)
@@ -46,7 +49,6 @@ def create_corpus(tokens):
     return corpus
 
 def create_bin_array(corpus, text):
-    tokens = set()
     binary_array = [0] * len(corpus) # Initialize array with zeros
 
     tokens = tokenize_data(text)     # Tokenize the text
@@ -78,3 +80,4 @@ with open("data/test5.txt", 'r', encoding='utf-8') as file:
     print(f'Corpus:\n{corpus}\n Length: {len(corpus)}\n')
     print(f'Binary Array:\n{binary_array}\n')
     print(f'Text:\n{text}\n')
+

@@ -11,6 +11,7 @@
 import numpy as np
 
 from settings import *
+from tokenizer import *
 
 #-------------------------------------
 #   The model and training the AI    |
@@ -68,6 +69,13 @@ model = NeuralNetwork(input_size, hidden_size, output_size)
 #-----------------------------------------------------------------------
 #    Training data (will be loaded using a json script or something)   |
 #-----------------------------------------------------------------------
+
+for file_path in file_paths:
+    with open(file_path, "r", encoding="utf-8") as file:
+        text = file.read()
+        binary_array = create_bin_array(corpus, text) # This will be the text from the user
+
+        print(f'Bin Array:\n{binary_array}\n')
 
 # These will be changed to reflect the data and binary arrays of the testing data rather than the hard coded values here
 X = np.array([[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [1, 1, 1, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1]])
