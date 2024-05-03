@@ -59,8 +59,8 @@ class NeuralNetwork:
         return a2
     
 # Define network Parameters
-input_size = 5
-hidden_size = 25
+input_size = 53
+hidden_size = 250
 output_size = 5
 learning_rate = 0.1
 
@@ -69,17 +69,16 @@ model = NeuralNetwork(input_size, hidden_size, output_size)
 #-----------------------------------------------------------------------
 #    Training data (will be loaded using a json script or something)   |
 #-----------------------------------------------------------------------
+binary_array = []
 
 for file_path in file_paths:
     with open(file_path, "r", encoding="utf-8") as file:
         text = file.read()
-        binary_array = create_bin_array(corpus, text) # This will be the text from the user
-
-        print(f'Bin Array:\n{binary_array}\n')
+        binary_array.append(create_bin_array(corpus, text)) # This will be the text from the user
 
 # These will be changed to reflect the data and binary arrays of the testing data rather than the hard coded values here
-X = np.array([[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [1, 1, 1, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1]])
-y = np.array([[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [1, 1, 1, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1]])
+X = np.array(binary_array)
+y = np.array([[0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 1, 0], [1, 0, 0, 0, 0]])
 
 #------------------------
 #   Train the network   |
@@ -87,6 +86,7 @@ y = np.array([[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0]
 
 epochs = 1500
 
+print('Training the AI:')
 printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
 for epoch in range(epochs):
     model.backwards_prop(X, y, learning_rate)

@@ -8,9 +8,12 @@
 #    IMPORTS    |
 #----------------
 
+import codecs
+
 from settings import *
 from model import *
 from tokenizer import *
+
 from scripts.scan_ports import *
 from scripts.network_map import *
 from scripts.scrape_website import *
@@ -31,11 +34,12 @@ logo = f'''
 {RESET}
 '''
 
-print(f'{logo}\n{CAL_COL}Calista{RESET}> Hello my name is Calista. I am an AI that is capable of hacking.\n\t Enter a prompt to get started.\n')
+print(f'{logo}\n{CAL_COL}Calista{RESET}> Hello my name is Calista. I am an AI that is capable of competing\n\t in a cyber CTF.\n')
 
 # This is where the AI will get user input. It will be a loop until ctrl + c or input quit
 while True:
     usr_prompt = input(f'{USER}User{RESET}> ')
+    usr_bin_array = create_bin_array(corpus, usr_prompt)
 
     if (usr_prompt.lower() == 'quit') or (usr_prompt.lower() == 'q'):
         print('\n')
@@ -44,7 +48,7 @@ while True:
         print(f'\n{CAL_COL}Calista{RESET}> Let me see what I can do based on your input.\n')
 
         # This will be changed to create the binary array based on user input and the corpus
-        data = np.array([int(i) for i in usr_prompt.split(' ')]) # Temp parsing of data
+        data = np.array(usr_bin_array) # Temp parsing of data
 
         # Scan a device, Scan a network, scrape website, dirb
         tasks = np.array([1, 1, 1, 1, 1]) # This can be changed. To a dictionary rather than a list. Maybe....
@@ -52,9 +56,9 @@ while True:
 
         for pred in prediction.round():
             if pred[0] == tasks[0]:
-                #-----------------------------------------------------------------------
-                #   Where we use the scan_ports.py script based on the AI prediction   |
-                #-----------------------------------------------------------------------
+                #----------------------------------------------------------------------------
+                #   Will run the port_scan.py script. This will find ports between 1-1000   |
+                #----------------------------------------------------------------------------
 
                 ports = [range(1, 1000)]
 
@@ -95,7 +99,7 @@ while True:
                 #----------------------------------------------------------------------------------
 
                 print('Searching for webpages...')
-                print("** Please note:** This script performs basic checks and may not identify all existing webpages. Always respect robots.txt guidelines when scraping websites.\n")
+                print("** Please note:** This script performs basic checks and may not identify all existing webpages.\n")
                 try:
                     find_webpages('http://192.168.1.72', "scripts/wordlist.txt")
                 except:
@@ -104,7 +108,11 @@ while True:
                 print('')
 
             if pred[4] == tasks[4]:
-                #
-                #
-                #
-                pass
+                #-------------------------------------------------------------------
+                #   This function can use the codecs import and decode rot13 text  |
+                #-------------------------------------------------------------------
+                original_flag = "cvpbPGS{arkg_gvzr_V'yy_gel_2_ebhaqf_bs_ebg13_nSkgmDJE}"
+                flag = codecs.decode(original_flag, 'rot13')
+
+                print(f'This was the original flag: {original_flag}')
+                print(f'Decoded Flag: {flag}')
