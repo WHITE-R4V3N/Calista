@@ -53,6 +53,7 @@ while True:
         # Scan a device, Scan a network, scrape website, dirb
         tasks = np.array([1, 1, 1, 1, 1]) # This can be changed. To a dictionary rather than a list. Maybe....
         prediction = model.predict(data)
+        print(prediction)
 
         for pred in prediction.round():
             if pred[0] == tasks[0]:

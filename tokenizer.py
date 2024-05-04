@@ -15,7 +15,7 @@ from datasets import load_dataset
 #-----------------------------------
 #   The training data to be used   |
 #-----------------------------------
-file_paths = ["data/test1.txt", "data/test2.txt", "data/test3.txt", "data/test4.txt", "data/test5.txt"]
+file_paths = ["data/test1.txt", "data/test2.txt", "data/test3.txt", "data/test4.txt", "data/test5.txt", "data/test6.txt"]
 
 ip_pattern = r'\b(?:\d{1,3}\.){3}\d{1,3}\b'
 port_pattern = r'\b\d{1,5}\b'
@@ -30,18 +30,18 @@ def tokenize_data(text, tokens):
     # Tokenize the ip, port and flags within the data
     matches = re.findall(ip_pattern + '|' + flag_pattern + '|' + port_pattern, text)
     for match in matches:
-        tokens.add(match)
-        text = re.sub(ip_pattern, '<IP>', text)
-        text = re.sub(flag_pattern, '<FLAG>', text)
-        text = re.sub(port_pattern, '<PORT>', text)
+        tokens.add(match)                           # Add the matched items to the tokens
+        text = re.sub(ip_pattern, '<IP>', text)     # Remove the ip address and replace with another tag
+        text = re.sub(flag_pattern, '<FLAG>', text) # Replace the flag if any with a tag
+        text = re.sub(port_pattern, '<PORT>', text) # Replace the port with a tag
 
     # Tokenize the other words in the document
-    words = re.findall(r'\b\w+\b', text)
+    words = re.findall(r'\b\w+\b', text)    # Create a token of every word including the new tags
     tokens.update(words)
 
     return tokens
 
-def create_corpus(tokens):
+def create_corpus(tokens):                  # Create a corpus which has is: token: (position, token)
     for i, token in enumerate(tokens):
         corpus[token] = (i, token)
 
@@ -72,17 +72,7 @@ def train_corpus():
     corpus = create_corpus(tokens)  # Generated from all the data files to create a corpus to use
     print(f'{corpus}\n')
 
-    with open("data/test5.txt", 'r', encoding='utf-8') as file:
-        text = file.read()
-
-        #print(f'Tokens:\n{tokens}\n')
-        tokens = set()
-
-        binary_array = create_bin_array(corpus, text) # This will be the text from the user
-
-        #print(f'Corpus:\n{corpus}\n Length: {len(corpus)}\n')
-        #print(f'Binary Array:\n{binary_array}\n')
-        #print(f'Text:\n{text}\n')
+#create_bin_array(corpus, text) # This will be the text from the user
 
 # Lets see if this fixes the problem we are having.
 print('Training the tokenizer:')

@@ -59,8 +59,8 @@ class NeuralNetwork:
         return a2
     
 # Define network Parameters
-input_size = 53
-hidden_size = 250
+input_size = 54
+hidden_size = 108
 output_size = 5
 learning_rate = 0.1
 
@@ -76,15 +76,17 @@ for file_path in file_paths:
         text = file.read()
         binary_array.append(create_bin_array(corpus, text)) # This will be the text from the user
 
+print(binary_array)
+
 # These will be changed to reflect the data and binary arrays of the testing data rather than the hard coded values here
 X = np.array(binary_array)
-y = np.array([[0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 1, 0], [1, 0, 0, 0, 0]])
+y = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0]])
 
 #------------------------
 #   Train the network   |
 #------------------------
 
-epochs = 1500
+epochs = 5000
 
 print('Training the AI:')
 printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
