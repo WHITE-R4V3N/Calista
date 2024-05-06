@@ -54,13 +54,16 @@ class NeuralNetwork:
         self.bias2 -= learning_rate * delta2.sum(axis=0) / m
         self.bias1 -= learning_rate * delta1.sum(axis=0) / m
 
+        return a1, a2
+
     def predict(self, X):
         _, a2 = self.forward_prop(X)
         return a2
     
 # Define network Parameters
-input_size = 54
-hidden_size = 108
+input_size = 48
+# 54
+hidden_size = 20
 output_size = 5
 learning_rate = 0.1
 
@@ -75,11 +78,13 @@ for file_path in file_paths:
     with open(file_path, "r", encoding="utf-8") as file:
         text = file.read()
         binary_array.append(create_bin_array(corpus, text)) # This will be the text from the user
+        print(text)
 
 print(binary_array)
 
 # These will be changed to reflect the data and binary arrays of the testing data rather than the hard coded values here
-X = np.array(binary_array)
+X = np.array(binary_array) # ithink the array is not being matched up with the expected output properly. Or size is an issue
+#X = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0]])
 y = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0]])
 
 #------------------------
@@ -91,5 +96,7 @@ epochs = 5000
 print('Training the AI:')
 printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
 for epoch in range(epochs):
-    model.backwards_prop(X, y, learning_rate)
+    a1, a2 = model.backwards_prop(X, y, learning_rate)
+    #print(f'A1: {a1}')
+    #print(f'A2: {a2}')
     printProgressBar(epoch + 1, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)

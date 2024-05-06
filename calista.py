@@ -49,6 +49,7 @@ while True:
 
         # This will be changed to create the binary array based on user input and the corpus
         data = np.array(usr_bin_array) # Temp parsing of data
+        # [0, 0, 0, 0, 1]
 
         # Scan a device, Scan a network, scrape website, dirb
         tasks = np.array([1, 1, 1, 1, 1]) # This can be changed. To a dictionary rather than a list. Maybe....
@@ -72,7 +73,7 @@ while True:
                 #--------------------------------------------------------------------
                 #   Where we use the network_map.py script based on AI prediction   |
                 #--------------------------------------------------------------------
-
+                pass
                 subnet = "192.168.1.0/24"
 
                 print(f'Scanning the network {subnet}...')

@@ -20,6 +20,7 @@ file_paths = ["data/test1.txt", "data/test2.txt", "data/test3.txt", "data/test4.
 ip_pattern = r'\b(?:\d{1,3}\.){3}\d{1,3}\b'
 port_pattern = r'\b\d{1,5}\b'
 flag_pattern = r"\w+'?\w*\{[a-zA-Z0-9_'-]+\}"
+website_pattern = r'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+'
 
 corpus = {}
 #----------------------------------------------------------------
@@ -28,12 +29,13 @@ corpus = {}
 
 def tokenize_data(text, tokens):
     # Tokenize the ip, port and flags within the data
-    matches = re.findall(ip_pattern + '|' + flag_pattern + '|' + port_pattern, text)
+    matches = re.findall(ip_pattern + '|' + flag_pattern + '|' + port_pattern + '|' + website_pattern, text)
     for match in matches:
         tokens.add(match)                           # Add the matched items to the tokens
         text = re.sub(ip_pattern, '<IP>', text)     # Remove the ip address and replace with another tag
         text = re.sub(flag_pattern, '<FLAG>', text) # Replace the flag if any with a tag
         text = re.sub(port_pattern, '<PORT>', text) # Replace the port with a tag
+        text = re.sub(website_pattern, '<LINK>', text)
 
     # Tokenize the other words in the document
     words = re.findall(r'\b\w+\b', text)    # Create a token of every word including the new tags
@@ -70,7 +72,7 @@ def train_corpus():
             tokens = tokenize_data(text, tokens)
 
     corpus = create_corpus(tokens)  # Generated from all the data files to create a corpus to use
-    print(f'{corpus}\n')
+    print(f'{corpus}\nSize:{len(corpus)}')
 
 #create_bin_array(corpus, text) # This will be the text from the user
 
