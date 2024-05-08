@@ -61,7 +61,8 @@ while True:
                 #----------------------------------------------------------------------------
                 #   Will run the port_scan.py script. This will find ports between 1-1000   |
                 #----------------------------------------------------------------------------
-
+                print(f'Scan')
+                break
                 ports = [range(1, 1000)]
 
                 for p in ports:
@@ -73,7 +74,8 @@ while True:
                 #--------------------------------------------------------------------
                 #   Where we use the network_map.py script based on AI prediction   |
                 #--------------------------------------------------------------------
-                pass
+                print(f'Map')
+                break
                 subnet = "192.168.1.0/24"
 
                 print(f'Scanning the network {subnet}...')
@@ -88,7 +90,8 @@ while True:
                 #-----------------------------------------------------------------
                 #   This is where we will curl the website (for now just open)   |
                 #-----------------------------------------------------------------
-
+                print('Scrape')
+                break
                 url = "http://192.168.1.72/"
                 output_file = 'output.html'
 
@@ -99,7 +102,9 @@ while True:
                 #----------------------------------------------------------------------------------
                 #   This will do a directory search of the website and find all common webpages   |
                 #----------------------------------------------------------------------------------
-
+                print('Dirb')
+                break
+            
                 print('Searching for webpages...')
                 print("** Please note:** This script performs basic checks and may not identify all existing webpages.\n")
                 try:
