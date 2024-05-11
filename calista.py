@@ -49,6 +49,7 @@ while True:
 
         # This will be changed to create the binary array based on user input and the corpus
         data = np.array(usr_bin_array) # Temp parsing of data
+        print(data)
         # [0, 0, 0, 0, 1]
 
         # Scan a device, Scan a network, scrape website, dirb
