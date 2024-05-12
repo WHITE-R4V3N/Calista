@@ -102,7 +102,7 @@ y = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0]
 #   Train the network   |
 #------------------------
 
-epochs = 2500
+epochs = 5000
 
 print('Training the AI:')
 printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)

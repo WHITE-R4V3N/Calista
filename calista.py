@@ -63,7 +63,7 @@ while True:
                 #   Will run the port_scan.py script. This will find ports between 1-1000   |
                 #----------------------------------------------------------------------------
                 print(f'Scan')
-                break
+                
                 ports = [range(1, 1000)]
 
                 for p in ports:
