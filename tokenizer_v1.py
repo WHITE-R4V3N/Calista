@@ -23,11 +23,6 @@ flag_pattern = r"\w+'?\w*\{[a-zA-Z0-9_'-]+\}"
 website_pattern = r'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+'
 
 corpus = {}
-keywords = []
-
-with open('tokenizer_words.txt', 'r') as file:
-    keywords = file.read().split('\n')
-
 #----------------------------------------------------------------
 #   Functions to tokenize the text or data and create a corpus  |
 #----------------------------------------------------------------
@@ -44,9 +39,7 @@ def tokenize_data(text, tokens):
 
     # Tokenize the other words in the document
     words = re.findall(r'\b\w+\b', text)    # Create a token of every word including the new tags
-    for word in words:
-        if word in keywords:
-            tokens.add(word)
+    tokens.update(words)
     # Change to only find all select words within a text
 
     return tokens

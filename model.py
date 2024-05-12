@@ -72,8 +72,8 @@ class NeuralNetwork:
 # Define network Parameters
 input_size = len(corpus)
 # 54
-hidden_size = 96
-hidden_size_2 = 96
+hidden_size = 15
+hidden_size_2 = 15
 # Possibly add a 3rd hidden layer to the network
 output_size = 5
 learning_rate = 0.5
@@ -102,7 +102,7 @@ y = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0]
 #   Train the network   |
 #------------------------
 
-epochs = 1000
+epochs = 2500
 
 print('Training the AI:')
 printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
