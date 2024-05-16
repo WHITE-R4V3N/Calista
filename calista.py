@@ -19,6 +19,10 @@ from scripts.network_map import *
 from scripts.scrape_website import *
 from scripts.dirb import *
 
+# Add a class called machine info. This will be able to store and save data about the machine we wish to interact
+# with using the AI. Such as IP address, ports, services, etc. we can also create more machine data to use that the AI
+# can in turn do various tasks on. Maybe it can predict which machine to do it on based on user input???
+
 #----------------
 #    I/O Loop   |
 #----------------
@@ -49,25 +53,26 @@ while True:
 
         # This will be changed to create the binary array based on user input and the corpus
         data = np.array(usr_bin_array) # Temp parsing of data
-        print(data)
+        #print(data) # Debugging purpose
         # [0, 0, 0, 0, 1]
 
         # Scan a device, Scan a network, scrape website, dirb
         tasks = np.array([1, 1, 1, 1, 1]) # This can be changed. To a dictionary rather than a list. Maybe....
         prediction = model.predict(data)
-        print(prediction)
+        #print(prediction) # Debugging purpose
 
         for pred in prediction.round():
             if pred[0] == tasks[0]:
                 #----------------------------------------------------------------------------
                 #   Will run the port_scan.py script. This will find ports between 1-1000   |
                 #----------------------------------------------------------------------------
-                print(f'Scan')
+                ip_address = re.findall(ip_pattern, usr_prompt)[0]
+                print(f'Scanning {ip_address}:')
                 
                 ports = [range(1, 1000)]
 
                 for p in ports:
-                    scan_target('192.168.1.72', p) # The AI should be able to pull this information from the prompt
+                    scan_target(ip_address, p) # The AI should be able to pull this information from the prompt
 
                 print('')
 
@@ -103,13 +108,13 @@ while True:
                 #----------------------------------------------------------------------------------
                 #   This will do a directory search of the website and find all common webpages   |
                 #----------------------------------------------------------------------------------
+                ip_address = re.findall(ip_pattern, usr_prompt)[0]
                 print('Dirb')
-                break
             
                 print('Searching for webpages...')
                 print("** Please note:** This script performs basic checks and may not identify all existing webpages.\n")
                 try:
-                    find_webpages('http://192.168.1.72', "scripts/wordlist.txt")
+                    find_webpages(f'http://{ip_address}', "scripts/wordlist.txt")
                 except:
                     pass
                 #find_webpages(base_url, wordlist_file)
@@ -119,8 +124,9 @@ while True:
                 #-------------------------------------------------------------------
                 #   This function can use the codecs import and decode rot13 text  |
                 #-------------------------------------------------------------------
-                original_flag = "cvpbPGS{arkg_gvzr_V'yy_gel_2_ebhaqf_bs_ebg13_nSkgmDJE}"
-                flag = codecs.decode(original_flag, 'rot13')
+                #original_flag = "cvpbPGS{arkg_gvzr_V'yy_gel_2_ebhaqf_bs_ebg13_nSkgmDJE}"
+                encoded_rot13 = re.findall(flag_pattern, usr_prompt)[0]
+                flag = codecs.decode(encoded_rot13, 'rot13')
 
-                print(f'This was the original flag: {original_flag}')
-                print(f'Decoded Flag: {flag}')
+                print(f'\nThis was the original flag:\n{encoded_rot13}\n')
+                print(f'Decoded Data:\n{flag}\n')

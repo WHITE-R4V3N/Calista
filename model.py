@@ -96,7 +96,7 @@ print(binary_array)
 # These will be changed to reflect the data and binary arrays of the testing data rather than the hard coded values here
 X = np.array(binary_array) # ithink the array is not being matched up with the expected output properly. Or size is an issue
 #X = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0]])
-y = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0]])
+y = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 1, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0]])
 
 #------------------------
 #   Train the network   |
