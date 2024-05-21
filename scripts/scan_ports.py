@@ -30,7 +30,7 @@ def scan_port(target, port):
         pass
 
 def scan_target(target, ports):
-    print(f"\nScanning target {target}...")
+    print(f"Scanning target {target}...")
     print('\nPORT    STATE    SERVICE')
     with ThreadPoolExecutor(max_workers=100) as executor:
         for port in ports:

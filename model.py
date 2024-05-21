@@ -89,14 +89,14 @@ for file_path in file_paths:
     with open(file_path, "r", encoding="utf-8") as file:
         text = file.read()
         binary_array.append(create_bin_array(corpus, text)) # This will be the text from the user
-        print(text)
+        #print(text)
 
-print(binary_array)
+#print(binary_array)
 
 # These will be changed to reflect the data and binary arrays of the testing data rather than the hard coded values here
 X = np.array(binary_array) # ithink the array is not being matched up with the expected output properly. Or size is an issue
 #X = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0]])
-y = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 1, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0]])
+y = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 1, 0], [1, 0, 0, 0, 0], [0, 0, 1, 0, 0]])
 
 #------------------------
 #   Train the network   |
@@ -104,7 +104,7 @@ y = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 1, 0]
 
 epochs = 5000
 
-print('Training the AI:')
+print('\nTraining the AI:')
 printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
 for epoch in range(epochs):
     a1, a2, a3 = model.backwards_prop(X, y, learning_rate)

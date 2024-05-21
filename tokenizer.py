@@ -87,4 +87,3 @@ def train_corpus():
 # Lets see if this fixes the problem we are having.
 print('Training the tokenizer:')
 train_corpus()
-print(len(corpus))

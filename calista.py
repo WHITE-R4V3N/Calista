@@ -19,9 +19,7 @@ from scripts.network_map import *
 from scripts.scrape_website import *
 from scripts.dirb import *
 
-# Add a class called machine info. This will be able to store and save data about the machine we wish to interact
-# with using the AI. Such as IP address, ports, services, etc. we can also create more machine data to use that the AI
-# can in turn do various tasks on. Maybe it can predict which machine to do it on based on user input???
+machines = []
 
 #----------------
 #    I/O Loop   |
@@ -67,10 +65,9 @@ while True:
                 #   Will run the port_scan.py script. This will find ports between 1-1000   |
                 #----------------------------------------------------------------------------
                 ip_address = re.findall(ip_pattern, usr_prompt)[0]
-                print(f'Scanning {ip_address}:')
+                #print(f'Scanning {ip_address}:')
                 
                 ports = [range(1, 1000)]
-
                 for p in ports:
                     scan_target(ip_address, p) # The AI should be able to pull this information from the prompt
 
@@ -97,9 +94,10 @@ while True:
                 #   This is where we will curl the website (for now just open)   |
                 #-----------------------------------------------------------------
                 print('Scrape')
-                break
-                url = "http://192.168.1.72/"
-                output_file = 'output.html'
+                
+                ip_address = re.findall(ip_pattern, usr_prompt)[0]
+                url = f"http://{ip_address}/"
+                output_file = f'websites/{ip_address}.html'
 
                 scrape_and_save(url, output_file)
                 open_local_html_file(output_file)
