@@ -13,13 +13,14 @@ import codecs
 from settings import *
 from model import *
 from tokenizer import *
+from machine_data import *
 
 from scripts.scan_ports import *
 from scripts.network_map import *
 from scripts.scrape_website import *
 from scripts.dirb import *
 
-machines = []
+machines = MachineManager()
 
 #----------------
 #    I/O Loop   |
@@ -58,6 +59,18 @@ while True:
         tasks = np.array([1, 1, 1, 1, 1]) # This can be changed. To a dictionary rather than a list. Maybe....
         prediction = model.predict(data)
         #print(prediction) # Debugging purpose
+
+        # Check if the machine data is saved in the machines object
+        # if yes then run the scans and add the data to the existing machine
+        # if no then create a machine and save it to the machines. Then add data as found.
+        
+        ip_address = re.findall(ip_pattern, usr_prompt)[0]
+
+        for machine in machines.machines:
+            if machine.ip == ip_address:
+                pass
+            else:
+                machines.append(Machine(ip_address))
 
         for pred in prediction.round():
             if pred[0] == tasks[0]:
