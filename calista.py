@@ -20,7 +20,8 @@ from scripts.network_map import *
 from scripts.scrape_website import *
 from scripts.dirb import *
 
-machines = MachineManager()
+machines = []
+current_machine = ''
 
 #----------------
 #    I/O Loop   |
@@ -39,105 +40,46 @@ logo = f'''
 
 print(f'{logo}\n{CAL_COL}Calista{RESET}> Hello my name is Calista. I am an AI that is capable of competing\n\t in a cyber CTF.\n')
 
-# This is where the AI will get user input. It will be a loop until ctrl + c or input quit
+# This is where the AI will get user input. It will loop until the user inputs quit.
 while True:
-    usr_prompt = input(f'{USER}User{RESET}> ')
-    usr_bin_array = create_bin_array(corpus, usr_prompt)
+    usr_prompt = input(f'{USER}User{RESET}> ')              # Get user input
+    usr_bin_array = create_bin_array(corpus, usr_prompt)    # Create a binary array using the corpus and user input.
 
     if (usr_prompt.lower() == 'quit') or (usr_prompt.lower() == 'q'):
         print('\n')
         exit(-1)
     else:
-        print(f'\n{CAL_COL}Calista{RESET}> Let me see what I can do based on your input.\n')
+        data = np.array(usr_bin_array)
 
-        # This will be changed to create the binary array based on user input and the corpus
-        data = np.array(usr_bin_array) # Temp parsing of data
-        #print(data) # Debugging purpose
-        # [0, 0, 0, 0, 1]
-
-        # Scan a device, Scan a network, scrape website, dirb
-        tasks = np.array([1, 1, 1, 1, 1]) # This can be changed. To a dictionary rather than a list. Maybe....
+        tasks = np.array([1, 1, 1, 1, 1])
         prediction = model.predict(data)
-        #print(prediction) # Debugging purpose
-
-        # Check if the machine data is saved in the machines object
-        # if yes then run the scans and add the data to the existing machine
-        # if no then create a machine and save it to the machines. Then add data as found.
         
-        ip_address = re.findall(ip_pattern, usr_prompt)[0]
-
-        for machine in machines.machines:
-            if machine.ip == ip_address:
-                pass
-            else:
+        # Create the machine object or load data if machine with IP already exists during session.
+        try:
+            ip_address = re.findall(ip_pattern, usr_prompt)[0] # Finds an IP address in the user input.
+            
+            if (not machines): # if no machines exist then create the first machine
                 machines.append(Machine(ip_address))
+            elif (ip_address not in [machine.ip for machine in machines]):# If IP address not found with in the machines then create
+                machines.append(Machine(ip_address))    # the machine object with ip equal to the user input IP
+            else:
+                pass # Make it equal the matching machine IP
+        except:
+            pass
 
+        #-------------------------------------------------------------
+        #    Program what each prediction should do individually.    |
+        #-------------------------------------------------------------
         for pred in prediction.round():
             if pred[0] == tasks[0]:
                 #----------------------------------------------------------------------------
                 #   Will run the port_scan.py script. This will find ports between 1-1000   |
                 #----------------------------------------------------------------------------
                 ip_address = re.findall(ip_pattern, usr_prompt)[0]
-                #print(f'Scanning {ip_address}:')
+                print(f'\n{CAL_COL}Calista{RESET}> Scanning {ip_address} for open ports.')
                 
                 ports = [range(1, 1000)]
                 for p in ports:
-                    scan_target(ip_address, p) # The AI should be able to pull this information from the prompt
+                    open_ports = scan_target(ip_address, p) # The AI should be able to pull this information from the prompt
 
-                print('')
-
-            if pred[1] == tasks[1]:
-                #--------------------------------------------------------------------
-                #   Where we use the network_map.py script based on AI prediction   |
-                #--------------------------------------------------------------------
-                print(f'Map')
-                break
-                subnet = "192.168.1.0/24"
-
-                print(f'Scanning the network {subnet}...')
-
-                devices = scan_network(subnet)
-                print("\nDevices found:")
-                for device in devices:
-                    print(f"IP: {device['ip']}, MAC: {device['mac']}, Vendor: {device['vendor']}, Hostname: {device['hostname']}")
-                
-                print('')
-            if pred[2] == tasks[2]:
-                #-----------------------------------------------------------------
-                #   This is where we will curl the website (for now just open)   |
-                #-----------------------------------------------------------------
-                print('Scrape')
-                
-                ip_address = re.findall(ip_pattern, usr_prompt)[0]
-                url = f"http://{ip_address}/"
-                output_file = f'websites/{ip_address}.html'
-
-                scrape_and_save(url, output_file)
-                open_local_html_file(output_file)
-
-            if pred[3] == tasks[3]:
-                #----------------------------------------------------------------------------------
-                #   This will do a directory search of the website and find all common webpages   |
-                #----------------------------------------------------------------------------------
-                ip_address = re.findall(ip_pattern, usr_prompt)[0]
-                print('Dirb')
-            
-                print('Searching for webpages...')
-                print("** Please note:** This script performs basic checks and may not identify all existing webpages.\n")
-                try:
-                    find_webpages(f'http://{ip_address}', "scripts/wordlist.txt")
-                except:
-                    pass
-                #find_webpages(base_url, wordlist_file)
-                print('')
-
-            if pred[4] == tasks[4]:
-                #-------------------------------------------------------------------
-                #   This function can use the codecs import and decode rot13 text  |
-                #-------------------------------------------------------------------
-                #original_flag = "cvpbPGS{arkg_gvzr_V'yy_gel_2_ebhaqf_bs_ebg13_nSkgmDJE}"
-                encoded_rot13 = re.findall(flag_pattern, usr_prompt)[0]
-                flag = codecs.decode(encoded_rot13, 'rot13')
-
-                print(f'\nThis was the original flag:\n{encoded_rot13}\n')
-                print(f'Decoded Data:\n{flag}\n')
+                print(open_ports)

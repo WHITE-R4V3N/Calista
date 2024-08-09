@@ -26,6 +26,7 @@ def scan_port(target, port):
                 except OSError:
                     service = "Unknown"
                 print(f'{port}/tcp  open     {service}')
+                found_services.append(port)
     except Exception as e:
         pass
 
@@ -35,3 +36,5 @@ def scan_target(target, ports):
     with ThreadPoolExecutor(max_workers=100) as executor:
         for port in ports:
             executor.submit(scan_port, target, port)
+    
+    return found_services
