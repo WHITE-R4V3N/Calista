@@ -29,4 +29,7 @@ class MachineManager():
 
     def view_machine(self):
         for machine in self.machines:
-            print(machine)
+            print(f"Machine IP: {machine.ip}\nOther Info:\n{machine.ports}\n{machine.links}")
+
+    def add_machine(self, machine):
+        self.machines.append(machine)

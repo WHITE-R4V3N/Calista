@@ -20,8 +20,18 @@ from scripts.network_map import *
 from scripts.scrape_website import *
 from scripts.dirb import *
 
-machines = []
+machines = MachineManager()
 current_machine = ''
+
+# NN Model's
+calista_model = ''              # Processing input from the user and deciding what model(s) to use
+recon_model = ''                # Used for processing input related to recon
+cryptography_model = ''         # Used for input related to cryptographic analysis
+reverse_engineering_model = ''  # Used for prompts related to reverse engineering
+forensics_model = ''            # Used for input related to forensics
+general_skills_model = ''       # Used for inputs related to general skills in cyber security
+binary_exploit_model = ''       # Used for inputs related to binary exploitation
+web_exploit_model = ''          # Used for input related to web exploitation
 
 #----------------
 #    I/O Loop   |
@@ -59,11 +69,13 @@ while True:
             ip_address = re.findall(ip_pattern, usr_prompt)[0] # Finds an IP address in the user input.
             
             if (not machines): # if no machines exist then create the first machine
-                machines.append(Machine(ip_address))
-            elif (ip_address not in [machine.ip for machine in machines]):# If IP address not found with in the machines then create
-                machines.append(Machine(ip_address))    # the machine object with ip equal to the user input IP
-            else:
-                pass # Make it equal the matching machine IP
+                machines.add_machine(Machine(ip_address))
+            elif (ip_address not in [machine.ip for machine in machines.machines]):# If IP address not found with in the machines then create
+                machines.add_machine(Machine(ip_address))    # the machine object with ip equal to the user input IP
+            #else:
+            for machine in machines.machines:
+                if (ip_address == machine.ip):
+                    current_machine = machine
         except:
             pass
 
@@ -82,4 +94,6 @@ while True:
                 for p in ports:
                     open_ports = scan_target(ip_address, p) # The AI should be able to pull this information from the prompt
 
-                print(open_ports)
+                current_machine.update_ports(open_ports)
+        
+        #machines.view_machine() Used to see whats happening with the machine
