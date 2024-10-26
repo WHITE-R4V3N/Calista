@@ -24,6 +24,7 @@ machines = MachineManager()
 current_machine = ''
 
 # NN Model's
+# nn_models = [calista_model, recon_model, ...]
 calista_model = ''              # Processing input from the user and deciding what model(s) to use
 recon_model = ''                # Used for processing input related to recon
 cryptography_model = ''         # Used for input related to cryptographic analysis
@@ -44,11 +45,10 @@ logo = f'''
 \t\t\t / /  / _` | | / __| __/ _` |
 \t\t\t/ /__| (_| | | \\__ \\ || (_| |
 \t\t\t\\____/\\__,_|_|_|___/\\__\\__,_|
-\t\t\t{YELLOW}-----------------------------
-{RESET}
+\t\t\t{YELLOW}-----------------------------{RESET}\tv 0.0.9
 '''
 
-print(f'{logo}\n{CAL_COL}Calista{RESET}> Hello my name is Calista. I am an AI that is capable of competing\n\t in a cyber CTF.\n')
+print(f'{logo}\n{CAL_COL}Calista{RESET}> Hello my name is Calista. I am an AI that is capable of competing\n\t in a cyber CTF.\n\n\t Enter questions from the CTF and I will do the rest.\n')
 
 # This is where the AI will get user input. It will loop until the user inputs quit.
 while True:

@@ -69,6 +69,9 @@ class NeuralNetwork:
         _, _, a3 = self.forward_prop(X)
         return a3
     
+# def create_model (input_size, hidden_size, hidden_size_2, output_size)
+# returns { 'calista' : [model, X, y], 'recon_model' : [model, X, y], ...}
+
 # Define network Parameters
 input_size = len(corpus)
 # 54
@@ -102,6 +105,8 @@ y = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 1, 0]
 #   Train the network   |
 #------------------------
 
+
+# def train model (model, X, y, learning_rate, epochs)
 epochs = 5000
 
 print('\nTraining the AI:')
