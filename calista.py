@@ -12,8 +12,7 @@ import codecs
 
 from settings import *
 from model import *
-from tokenizer import *
-from machine_data import *
+from machine_data import * # Remove
 
 from scripts.scan_ports import *
 from scripts.network_map import *
