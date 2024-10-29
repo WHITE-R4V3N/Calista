@@ -10,8 +10,10 @@
 
 import codecs
 
+from settings import *
 from model import *
-from machine_manager import *
+from tokenizer import *
+from machine_data import *
 
 from scripts.scan_ports import *
 from scripts.network_map import *
@@ -43,7 +45,7 @@ logo = f'''
 \t\t\t / /  / _` | | / __| __/ _` |
 \t\t\t/ /__| (_| | | \\__ \\ || (_| |
 \t\t\t\\____/\\__,_|_|_|___/\\__\\__,_|
-\t\t\t{YELLOW}-----------------------------{RESET}\tv 1.0.0
+\t\t\t{YELLOW}-----------------------------{RESET}\tv 0.0.9
 '''
 
 print(f'{logo}\n{CAL_COL}Calista{RESET}> Hello my name is Calista. I am an AI that is capable of competing\n\t in a cyber CTF.\n\n\t Enter questions from the CTF and I will do the rest.\n')
@@ -51,48 +53,16 @@ print(f'{logo}\n{CAL_COL}Calista{RESET}> Hello my name is Calista. I am an AI th
 # This is where the AI will get user input. It will loop until the user inputs quit.
 while True:
     usr_prompt = input(f'{USER}User{RESET}> ')              # Get user input
-
-    if (usr_prompt.lower() == 'quit') or (usr_prompt.lower() == 'q'):
-        print('\n')
-        exit(-1)
-    else:
-        print('Still a work in progress. Please be patient')
-
-        # 1. Convert the usr_prompt into nums
-        # 2. Append to a new empty list
-        # 3. Pad the sequence to make it uniform
-        # 4. Pass to neural network
-
-        usr_texts = []
-        usr_nums = text_to_numbers(usr_prompt)
-        usr_texts.append(usr_nums)
-        usr_input = [seq + [0] * (max_length - len(seq)) for seq in cipher_texts]
-        _, _, a3 = model.forward_prop(np.array(usr_input))
-
-        print(f'Prediction Array: {a3.flatten()}')
-
-        plain_prediction = denormalize_prediction(a3.flatten())
-
-    '''
     usr_bin_array = create_bin_array(corpus, usr_prompt)    # Create a binary array using the corpus and user input.
 
     if (usr_prompt.lower() == 'quit') or (usr_prompt.lower() == 'q'):
         print('\n')
         exit(-1)
     else:
-        #data = np.array(usr_bin_array)
-        data = []
-        usr_prompt_nums = text_to_numbers(usr_prompt)
-        data.append(usr_prompt_nums)
-
-        usr_data = [seq + [0] * (max_length - len(seq)) for seq in data]
+        data = np.array(usr_bin_array)
 
         tasks = np.array([1, 1, 1, 1, 1])
-        prediction = model.predict(np.array(usr_data))
-
-        print(f'Prediction: {prediction}')
-        # Now reverse the normalization to get plaintext of prediction
-        print(f'\n{denormalize_prediction(prediction)}')
+        prediction = model.predict(data)
         
         # Create the machine object or load data if machine with IP already exists during session.
         try:
@@ -112,7 +82,6 @@ while True:
         #-------------------------------------------------------------
         #    Program what each prediction should do individually.    |
         #-------------------------------------------------------------
-        
         for pred in prediction.round():
             if pred[0] == tasks[0]:
                 #----------------------------------------------------------------------------
@@ -128,4 +97,3 @@ while True:
                 current_machine.update_ports(open_ports)
         
         #machines.view_machine() Used to see whats happening with the machine
-        '''

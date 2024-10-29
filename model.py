@@ -10,12 +10,8 @@
 
 import numpy as np
 
-from json_data_parse import *
 from settings import *
-
-
-from settings import *
-from json_data_parse import *
+from tokenizer import *
 
 #-------------------------------------
 #   The model and training the AI    |
@@ -77,19 +73,33 @@ class NeuralNetwork:
 # returns { 'calista' : [model, X, y], 'recon_model' : [model, X, y], ...}
 
 # Define network Parameters
-input_size = len(X[0])
-#input_size = len(corpus)
+input_size = len(corpus)
 # 54
-hidden_size = 20
-# hidden_size = 15
-hidden_size_2 = 10
-# hidden_size_2 = 15
+hidden_size = 15
+hidden_size_2 = 15
 # Possibly add a 3rd hidden layer to the network
-output_size = len(y[0])
-#output_size = 5
+output_size = 5
 learning_rate = 0.5
 
 model = NeuralNetwork(input_size, hidden_size, hidden_size_2, output_size)
+
+#-----------------------------------------------------------------------
+#    Training data (will be loaded using a json script or something)   |
+#-----------------------------------------------------------------------
+binary_array = []
+
+for file_path in file_paths:
+    with open(file_path, "r", encoding="utf-8") as file:
+        text = file.read()
+        binary_array.append(create_bin_array(corpus, text)) # This will be the text from the user
+        #print(text)
+
+#print(binary_array)
+
+# These will be changed to reflect the data and binary arrays of the testing data rather than the hard coded values here
+X = np.array(binary_array) # ithink the array is not being matched up with the expected output properly. Or size is an issue
+#X = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0]])
+y = np.array([[0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 0, 1, 0], [1, 0, 0, 0, 0], [0, 0, 1, 0, 0]])
 
 #------------------------
 #   Train the network   |
