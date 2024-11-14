@@ -1,16 +1,6 @@
 {
     "cryptography" : [
         {
-            "algorithm": "",
-            "ciphertext": "",
-            "key": null,
-            "plaintext": "",
-            "difficulty": "",
-            "hint": "",
-            "file_download": false
-        },
-        
-        {
             "algorithm": "caesar cipher",
             "ciphertext": "Khoor Zruog",
             "key": 3,
@@ -348,5 +338,27 @@
             "file_download": false
         }
 
+    ],
+    "flag_identification" : [
+        {
+            "sequence": "Here is some random output from the system log.",
+            "contains_flag": false
+        },
+        {
+            "sequence": "Flag found in the memory dump: <prefix>{unique_flag_here}",
+            "contains_flag": true
+        },
+        {
+            "sequence": "Nothing important here, just standard output.",
+            "contains_flag": false
+        },
+        {
+            "sequence": "The flag is hidden in plain sight: <prefix>{hidden_flag_123}",
+            "contains_flag": true
+        },
+        {
+            "sequence": "Standard log information without any flags present.",
+            "contains_flag": false
+        }
     ]
 }

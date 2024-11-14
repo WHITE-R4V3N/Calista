@@ -1,0 +1,222 @@
+File created at 11:32:13.446912 of 2024-11-14
+
+Network is done loading. Final loss is 0.14199889421918252.
+
+*USER INTERACTION*
+
+User has entered:
+8 5 12 12 15 20 8 5 18 5
+
+Normalized user prompt:
+[[0.14       0.         0.24418605 0.         0.19101124 0.20224719
+  0.         0.18681319 0.2        0.         0.18888889 0.43442623
+  0.31067961 0.46296296 0.4173913  0.26446281 0.47863248 0.2601626
+  0.46902655 0.26446281 0.44545455 0.48695652 0.26890756 0.43442623
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [1](caesar cipher)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[1](caesar cipher)
+
+*USER INTERACTION*
+
+User has entered:
+SGVsbG8gdGhlcmU=
+
+Normalized user prompt:
+[[0.68       0.45348837 0.62790698 0.93258427 0.74157303 0.43820225
+  0.32432432 0.78021978 0.75555556 0.43820225 0.8        0.8852459
+  0.96116505 1.00925926 0.73913043 0.50413223 0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [1](caesar cipher)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[1](caesar cipher)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+File created at 11:33:16.089572 of 2024-11-14
+
+Network is done loading. Final loss is 0.0065654625851304564.
+
+*USER INTERACTION*
+
+User has entered:
+SGVsbG8gdGhlcmU=
+
+Normalized user prompt:
+[[0.68       0.45348837 0.62790698 0.93258427 0.74157303 0.43820225
+  0.32432432 0.78021978 0.75555556 0.43820225 0.8        0.8852459
+  0.96116505 1.00925926 0.73913043 0.50413223 0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [0](base64)
+
+Cipher text to plain text:
+SGVsbG8gdGhlcmU= -> Hello there
+
+*USER INTERACTION*
+
+User has entered:
+8 5 12 12 15 20 8 5 18 5
+
+Normalized user prompt:
+[[0.14       0.         0.24418605 0.         0.19101124 0.20224719
+  0.         0.18681319 0.2        0.         0.18888889 0.43442623
+  0.31067961 0.46296296 0.4173913  0.26446281 0.47863248 0.2601626
+  0.46902655 0.26446281 0.44545455 0.48695652 0.26890756 0.43442623
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](A1Z26)
+
+Cipher text to plain text:
+8 5 12 12 15 20 8 5 18 5 -> HELLOTHERE
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 11:46:33.962419 of 2024-11-14
+
+Network is done loading. Final loss is 0.0001677190525179562.
+
+*USER INTERACTION*
+
+User has entered:
+8 5 12 12 15 20 8 5 18 5
+
+Normalized user prompt:
+[[0.14       0.         0.24418605 0.         0.19101124 0.20224719
+  0.         0.18681319 0.2        0.         0.18888889 0.43442623
+  0.31067961 0.46296296 0.4173913  0.26446281 0.47863248 0.2601626
+  0.46902655 0.26446281 0.44545455 0.48695652 0.26890756 0.43442623
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](A1Z26)
+
+Cipher text to plain text:
+8 5 12 12 15 20 8 5 18 5 -> HELLOTHERE
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 11:49:14.118771 of 2024-11-14
+
+Network is done loading. Final loss is 0.006529985869886175.
+
+*USER INTERACTION*
+
+User has entered:
+11222
+
+Normalized user prompt:
+[[ 0.          0.19767442  0.20930233  0.20224719  0.20224719 -0.35955056
+  -0.43243243 -0.35164835 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [4](A1Z26)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[4](A1Z26)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 12:06:11.827144 of 2024-11-14
+
+Network is done loading. Final loss is 0.07101918598827163.
+
+*USER INTERACTION*
+
+User has entered:
+8 5 12 12 15 20 8 5 18 5
+
+Normalized user prompt:
+[[0.14       0.         0.24418605 0.         0.19101124 0.20224719
+  0.         0.18681319 0.2        0.         0.18888889 0.43442623
+  0.31067961 0.46296296 0.4173913  0.26446281 0.47863248 0.2601626
+  0.46902655 0.26446281 0.44545455 0.48695652 0.26890756 0.43442623
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](A1Z26)
+
+Cipher text to plain text:
+8 5 12 12 15 20 8 5 18 5 -> HELLOTHERE
+
+*USER INTERACTION*
+
+User has entered:
+q
+

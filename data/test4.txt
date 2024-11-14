@@ -1,1 +1,0 @@
-Find all open ports and hidden directories at 192.168.1.72

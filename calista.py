@@ -1,41 +1,16 @@
 # Author:       Emma Gillespie
 # Date:         2024-03-20
-# Description:  What is and will be considered the front-end of the AI until a website
-#               or an app is made rather than the command line. This file is only for
-#               dealing with user input and output (mmsg from calista the AI)
+# Description:  This file serves as the main file for IRIS. This file will handle
+#               user input and give the neural network output in response. This includes
+#               running tests and or commands. All will be kept in a log file for documentation
+#               purposes. Name based on greek goddess for communication.
 
-#----------------
-#    IMPORTS    |
-#----------------
+import base64
 
-import codecs
-
+from data_parse import *
+from models_obj import *
 from settings import *
-from model import *
-from machine_data import * # Remove
-
-from scripts.scan_ports import *
-from scripts.network_map import *
-from scripts.scrape_website import *
-from scripts.dirb import *
-
-machines = MachineManager()
-current_machine = ''
-
-# NN Model's
-# nn_models = [calista_model, recon_model, ...]
-calista_model = ''              # Processing input from the user and deciding what model(s) to use
-recon_model = ''                # Used for processing input related to recon
-cryptography_model = ''         # Used for input related to cryptographic analysis
-reverse_engineering_model = ''  # Used for prompts related to reverse engineering
-forensics_model = ''            # Used for input related to forensics
-general_skills_model = ''       # Used for inputs related to general skills in cyber security
-binary_exploit_model = ''       # Used for inputs related to binary exploitation
-web_exploit_model = ''          # Used for input related to web exploitation
-
-#----------------
-#    I/O Loop   |
-#----------------
+from logs.logger import *
 
 logo = f'''
 \n\n\n\n
@@ -44,55 +19,85 @@ logo = f'''
 \t\t\t / /  / _` | | / __| __/ _` |
 \t\t\t/ /__| (_| | | \\__ \\ || (_| |
 \t\t\t\\____/\\__,_|_|_|___/\\__\\__,_|
-\t\t\t{YELLOW}-----------------------------{RESET}\tv 0.0.9
+\t\t\t{YELLOW}-----------------------------{RESET}\tv 1.0.0
+\t\t\t\t   By: Emma Gillespie
+
+{RED}[DISCLAIMER]{RESET} Capstone project and only to be used for ethical purposes!
 '''
 
-print(f'{logo}\n{CAL_COL}Calista{RESET}> Hello my name is Calista. I am an AI that is capable of competing\n\t in a cyber CTF.\n\n\t Enter questions from the CTF and I will do the rest.\n')
+create_file()
 
-# This is where the AI will get user input. It will loop until the user inputs quit.
+#-------------------------------------------------------------------|
+#   Creating the model object and training it using the json files  |
+#-------------------------------------------------------------------|
+cipher_labels = ['base64', 'caesar cipher', 'base64 -> base64 -> caesar cipher', 'rot13', 'A1Z26']
+# Create a model object to predict cipher used. input size and output size will vary based on the data used
+tokenizer = DataTokenizer()
+cipher_dataset = json.loads(open('datasets/json_training_data.json', 'r').read())
+cipher_model = Base_Model(Simplified_NN(input_size=72, hidden_size=128, output_size=5), tokenizer, cipher_dataset)
+
+X = []
+y = []
+labels = []
+cipher_labels = ['base64', 'caesar cipher', 'base64 -> base64 -> caesar cipher', 'rot13', 'A1Z26', '']
+for ciphered_text in algorithm_cipher:
+    X.append(cipher_model.tokenizer.char_tokenize(ciphered_text))
+    X = cipher_model.tokenizer.pad_input(X)
+    # Will eventually have to add a line to be able to normalize the Input data. For now this will work
+
+    labels.append(algorithm_cipher[ciphered_text])
+
+for label in labels:
+    y.append(cipher_labels.index(label))
+
+y = np.eye(5)[y] # one-hot encoding
+X = np.array(X) # Normalize x before using. Causes overflow otherwise
+
+X_min = X.min(axis=0)
+X_max = X.max(axis=0)
+X = (X - X_min) / (X_max - X_min)
+
+# Train the NN for the cipher prediction model
+final_loss = cipher_model.model.train(X, y)
+
+append_data(f'Network is done loading. Final loss is {final_loss}.\n')
+
+#--------------------------------------------------------------------------------
+#   The loop for taking in user input and or questions, flags, ciphers, etc.    |
+#--------------------------------------------------------------------------------
+print(f'{logo}\n{CAL_COL}IRIS{RESET}> Hi, I am Calista. I am a work in progress AI that will compete in\nCapture the flag competitions.\n')
+
 while True:
-    usr_prompt = input(f'{USER}User{RESET}> ')              # Get user input
-    usr_bin_array = create_bin_array(corpus, usr_prompt)    # Create a binary array using the corpus and user input.
+    usr_prompt = input(f'{USER}User{RESET}> ')
+
+    append_data(f'*USER INTERACTION*\n\nUser has entered:\n{usr_prompt}\n')
 
     if (usr_prompt.lower() == 'quit') or (usr_prompt.lower() == 'q'):
         print('\n')
         exit(-1)
     else:
-        data = np.array(usr_bin_array)
+        x_usr = [cipher_model.tokenizer.char_tokenize(usr_prompt)]
+        x_usr = [seq + [0] * (cipher_model.tokenizer.max_length - len(seq)) for seq in x_usr]
+        x_usr = (x_usr - X_min) / (X_max - X_min)
 
-        tasks = np.array([1, 1, 1, 1, 1])
-        prediction = model.predict(data)
-        
-        # Create the machine object or load data if machine with IP already exists during session.
+        append_data(f'Normalized user prompt:\n{x_usr}\n')
+
+        prediction = cipher_model.model.predict(x_usr)
+        append_data(f'Model Prediction: {prediction}({cipher_labels[prediction[0]]})\n')
+        print(f'\nCipher Type: {GREEN}{cipher_labels[prediction[0]]}{RESET}\n\n{YELLOW}Attempting to retrieve flag...{RESET}\n')
+
         try:
-            ip_address = re.findall(ip_pattern, usr_prompt)[0] # Finds an IP address in the user input.
-            
-            if (not machines): # if no machines exist then create the first machine
-                machines.add_machine(Machine(ip_address))
-            elif (ip_address not in [machine.ip for machine in machines.machines]):# If IP address not found with in the machines then create
-                machines.add_machine(Machine(ip_address))    # the machine object with ip equal to the user input IP
-            #else:
-            for machine in machines.machines:
-                if (ip_address == machine.ip):
-                    current_machine = machine
+            if prediction[0] == 0:                          # Decrypt base64 encryption
+                usr_decode = base64.b64decode(usr_prompt)
+                usr_plain = usr_decode.decode('ascii')
+            elif prediction[0] == 1:
+                pass
+            elif prediction == 4:
+                usr_decode = usr_prompt.split(' ')          # Decrypt A1Z26 encryption
+                usr_plain = "".join(chr(int(elem) + 64) for elem in usr_decode)
+
+            append_data(f'Cipher text to plain text:\n{usr_prompt} -> {usr_plain}\n')
+            print(f'{RED}{usr_prompt}{RESET} -> {GREEN}{usr_plain}{RESET}\n')
         except:
-            pass
-
-        #-------------------------------------------------------------
-        #    Program what each prediction should do individually.    |
-        #-------------------------------------------------------------
-        for pred in prediction.round():
-            if pred[0] == tasks[0]:
-                #----------------------------------------------------------------------------
-                #   Will run the port_scan.py script. This will find ports between 1-1000   |
-                #----------------------------------------------------------------------------
-                ip_address = re.findall(ip_pattern, usr_prompt)[0]
-                print(f'\n{CAL_COL}Calista{RESET}> Scanning {ip_address} for open ports.')
-                
-                ports = [range(1, 1000)]
-                for p in ports:
-                    open_ports = scan_target(ip_address, p) # The AI should be able to pull this information from the prompt
-
-                current_machine.update_ports(open_ports)
-        
-        #machines.view_machine() Used to see whats happening with the machine
+            print(f'Something went wrong while computing.\nPrediction: {RED}{prediction[0]}{RESET} ({YELLOW}{cipher_labels[prediction[0]]}{RESET})\n')
+            append_data(f'Something went wrong with the model\'s prediction.\nPrediction was:\n{prediction}({cipher_labels[prediction[0]]})\n')
