@@ -1,0 +1,169 @@
+*CALISTA AI STARTED*
+
+File edited at 08:29:57.891307 of 2024-11-15
+
+Network is done loading. Final loss is 0.000105297093892384.
+
+*USER INTERACTION*
+
+User has entered:
+btwqi
+
+Normalized user prompt:
+[[ 0.98        0.97674419  1.01162791  0.91011236  0.82022472 -0.35955056
+  -0.43243243 -0.35164835 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [4](A1Z26)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[4](A1Z26)
+
+*USER INTERACTION*
+
+User has entered:
+d29ybGQ=
+
+Normalized user prompt:
+[[ 1.02        0.20930233  0.29069767  1.          0.74157303  0.43820225
+   0.66216216  0.31868132 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [4](A1Z26)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[4](A1Z26)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 08:31:13.105774 of 2024-11-15
+
+Network is done loading. Final loss is 0.012937661795551652.
+
+*USER INTERACTION*
+
+User has entered:
+d29ybGQ=
+
+Normalized user prompt:
+[[ 1.02        0.20930233  0.29069767  1.          0.74157303  0.43820225
+   0.66216216  0.31868132 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [0](base64)
+
+Cipher text to plain text:
+d29ybGQ= -> world
+
+*USER INTERACTION*
+
+User has entered:
+btwqi
+
+Normalized user prompt:
+[[ 0.98        0.97674419  1.01162791  0.91011236  0.82022472 -0.35955056
+  -0.43243243 -0.35164835 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [1](caesar cipher)
+
+Cipher text to plain text:
+btwqi -> world
+
+*USER INTERACTION*
+
+User has entered:
+23 15 18 12 4
+
+Normalized user prompt:
+[[0.02       0.22093023 0.         0.19101124 0.23595506 0.
+  0.22972973 0.26373626 0.         0.19101124 0.2        0.26229508
+  0.50485437 0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](A1Z26)
+
+Cipher text to plain text:
+23 15 18 12 4 -> WORLD
+
+*USER INTERACTION*
+
+User has entered:
+yoctv
+
+Normalized user prompt:
+[[ 1.44        0.91860465  0.77906977  0.94382022  0.96629213 -0.35955056
+  -0.43243243 -0.35164835 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [0](base64)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[0](base64)
+
+*USER INTERACTION*
+
+User has entered:
+quit
+

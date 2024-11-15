@@ -6,6 +6,7 @@
 #               purposes. Name based on greek goddess for communication.
 
 import base64
+import string
 
 from data_parse import *
 from models_obj import *
@@ -34,12 +35,12 @@ cipher_labels = ['base64', 'caesar cipher', 'base64 -> base64 -> caesar cipher',
 # Create a model object to predict cipher used. input size and output size will vary based on the data used
 tokenizer = DataTokenizer()
 cipher_dataset = json.loads(open('datasets/json_training_data.json', 'r').read())
-cipher_model = Base_Model(Simplified_NN(input_size=72, hidden_size=128, output_size=5), tokenizer, cipher_dataset)
+cipher_model = Base_Model(Simplified_NN(input_size=72, hidden_size=256, output_size=5), tokenizer, cipher_dataset)
 
 X = []
 y = []
 labels = []
-cipher_labels = ['base64', 'caesar cipher', 'base64 -> base64 -> caesar cipher', 'rot13', 'A1Z26', '']
+#cipher_labels = ['base64', 'caesar cipher', 'base64 -> base64 -> caesar cipher', 'rot13', 'A1Z26', '']
 for ciphered_text in algorithm_cipher:
     X.append(cipher_model.tokenizer.char_tokenize(ciphered_text))
     X = cipher_model.tokenizer.pad_input(X)
@@ -65,7 +66,7 @@ append_data(f'Network is done loading. Final loss is {final_loss}.\n')
 #--------------------------------------------------------------------------------
 #   The loop for taking in user input and or questions, flags, ciphers, etc.    |
 #--------------------------------------------------------------------------------
-print(f'{logo}\n{CAL_COL}IRIS{RESET}> Hi, I am Calista. I am a work in progress AI that will compete in\nCapture the flag competitions.\n')
+print(f'{logo}\n{CAL_COL}Calista{RESET}> Hi, I am Calista. I am a work in progress AI that will compete in\nCapture the flag competitions.\n')
 
 while True:
     usr_prompt = input(f'{USER}User{RESET}> ')
@@ -92,6 +93,20 @@ while True:
                 usr_plain = usr_decode.decode('ascii')
             elif prediction[0] == 1:
                 pass
+                usr_decode = usr_prompt.strip().lower()
+                key = 5         # For now hard coded to 5. Will either predict key or just go -26 to 26
+                alphabet = string.ascii_lowercase
+                usr_plain = ''
+
+                # Attempt to decipher, send to falg identifying model. If no flag keep going. Else print deciphered flag
+
+                for c in usr_decode:
+                    if c in alphabet:
+                        position = alphabet.find(c)
+                        new_position = (position - key)
+                        new_character = alphabet[new_position]
+                        usr_plain += new_character
+
             elif prediction == 4:
                 usr_decode = usr_prompt.split(' ')          # Decrypt A1Z26 encryption
                 usr_plain = "".join(chr(int(elem) + 64) for elem in usr_decode)
