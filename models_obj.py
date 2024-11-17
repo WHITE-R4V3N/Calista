@@ -7,6 +7,8 @@ class Base_Model:
         self.model = model
         self.tokenizer = tokenizer
         self.dataset = dataset
+        self.X = []
+        self.y = []
 
 class Simplified_NN:
     def __init__(self, input_size, hidden_size, output_size, learning_rate=0.01):

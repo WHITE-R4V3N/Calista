@@ -1,0 +1,297 @@
+*CALISTA AI STARTED*
+
+File edited at 11:54:05.364824 of 2024-11-16
+
+Network is done loading. Final loss is 0.019380911170386497.
+
+*USER INTERACTION*
+
+User has entered:
+Q2FsaXN0YSBBSQ==
+
+Normalized user prompt:
+[[0.64       0.20930233 0.44186047 0.93258427 0.73033708 0.62921348
+  0.62162162 0.17582418 0.63333333 0.57303371 0.37777778 0.54098361
+  0.80582524 0.75       0.53043478 0.50413223 0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [0](base64)
+
+Cipher text to plain text:
+Q2FsaXN0YSBBSQ== -> Calista AI
+
+*USER INTERACTION*
+
+User has entered:
+quit
+
+*CALISTA AI STARTED*
+
+File edited at 12:27:48.482598 of 2024-11-16
+
+*CALISTA AI STARTED*
+
+File edited at 12:28:08.889675 of 2024-11-16
+
+Network is done loading. Final loss is 0.13548339179448787.
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 12:29:49.260639 of 2024-11-16
+
+Network is done loading. Final loss is 0.07744654766634064.
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 12:33:47.894782 of 2024-11-16
+
+Network is done loading. Final loss is 0.20646924245344206.
+
+*USER INTERACTION*
+
+User has entered:
+Q2FsaXN0YSBBSQ==
+
+Normalized user prompt:
+[[0.64       0.20930233 0.44186047 0.93258427 0.73033708 0.62921348
+  0.62162162 0.17582418 0.63333333 0.57303371 0.37777778 0.54098361
+  0.80582524 0.75       0.53043478 0.50413223 0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](A1Z26)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[4](A1Z26)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 12:34:12.515796 of 2024-11-16
+
+Network is done loading. Final loss is 0.2645381302207493.
+
+*USER INTERACTION*
+
+User has entered:
+3 1 12 9 19 20 1 1 9
+
+Normalized user prompt:
+[[0.04       0.         0.19767442 0.         0.19101124 0.20224719
+  0.         0.27472527 0.         0.19101124 0.27777778 0.26229508
+  0.48543689 0.44444444 0.27826087 0.40495868 0.27350427 0.39837398
+  0.28318584 0.47107438 0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [2](base64 -> base64 -> caesar cipher)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[2](base64 -> base64 -> caesar cipher)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 12:34:47.631937 of 2024-11-16
+
+Network is done loading. Final loss is 0.07100068352581539.
+
+*USER INTERACTION*
+
+User has entered:
+3 1 12 9 19 20 1 1 9
+
+Normalized user prompt:
+[[0.04       0.         0.19767442 0.         0.19101124 0.20224719
+  0.         0.27472527 0.         0.19101124 0.27777778 0.26229508
+  0.48543689 0.44444444 0.27826087 0.40495868 0.27350427 0.39837398
+  0.28318584 0.47107438 0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](A1Z26)
+
+Cipher text to plain text:
+3 1 12 9 19 20 1 1 9 -> CALISTAAI
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 17:04:16.434849 of 2024-11-16
+
+Network is done loading. Final loss is 0.012938017830259848.
+
+*USER INTERACTION*
+
+User has entered:
+3 1 12 9 19 20 1 1 9
+
+Normalized user prompt:
+[[0.04       0.         0.19767442 0.         0.19101124 0.20224719
+  0.         0.27472527 0.         0.19101124 0.27777778 0.26229508
+  0.48543689 0.44444444 0.27826087 0.40495868 0.27350427 0.39837398
+  0.28318584 0.47107438 0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[3](A1Z26)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 17:04:42.273641 of 2024-11-16
+
+Network is done loading. Final loss is 0.01938412428439671.
+
+*USER INTERACTION*
+
+User has entered:
+3 1 12 9 19 20 1 1 9
+
+Normalized user prompt:
+[[0.04       0.         0.19767442 0.         0.19101124 0.20224719
+  0.         0.27472527 0.         0.19101124 0.27777778 0.26229508
+  0.48543689 0.44444444 0.27826087 0.40495868 0.27350427 0.39837398
+  0.28318584 0.47107438 0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[3](A1Z26)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 17:05:02.248539 of 2024-11-16
+
+Network is done loading. Final loss is 0.0064989366373899215.
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 17:05:26.322680 of 2024-11-16
+
+Network is done loading. Final loss is 0.141941029110034.
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 17:06:10.412083 of 2024-11-16
+
+Network is done loading. Final loss is 0.0064872606455828145.
+
+*USER INTERACTION*
+
+User has entered:
+3 1 12 9 19 20 1 1 9
+
+Normalized user prompt:
+[[0.04       0.         0.19767442 0.         0.19101124 0.20224719
+  0.         0.27472527 0.         0.19101124 0.27777778 0.26229508
+  0.48543689 0.44444444 0.27826087 0.40495868 0.27350427 0.39837398
+  0.28318584 0.47107438 0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Cipher text to plain text:
+3 1 12 9 19 20 1 1 9 -> CALISTAAI
+
+*USER INTERACTION*
+
+User has entered:
+q
+

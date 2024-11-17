@@ -9,17 +9,16 @@ from collections import defaultdict
 json_data = json.loads(open('datasets/json_training_data.json', 'r').read())
 
 categories = []
-algorithm_cipher = {}
-challenge = []
 flags = {}
 
 flag_prefix = ''    # Can set a specific prefix the model can look for in flags. Train the AI at program start.
 
 # Class to tokenize the data being given
 class DataTokenizer:
-    def __init__(self):
+    def __init__(self, data_file):
         self.word_index = defaultdict(lambda: len(self.word_index))
         self.max_length = 0
+        self.data_file = data_file
 
     def fit_on_texts(self, texts):
         for text in texts:
@@ -43,11 +42,18 @@ class DataTokenizer:
     def normalize_array(arr, max_value=65535):
         return arr / max_value
 
-for entry in json_data['cryptography']:
-    #categories.append[entry]
+    def parse_cypto(self):
+        algorithm_cipher = {}
+        challenge = []
 
-    algorithm_cipher[entry['ciphertext']] = entry['algorithm']
-    challenge.append(entry['hint'])
+        for entry in self.data_file['cryptography']:
+            #categories.append[entry]
+
+            algorithm_cipher[entry['ciphertext']] = entry['algorithm']
+            challenge.append(entry['hint'])
+
+        return algorithm_cipher, challenge
+
 
 for entry in json_data['flag_identification']:
     flags[entry['sequence']] = entry['contains_flag']

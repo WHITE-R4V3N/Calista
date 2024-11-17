@@ -336,26 +336,6 @@
             "difficulty": "hard",
             "hint": "Match each number.",
             "file_download": false
-        },
-
-        {
-            "algorithm": "vigenere",
-            "ciphertext": "hpaso xsklo",
-            "key": "alphabet",
-            "plaintext": "hello world",
-            "difficulty": "hard",
-            "hint": "The alphabet has a key.",
-            "file_download": false
-        },
-
-        {
-            "algorithm": "vigenere",
-            "ciphertext": "lwryr ioe",
-            "key": "world",
-            "plaintext": "piano man",
-            "difficulty": "hard",
-            "hint": "The one song about a gentle man and the key world",
-            "file_download": false
         }
 
     ],

@@ -31,16 +31,23 @@ create_file()
 #-------------------------------------------------------------------|
 #   Creating the model object and training it using the json files  |
 #-------------------------------------------------------------------|
-cipher_labels = ['base64', 'caesar cipher', 'base64 -> base64 -> caesar cipher', 'rot13', 'A1Z26']
+#cipher_labels = ['base64', 'caesar cipher', 'base64 -> base64 -> caesar cipher', 'rot13', 'A1Z26']
 # Create a model object to predict cipher used. input size and output size will vary based on the data used
-tokenizer = DataTokenizer()
-cipher_dataset = json.loads(open('datasets/json_training_data.json', 'r').read())
-cipher_model = Base_Model(Simplified_NN(input_size=72, hidden_size=256, output_size=5), tokenizer, cipher_dataset)
+cipher_model = Base_Model(Simplified_NN(input_size=72, hidden_size=256, output_size=5),
+                          DataTokenizer(json.loads(open('datasets/json_training_data.json', 'r').read())),
+                          json.loads(open('datasets/json_training_data.json', 'r').read()))
 
 X = []
 y = []
-labels = []
-#cipher_labels = ['base64', 'caesar cipher', 'base64 -> base64 -> caesar cipher', 'rot13', 'A1Z26', '']
+labels = [] # Figure a way to ccreate the labels using a set and convert to list before going through a creating y training data. If that makes sense
+algorithm_cipher, challenge = cipher_model.tokenizer.parse_cypto()
+
+cipher_labels = []
+for ci_text in algorithm_cipher:
+    cipher_labels.append(algorithm_cipher[ci_text])
+
+cipher_labels = list(dict.fromkeys(cipher_labels)) # Create the labels used by the cryptographic AI model
+
 for ciphered_text in algorithm_cipher:
     X.append(cipher_model.tokenizer.char_tokenize(ciphered_text))
     X = cipher_model.tokenizer.pad_input(X)
@@ -88,17 +95,17 @@ while True:
         print(f'\nCipher Type: {GREEN}{cipher_labels[prediction[0]]}{RESET}\n\n{YELLOW}Attempting to retrieve flag...{RESET}\n')
 
         try:
-            if prediction[0] == 0:                          # Decrypt base64 encryption
+            if prediction[0] == 4:                          # Decrypt base64 encryption
                 usr_decode = base64.b64decode(usr_prompt)
                 usr_plain = usr_decode.decode('ascii')
-            elif prediction[0] == 1:
+            elif prediction[0] == 0:
                 pass
                 usr_decode = usr_prompt.strip().lower()
                 key = 5         # For now hard coded to 5. Will either predict key or just go -26 to 26
                 alphabet = string.ascii_lowercase
                 usr_plain = ''
 
-                # Attempt to decipher, send to falg identifying model. If no flag keep going. Else print deciphered flag
+                # Attempt to decipher, send to flag identifying model. If no flag keep going. Else print deciphered flag
 
                 for c in usr_decode:
                     if c in alphabet:
@@ -107,7 +114,7 @@ while True:
                         new_character = alphabet[new_position]
                         usr_plain += new_character
 
-            elif prediction == 4:
+            elif prediction == 3:
                 usr_decode = usr_prompt.split(' ')          # Decrypt A1Z26 encryption
                 usr_plain = "".join(chr(int(elem) + 64) for elem in usr_decode)
 
