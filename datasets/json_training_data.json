@@ -359,6 +359,22 @@
         {
             "sequence": "Standard log information without any flags present.",
             "contains_flag": false
+        },
+        {
+            "sequence": "Determine if this is a flag: <prefix>{x14_be_k1nd}",
+            "contains_flag": true
+        },
+        {
+            "sequence": "Nothing important here, just standard output.",
+            "contains_flag": false
+        },
+        {
+            "sequence": "The flag is hidden in plain sight: <prefix>{th1s_15_4_fl4g}",
+            "contains_flag": true
+        },
+        {
+            "sequence": "Standard log information without any flags present.",
+            "contains_flag": false
         }
     ]
 }

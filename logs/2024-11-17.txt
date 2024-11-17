@@ -1,0 +1,82 @@
+*CALISTA AI STARTED*
+
+File edited at 12:48:20.168743 of 2024-11-17
+
+Network is done loading. Final loss is 0.0064848974666999026.
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 12:49:23.859037 of 2024-11-17
+
+Network is done loading. Final loss is 0.013159337148504284.
+
+*USER INTERACTION*
+
+User has entered:
+3 1 12 9 19 20 1 1 9
+
+Normalized user prompt:
+[[0.04       0.         0.19767442 0.         0.19101124 0.20224719
+  0.         0.27472527 0.         0.19101124 0.27777778 0.26229508
+  0.48543689 0.44444444 0.27826087 0.40495868 0.27350427 0.39837398
+  0.28318584 0.47107438 0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Cipher text to plain text:
+3 1 12 9 19 20 1 1 9 -> CALISTAAI
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 14:24:48.979145 of 2024-11-17
+
+Network is done loading. Final loss is 0.07747375080174944.
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 14:27:19.861406 of 2024-11-17
+
+Network is done loading cipher model. Final loss is 0.00648750530312989.
+
+*CALISTA AI STARTED*
+
+File edited at 14:28:13.228077 of 2024-11-17
+
+Network is done loading cipher model. Final loss is 0.025821697237861728.
+
+*CALISTA AI STARTED*
+
+File edited at 14:28:42.396103 of 2024-11-17
+
+Network is done loading cipher model. Final loss is 0.07098832784638451.
+
+Network is done loading flag identification model. Final loss is 0.00014349745932142112.
+
+*USER INTERACTION*
+
+User has entered:
+q
+

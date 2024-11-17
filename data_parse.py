@@ -8,9 +8,6 @@ from collections import defaultdict
 # Load the file
 json_data = json.loads(open('datasets/json_training_data.json', 'r').read())
 
-categories = []
-flags = {}
-
 flag_prefix = ''    # Can set a specific prefix the model can look for in flags. Train the AI at program start.
 
 # Class to tokenize the data being given
@@ -53,7 +50,11 @@ class DataTokenizer:
             challenge.append(entry['hint'])
 
         return algorithm_cipher, challenge
+    
+    def parse_flag(self):
+        flag_dict = {}
 
+        for entry in self.data_file['flag_identification']:
+            flag_dict[entry['sequence']] = entry['contains_flag']
 
-for entry in json_data['flag_identification']:
-    flags[entry['sequence']] = entry['contains_flag']
+        return flag_dict

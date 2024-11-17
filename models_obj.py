@@ -8,7 +8,33 @@ class Base_Model:
         self.tokenizer = tokenizer
         self.dataset = dataset
         self.X = []
+        self.X_min = 0
+        self.X_max = 0
         self.y = []
+        self.labels = []
+        self.labels_index = []
+
+    def create_X_y_training(self, algorithm_cipher):
+        for ci_text in algorithm_cipher:
+            self.labels_index.append(algorithm_cipher[ci_text])
+
+        self.labels_index = list(dict.fromkeys(self.labels_index)) # Create the labels used by the cryptographic AI model
+
+        for ciphered_text in algorithm_cipher:
+            self.X.append(self.tokenizer.char_tokenize(ciphered_text))
+            self.X = self.tokenizer.pad_input(self.X)
+            self.labels.append(algorithm_cipher[ciphered_text])
+
+        for label in self.labels:
+            self.y.append(self.labels_index.index(label))
+
+        self.y = np.eye(len(self.labels_index))[self.y] # one-hot encoding
+        self.X = np.array(self.X) # Normalize x before using. Causes overflow otherwise
+
+        # Here is where we normalize the X so there is no overflow in the data.
+        self.X_min = self.X.min(axis=0)
+        self.X_max = self.X.max(axis=0)
+        self.X = (self.X - self.X_min) / (self.X_max - self.X_min)
 
 class Simplified_NN:
     def __init__(self, input_size, hidden_size, output_size, learning_rate=0.01):
