@@ -51,8 +51,6 @@ cipher_labels = list(dict.fromkeys(cipher_labels)) # Create the labels used by t
 for ciphered_text in algorithm_cipher:
     X.append(cipher_model.tokenizer.char_tokenize(ciphered_text))
     X = cipher_model.tokenizer.pad_input(X)
-    # Will eventually have to add a line to be able to normalize the Input data. For now this will work
-
     labels.append(algorithm_cipher[ciphered_text])
 
 for label in labels:
@@ -61,6 +59,7 @@ for label in labels:
 y = np.eye(5)[y] # one-hot encoding
 X = np.array(X) # Normalize x before using. Causes overflow otherwise
 
+# Here is where we normalize the X so there is no overflow in the data
 X_min = X.min(axis=0)
 X_max = X.max(axis=0)
 X = (X - X_min) / (X_max - X_min)
