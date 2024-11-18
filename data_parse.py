@@ -58,3 +58,6 @@ class DataTokenizer:
             flag_dict[entry['sequence']] = entry['contains_flag']
 
         return flag_dict
+    
+    def parse_question_type():
+        pass

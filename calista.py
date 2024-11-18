@@ -13,14 +13,16 @@ from models_obj import *
 from settings import *
 from logs.logger import *
 
+nn_visualizer = True
+
 logo = f'''
-\n\n\n\n
+\n
 \t\t\t   ___      _ _     _        
 \t\t\t  / __\\__ _| (_)___| |_ __ _ 
 \t\t\t / /  / _` | | / __| __/ _` |
 \t\t\t/ /__| (_| | | \\__ \\ || (_| |
 \t\t\t\\____/\\__,_|_|_|___/\\__\\__,_|
-\t\t\t{YELLOW}-----------------------------{RESET}\tv 1.0.5
+\t\t\t{YELLOW}-----------------------------{RESET}\tv 1.0.7
 \t\t\t\t   By: Emma Gillespie
 
 {RED}[DISCLAIMER]{RESET} Capstone project and only to be used for ethical purposes!
@@ -28,6 +30,7 @@ logo = f'''
 
 create_file() # Creates the files for the logs
 
+print(f'\n{YELLOW}Loading Cipher Module:{RESET}')
 # Create an object for the neural network that predicts what cipher is used on a piece of text
 cipher_model = Base_Model(Simplified_NN(input_size=72, hidden_size=256, output_size=5),
                           DataTokenizer(json.loads(open('datasets/json_training_data.json', 'r').read())),
@@ -38,8 +41,10 @@ cipher_model = Base_Model(Simplified_NN(input_size=72, hidden_size=256, output_s
 algorithm_cipher, challenge = cipher_model.tokenizer.parse_cypto()      # Parses relevant information needed for cypto analysis
 cipher_model.create_X_y_training(algorithm_cipher)                      # Parses and creates the training data used for the neural network
 final_loss = cipher_model.model.train(cipher_model.X, cipher_model.y)   # Trains the network and returns the final loss number
+print(f'Final loss of network: {GREEN}{final_loss}{RESET}\n')
 append_data(f'Network is done loading cipher model. Final loss is {final_loss}.\n')  # Appends the loss to the log file for reference and analyzing what happened in logs
 
+print(f'\n{YELLOW}Loading Flag Identification Module:{RESET}')
 flag_model = Base_Model(Simplified_NN(input_size=60, hidden_size=128, output_size=2),
                         DataTokenizer(json.loads(open('datasets/json_training_data.json', 'r').read())),
                         json.loads(open('datasets/json_training_data.json', 'r').read()))
@@ -47,6 +52,7 @@ flag_model = Base_Model(Simplified_NN(input_size=60, hidden_size=128, output_siz
 flag_dict = flag_model.tokenizer.parse_flag()
 flag_model.create_X_y_training(flag_dict)
 final_loss = flag_model.model.train(flag_model.X, flag_model.y)
+print(f'Final loss of network: {GREEN}{final_loss}{RESET}\n')
 append_data(f'Network is done loading flag identification model. Final loss is {final_loss}.\n') # Appends the loss to the log file for reference and analyzing what happened in logs
 
 #--------------------------------------------------------------------------------
@@ -102,3 +108,6 @@ while True:
         except:
             print(f'Something went wrong while computing.\nPrediction: {RED}{prediction[0]}{RESET} ({YELLOW}{cipher_model.labels_index[prediction[0]]}{RESET})\n')
             append_data(f'Something went wrong with the model\'s prediction.\nPrediction was:\n{prediction}({cipher_model.labels_index[prediction[0]]})\n')
+
+        if nn_visualizer:
+            cipher_model.model.visualize(np.array(x_usr)) # Create a visual of the model
