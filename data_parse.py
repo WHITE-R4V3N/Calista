@@ -8,7 +8,7 @@ from collections import defaultdict
 # Load the file
 json_data = json.loads(open('datasets/json_training_data.json', 'r').read())
 
-flag_prefix = ''    # Can set a specific prefix the model can look for in flags. Train the AI at program start.
+flag_prefix = 'CalistaAI'    # Can set a specific prefix for the CTF
 
 # Class to tokenize the data being given
 class DataTokenizer:
@@ -55,7 +55,12 @@ class DataTokenizer:
         flag_dict = {}
 
         for entry in self.data_file['flag_identification']:
-            flag_dict[entry['sequence']] = entry['contains_flag']
+            p_flag = str(entry['contains_flag'])
+
+            if ('<prefix>' in p_flag) and (flag_prefix != ''):
+                p_flag.replace('<prefix>', flag_prefix)
+
+            flag_dict[entry['sequence']] = p_flag
 
         return flag_dict
     

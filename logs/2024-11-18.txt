@@ -1,0 +1,738 @@
+*CALISTA AI STARTED*
+
+File edited at 08:53:40.962894 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.006484766732128164.
+
+Network is done loading flag identification model. Final loss is 0.00022284212941348934.
+
+*USER INTERACTION*
+
+User has entered:
+SmlueA==
+
+Normalized user prompt:
+[[ 0.68        0.89534884  0.88372093  0.95505618  0.7752809   0.37078652
+   0.39189189  0.31868132 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [0](caesar cipher)
+
+Cipher text to plain text:
+SmlueA== -> nhgpzv
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 08:54:55.195423 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.012948535075855533.
+
+Network is done loading flag identification model. Final loss is 0.00013663919441732293.
+
+*USER INTERACTION*
+
+User has entered:
+SmlueA==
+
+Normalized user prompt:
+[[ 0.68        0.89534884  0.88372093  0.95505618  0.7752809   0.37078652
+   0.39189189  0.31868132 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [0](caesar cipher)
+
+Cipher text to plain text:
+SmlueA== -> nhgpzv
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 08:57:49.127789 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.006495353562007496.
+
+Network is done loading flag identification model. Final loss is 0.2143345790539624.
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 08:58:09.997460 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.0709939430320415.
+
+Network is done loading flag identification model. Final loss is 0.00010403443898368104.
+
+*USER INTERACTION*
+
+User has entered:
+if nn_visualizer:
+
+Normalized user prompt:
+[[1.12       0.81395349 0.         0.87640449 0.87640449 0.70786517
+  1.16216216 0.8021978  0.92222222 0.95505618 0.72222222 0.8852459
+  1.01941748 1.12962963 0.87826087 0.94214876 0.4957265  0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](base64)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[4](base64)
+
+*USER INTERACTION*
+
+User has entered:
+            cipher_model.model.visualize(np.array(x_usr)) # Create a visual of the modelSmlueA==
+
+*CALISTA AI STARTED*
+
+File edited at 08:59:15.709854 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.14841497422357464.
+
+Network is done loading flag identification model. Final loss is 0.2143635815024861.
+
+*USER INTERACTION*
+
+User has entered:
+SmlueA==
+
+Normalized user prompt:
+[[ 0.68        0.89534884  0.88372093  0.95505618  0.7752809   0.37078652
+   0.39189189  0.31868132 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [0](caesar cipher)
+
+Cipher text to plain text:
+SmlueA== -> nhgpzv
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 08:59:33.159220 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.26454200514441645.
+
+Network is done loading flag identification model. Final loss is 0.00024462967386286287.
+
+*USER INTERACTION*
+
+User has entered:
+SmlueA==
+
+Normalized user prompt:
+[[ 0.68        0.89534884  0.88372093  0.95505618  0.7752809   0.37078652
+   0.39189189  0.31868132 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [1](base64 -> base64 -> caesar cipher)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[1](base64 -> base64 -> caesar cipher)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 08:59:53.423893 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.06455817287314325.
+
+Network is done loading flag identification model. Final loss is 0.00012072296764025624.
+
+*USER INTERACTION*
+
+User has entered:
+SmlueA==
+
+Normalized user prompt:
+[[ 0.68        0.89534884  0.88372093  0.95505618  0.7752809   0.37078652
+   0.39189189  0.31868132 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [1](base64 -> base64 -> caesar cipher)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[1](base64 -> base64 -> caesar cipher)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 09:06:12.310351 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.06454735626334818.
+
+Network is done loading flag identification model. Final loss is 0.00014943557570709648.
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 09:07:44.846948 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.2064788912388387.
+
+Network is done loading flag identification model. Final loss is 0.28578112299440167.
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 09:08:10.575334 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.07099253195709755.
+
+Network is done loading flag identification model. Final loss is 0.2857790059628506.
+
+*USER INTERACTION*
+
+User has entered:
+p_flag = str(entry['contains_flag'])
+
+Normalized user prompt:
+[[1.26       0.73255814 0.81395349 0.85393258 0.73033708 0.79775281
+  0.         0.31868132 0.         0.93258427 0.93333333 0.93442623
+  0.38834951 0.93518519 0.95652174 0.95867769 0.97435897 0.98373984
+  0.80530973 0.32231405 0.9        0.96521739 0.92436975 0.95081967
+  0.8220339  0.88235294 1.05769231 0.98290598 0.85585586 0.84297521
+  0.94736842 0.79508197 0.824      0.32231405 1.09411765 0.37962963
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](base64)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[4](base64)
+
+*USER INTERACTION*
+
+User has entered:
+
+
+Normalized user prompt:
+[[-0.98       -0.37209302 -0.37209302 -0.35955056 -0.35955056 -0.35955056
+  -0.43243243 -0.35164835 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[3](A1Z26)
+
+*USER INTERACTION*
+
+User has entered:
+        if ('<prefix>' in p_flag) and (flag_prefix != ''):
+
+Normalized user prompt:
+[[-0.34        0.          0.          0.          0.          0.
+   0.          0.          0.81111111  0.78651685  0.          0.32786885
+   0.37864078  0.55555556  0.97391304  0.94214876  0.86324786  0.82926829
+   0.92920354  0.99173554  0.56363636  0.33913043  0.26890756  0.86065574
+   0.93220339  0.26890756  1.07692308  0.81196581  0.91891892  0.89256198
+   0.85087719  0.8442623   0.328       0.26446281  1.14117647  1.01851852
+   1.1627907   0.45070423  0.33613445  0.83606557  1.24137931  1.12790698
+   1.25609756  1.20253165  1.13131313  1.05555556  0.97115385  1.88888889
+   1.16666667  0.98360656  0.43243243  0.31730769  0.79220779  0.29090909
+   0.39        0.72222222  0.48809524  0.66666667  0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[3](A1Z26)
+
+*USER INTERACTION*
+
+User has entered:
+            p_flag.replace('<prefix>', flag_prefix)q
+
+Normalized user prompt:
+[[-0.34        0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.26229508
+   1.08737864  0.87962963  0.88695652  0.89256198  0.82905983  0.83739837
+   0.40707965  0.94214876  0.91818182  0.97391304  0.90756303  0.79508197
+   0.83898305  0.8487395   0.38461538  0.33333333  0.54054054  0.92561983
+   1.          0.82786885  0.816       0.8677686   1.41176471  0.57407407
+   0.45348837  0.61971831  0.26890756  0.83606557  1.24137931  1.12790698
+   1.25609756  1.20253165  1.13131313  1.05555556  0.97115385  1.88888889
+   1.16666667  0.98360656  0.55405405  1.08653846  0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[3](A1Z26)
+
+*CALISTA AI STARTED*
+
+File edited at 11:39:26.000915 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.07098510817885596.
+
+Network is done loading flag identification model. Final loss is 0.21432579973927285.
+
+*USER INTERACTION*
+
+User has entered:
+SmlueA==
+
+Normalized user prompt:
+[[ 0.68        0.89534884  0.88372093  0.95505618  0.7752809   0.37078652
+   0.39189189  0.31868132 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [0](caesar cipher)
+
+Cipher text to plain text:
+SmlueA== -> nhgpzv
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 11:40:09.028488 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.006509248830642125.
+
+Network is done loading flag identification model. Final loss is 0.00013957117117378905.
+
+*USER INTERACTION*
+
+User has entered:
+SmlueA==
+
+Normalized user prompt:
+[[ 0.68        0.89534884  0.88372093  0.95505618  0.7752809   0.37078652
+   0.39189189  0.31868132 -0.35555556 -0.35955056 -0.35555556  0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[3](A1Z26)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 11:41:19.057750 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.07101052339765797.
+
+Network is done loading flag identification model. Final loss is 0.21432246073149006.
+
+*USER INTERACTION*
+
+User has entered:
+SmlueCBmcm9tIEFyY2FuZQ==
+
+Normalized user prompt:
+[[0.68       0.89534884 0.88372093 0.95505618 0.7752809  0.39325843
+  0.45945946 0.84615385 0.74444444 0.86516854 0.27777778 0.95081967
+  0.70873786 0.63888889 0.60869565 1.         0.76068376 0.40650407
+  0.61946903 0.96694215 0.81818182 0.70434783 0.51260504 0.5
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](base64)
+
+Cipher text to plain text:
+SmlueCBmcm9tIEFyY2FuZQ== -> Jinx from Arcane
+
+*USER INTERACTION*
+
+User has entered:
+10 9 14 24 6 18 15 13 1 18 3 1 14 5
+
+Normalized user prompt:
+[[0.         0.18604651 0.         0.28089888 0.         0.19101124
+  0.27027027 0.         0.2        0.2247191  0.         0.44262295
+  0.31067961 0.4537037  0.48695652 0.26446281 0.41880342 0.43089431
+  0.28318584 0.40495868 0.46363636 0.27826087 0.41176471 0.26229508
+  0.41525424 0.47058824 0.30769231 0.43589744 0.28828829 0.40495868
+  0.28070175 0.40163934 0.416      0.26446281 0.62352941 0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](base64)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[4](base64)
+
+*USER INTERACTION*
+
+User has entered:
+Onsc kwtr Fwhfsj
+
+Normalized user prompt:
+[[0.6        0.90697674 0.96511628 0.75280899 0.         0.84269663
+  1.17567568 0.92307692 0.91111111 0.         0.42222222 0.97540984
+  1.00970874 0.94444444 1.         0.87603306 0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](base64)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[4](base64)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 11:42:49.043033 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.006487817375098722.
+
+Network is done loading flag identification model. Final loss is 0.00012571668592906938.
+
+*USER INTERACTION*
+
+User has entered:
+Onsc kwtr Fwhfsj
+
+Normalized user prompt:
+[[0.6        0.90697674 0.96511628 0.75280899 0.         0.84269663
+  1.17567568 0.92307692 0.91111111 0.         0.42222222 0.97540984
+  1.00970874 0.94444444 1.         0.87603306 0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [0](caesar cipher)
+
+Cipher text to plain text:
+Onsc kwtr Fwhfsj -> jinxfromarcane
+
+*USER INTERACTION*
+
+User has entered:
+10 9 14 24 6 18 15 13 1 18 3 1 14 5
+
+Normalized user prompt:
+[[0.         0.18604651 0.         0.28089888 0.         0.19101124
+  0.27027027 0.         0.2        0.2247191  0.         0.44262295
+  0.31067961 0.4537037  0.48695652 0.26446281 0.41880342 0.43089431
+  0.28318584 0.40495868 0.46363636 0.27826087 0.41176471 0.26229508
+  0.41525424 0.47058824 0.30769231 0.43589744 0.28828829 0.40495868
+  0.28070175 0.40163934 0.416      0.26446281 0.62352941 0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Cipher text to plain text:
+10 9 14 24 6 18 15 13 1 18 3 1 14 5 -> JINXFROMARCANE
+
+*USER INTERACTION*
+
+User has entered:
+SmlueCBmcm9tIEFyY2FuZQ==
+
+Normalized user prompt:
+[[0.68       0.89534884 0.88372093 0.95505618 0.7752809  0.39325843
+  0.45945946 0.84615385 0.74444444 0.86516854 0.27777778 0.95081967
+  0.70873786 0.63888889 0.60869565 1.         0.76068376 0.40650407
+  0.61946903 0.96694215 0.81818182 0.70434783 0.51260504 0.5
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](base64)
+
+Cipher text to plain text:
+SmlueCBmcm9tIEFyY2FuZQ== -> Jinx from Arcane
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 13:49:07.964312 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.07744257793321953.
+
+Network is done loading flag identification model. Final loss is 0.0001395146094567721.
+
+*USER INTERACTION*
+
+User has entered:
+10 9 14 24 6 18 15 13 1 18 3 1 14 5
+
+Normalized user prompt:
+[[0.         0.18604651 0.         0.28089888 0.         0.19101124
+  0.27027027 0.         0.2        0.2247191  0.         0.44262295
+  0.31067961 0.4537037  0.48695652 0.26446281 0.41880342 0.43089431
+  0.28318584 0.40495868 0.46363636 0.27826087 0.41176471 0.26229508
+  0.41525424 0.47058824 0.30769231 0.43589744 0.28828829 0.40495868
+  0.28070175 0.40163934 0.416      0.26446281 0.62352941 0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Cipher text to plain text:
+10 9 14 24 6 18 15 13 1 18 3 1 14 5 -> JINXFROMARCANE
+
+*CALISTA AI STARTED*
+
+File edited at 13:51:21.478384 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.012952395946831025.
+
+Network is done loading flag identification model. Final loss is 0.0001030164184983368.
+
+*USER INTERACTION*
+
+User has entered:
+10 9 14 24 6 18 15 13 1 18 3 1 14 5
+
+Normalized user prompt:
+[[0.         0.18604651 0.         0.28089888 0.         0.19101124
+  0.27027027 0.         0.2        0.2247191  0.         0.44262295
+  0.31067961 0.4537037  0.48695652 0.26446281 0.41880342 0.43089431
+  0.28318584 0.40495868 0.46363636 0.27826087 0.41176471 0.26229508
+  0.41525424 0.47058824 0.30769231 0.43589744 0.28828829 0.40495868
+  0.28070175 0.40163934 0.416      0.26446281 0.62352941 0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Cipher text to plain text:
+10 9 14 24 6 18 15 13 1 18 3 1 14 5 -> JINXFROMARCANE
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 13:52:04.402108 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 4.2578576413516925e-05.
+
+Network is done loading flag identification model. Final loss is 0.00012963329221101717.
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 18:18:25.065226 of 2024-11-18
+
+Network is done loading cipher model. Final loss is 0.07099578151881997.
+
+Network is done loading flag identification model. Final loss is 0.21433685919928805.
+
+*USER INTERACTION*
+
+User has entered:
+10 9 14 24 6 18 15 13 1 18 3 1 14 5
+
+Normalized user prompt:
+[[0.         0.18604651 0.         0.28089888 0.         0.19101124
+  0.27027027 0.         0.2        0.2247191  0.         0.44262295
+  0.31067961 0.4537037  0.48695652 0.26446281 0.41880342 0.43089431
+  0.28318584 0.40495868 0.46363636 0.27826087 0.41176471 0.26229508
+  0.41525424 0.47058824 0.30769231 0.43589744 0.28828829 0.40495868
+  0.28070175 0.40163934 0.416      0.26446281 0.62352941 0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [3](A1Z26)
+
+Cipher text to plain text:
+10 9 14 24 6 18 15 13 1 18 3 1 14 5 -> JINXFROMARCANE
+
+*USER INTERACTION*
+
+User has entered:
+q
+

@@ -116,12 +116,7 @@ def Visualize_NN(input_values, hidden_values, output_values, w1, w2):
     fig, ax = plt.subplots(figsize=(fig_width, fig_height))
     ax.axis('off')
     ax.set_aspect('equal')
-
-    # Adjust limits to prevent stretching
-    #x_margin = layer_spacing * 0.5
-    #y_margin = node_spacing * max_layer_size * 0.5
-    #ax.set_xlim(-x_margin, 2 * layer_spacing + x_margin)
-    #ax.set_ylim(-y_margin, y_margin)
+    # ax.set_title('Cipher Neural Netwrok Model') # Can add a title for the image created
 
     def draw_layer(values, x_position, layer_size, color_map):
         y_positions = np.linspace(-layer_size / 2, layer_size / 2, layer_size)

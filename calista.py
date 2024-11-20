@@ -14,6 +14,7 @@ from settings import *
 from logs.logger import *
 
 nn_visualizer = True
+version = 'v 1.0.7'
 
 logo = f'''
 \n
@@ -22,7 +23,7 @@ logo = f'''
 \t\t\t / /  / _` | | / __| __/ _` |
 \t\t\t/ /__| (_| | | \\__ \\ || (_| |
 \t\t\t\\____/\\__,_|_|_|___/\\__\\__,_|
-\t\t\t{YELLOW}-----------------------------{RESET}\tv 1.0.7
+\t\t\t{YELLOW}-----------------------------{RESET} {version}
 \t\t\t\t   By: Emma Gillespie
 
 {RED}[DISCLAIMER]{RESET} Capstone project and only to be used for ethical purposes!
