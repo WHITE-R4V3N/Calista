@@ -376,5 +376,42 @@
             "sequence": "Standard log information without any flags present.",
             "contains_flag": false
         }
+    ],
+
+    "command-line" : [
+        {
+            "description": "Scan a single host with default settings",
+            "target": "192.168.1.1",
+            "options": "-Pn",
+            "command": "nmap -Pn 192.168.1.1"
+        },
+
+        {
+            "description": "Perform a fast scan on a subnet",
+            "target": "192.168.1.0/24",
+            "options": "-T4",
+            "command": "nmap -T4 192.168.1.0/24"
+        },
+
+        {
+            "description": "Perform an agressive scan on a host",
+            "target": "8.8.8.8",
+            "options": "-A",
+            "command": "nmap -A 8.8.8.8"
+        },
+
+        {
+            "description": "Detect the operating system on a host",
+            "target": "203.0.113.45",
+            "options": "-O",
+            "command": "nmap -O 203.0.113.45"
+        },
+
+        {
+            "description": "Detect services and versions on all open ports",
+            "target": "192.167.1.156",
+            "options": "-sV",
+            "command": "nmap -sV 192.167.1.156"
+        }
     ]
 }

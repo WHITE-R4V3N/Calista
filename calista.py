@@ -14,7 +14,7 @@ from settings import *
 from logs.logger import *
 
 nn_visualizer = True
-version = 'v 1.0.7'
+version = 'v 1.0.8'
 
 logo = f'''
 \n
