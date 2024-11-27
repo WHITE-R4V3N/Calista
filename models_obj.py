@@ -156,3 +156,10 @@ def Visualize_NN(input_values, hidden_values, output_values, w1, w2):
         ax.add_artist(circle)
 
     plt.show()
+
+def create_model(model_obj, data_dict):
+    model_obj.create_X_y_training(data_dict)                        # Parses and creates the training data used for the neural network
+    final_loss = model_obj.model.train(model_obj.X, model_obj.y)    # Trains the network and returns the final loss number
+    print(f'Final loss of network: {GREEN}{final_loss}{RESET}\n')
+
+    return final_loss

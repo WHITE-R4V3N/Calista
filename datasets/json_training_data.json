@@ -412,6 +412,13 @@
             "target": "192.167.1.156",
             "options": "-sV",
             "command": "nmap -sV 192.167.1.156"
+        },
+
+        {
+            "description": "This is something we can all do together.",
+            "target": "NONE",
+            "options": "NONE",
+            "command": "NONE"
         }
     ]
 }

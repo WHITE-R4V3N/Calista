@@ -8,7 +8,7 @@ from collections import defaultdict
 # Load the file
 json_data = json.loads(open('datasets/json_training_data.json', 'r').read())
 
-flag_prefix = 'CalistaAI'    # Can set a specific prefix for the CTF
+flag_prefix = 'CTF'    # Can set a specific prefix for the CTF
 
 # Class to tokenize the data being given
 class DataTokenizer:
@@ -41,15 +41,11 @@ class DataTokenizer:
 
     def parse_cypto(self):
         algorithm_cipher = {}
-        challenge = []
 
         for entry in self.data_file['cryptography']:
-            #categories.append[entry]
-
             algorithm_cipher[entry['ciphertext']] = entry['algorithm']
-            challenge.append(entry['hint'])
 
-        return algorithm_cipher, challenge
+        return algorithm_cipher
     
     def parse_flag(self):
         flag_dict = {}
@@ -66,3 +62,11 @@ class DataTokenizer:
     
     def parse_question_type():
         pass
+
+    def parse_commands(self):
+        command_target_dict = {}
+
+        for entry in self.data_file['command-line']:
+            command_target_dict[f'{entry['description']} | {entry['target']}'] = entry['command']
+
+        return command_target_dict
