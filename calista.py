@@ -13,8 +13,8 @@ from models_obj import *
 from settings import *
 from logs.logger import *
 
-nn_visualizer = False
-version = 'v 1.0.9'
+nn_visualizer = True
+version = 'v 1.0.10'
 
 logo = f'''
 \n
@@ -102,7 +102,7 @@ while True:
             elif prediction[0] == 0:
                 pass
                 usr_decode = usr_prompt.strip().lower()
-                key = 5         # For now hard coded to 5. Will either predict key or just go -26 to 26
+                key = 9         # For now hard coded to 5. Will either predict key or just go -26 to 26
                 alphabet = string.ascii_lowercase
                 usr_plain = ''
 

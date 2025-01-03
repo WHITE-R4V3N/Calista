@@ -1,0 +1,187 @@
+{
+    "caesar_cipher": [
+        {
+            "cipher_text": "Khoor Zruog",
+            "key_value": 3,
+            "question": "The text looks like a familiar roman leader. Khoor Zruog",
+            "file_download": false,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "Hello World",
+            "contain_flag": false,
+            "file_name": null
+        },
+
+        {
+            "cipher_text": "Ebiil Tloia",
+            "key_value": -3,
+            "question": "Things look like they have shifted backwards.",
+            "file_download": true,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "Hello World",
+            "contain_flag": false,
+            "file_name": "test3.txt"
+        },
+
+        {
+            "cipher_text": "<yanorg>{cq1b_15_4_ou4p}",
+            "key_value": 9,
+            "question": "There is a secret hidden within!",
+            "file_download": true,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "<prefix>{th1s_15_4_fl4g}",
+            "contain_flag": true,
+            "file_name": "test2.txt"
+        },
+
+        {
+            "cipher_text": "<cersvk>{LNL_lbh_sbhaq_vg}",
+            "key_value": 13,
+            "question": "What was the encoded message?",
+            "file_download": false,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "<prefix>{YAY_you_found_it}",
+            "contain_flag": true,
+            "file_name": null
+        },
+
+        {
+            "cipher_text": "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. <uwjknc>{F_jshtiji_kqfl_bfx_stb_ktzsi}",
+            "key_value": 13,
+            "question": "Was there a flag encoded in the text?",
+            "file_download": true,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "<prefix>{A_encoded_flag_was_now_found}",
+            "contain_flag": true,
+            "file_name": "test1.txt"
+        },
+
+        {
+            "cipher_text": "R jdrcc kvok tfekrzezex r wcrx rj jlty: <givwzo>{R_wcrx_nzkyze_kvok}",
+            "key_value": 17,
+            "question": "Plain text in a webpage has been ciphered?",
+            "file_download": false,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "A small text containing a flag as such: <prefix>{A_flag_within_text}",
+            "contain_flag": true,
+            "file_name": null
+        },
+
+        {
+            "cipher_text": "Zpv bsf zpvs fjo! Vohsbuvmbuft",
+            "key_value": -1,
+            "question": "Reverse each letter shift.",
+            "file_download": false,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "You are your own! Congratulations",
+            "contain_flag": false,
+            "file_name": null
+        }
+    ],
+
+    "base64": [
+        {
+            "cipher_text": "QSBzbWFsbCB0ZXh0IGNvbnRhaW5pbmcgYSBmbGFnIGFzIHN1Y2g6IDxwcmVmaXg+e0FfZmxhZ193aXRoaW5fdGV4dH0=",
+            "key_value": null,
+            "question": "Plain text in a webpage has been ciphered?",
+            "file_download": false,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "A small text containing a flag as such: <prefix>{A_flag_within_text}",
+            "contain_flag": true,
+            "file_name": null
+        },
+
+        {
+            "cipher_text": "SGVsbG8gV29ybGQ=",
+            "key_value": null,
+            "question": "A small message is written down.",
+            "file_download": false,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "Hello World",
+            "contain_flag": true,
+            "file_name": null
+        },
+
+        {
+            "cipher_text": "WW91ciBzZWNyZXQgaXMgaW4gdGhlIGNvZGU=",
+            "key_value": null,
+            "question": "Can you look deeper into base64?",
+            "file_download": false,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "Your secret is in the code",
+            "contain_flag": false,
+            "file_name": null
+        },
+
+        {
+            "cipher_text": "VGhpcyBpcyBhIG1lc3NhZ2U=",
+            "key_value": null,
+            "question": "A common encoding used in emails.",
+            "file_download": false,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "This is a message",
+            "contain_flag": false,
+            "file_name": null
+        },
+
+        {
+            "cipher_text": "PHByZWZpeD57V2VsbF95b3VfbWFuYWdlZF90b19maW5kX2l0fQ==",
+            "key_value": null,
+            "question": "The base of all numbers can be different. What is ours?",
+            "file_download": true,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "<prefix>{Well_you_managed_to_find_it}",
+            "contain_flag": true,
+            "file_name": "test.txt"
+        }
+    ],
+
+    "A1Z26": [
+        {
+            "cipher_text": "8 5 12 12 15 23 15 18 12 4",
+            "key_value": null,
+            "question": "Can you convert numbers to letters?",
+            "file_download": false,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "HELLO WORLD",
+            "contain_flag": false,
+            "file_name": null
+        },
+
+        {
+            "cipher_text": "20 5 19 20 9 14 7",
+            "key_value": null,
+            "question": "This is just a text example.",
+            "file_download": false,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "TESTING",
+            "contain_flag": false,
+            "file_name": null
+        },
+
+        {
+            "cipher_text": "17 23 24 19 9 7 18 8 4 7 5 7 25 23 11 9 7 22 9 7 2 23 10 12 3 14 13 21 9 4 24 23 3 13 22 13 1 24 7 5 8 16 26 7 18 12 2 12 1 24 18 15 1 23 6 2 14 22 20 25 13 22 25 3",
+            "key_value": null,
+            "question": "A message of numbers. What does it say?",
+            "file_download": false,
+            "hints": [],
+            "difficulty": 1,
+            "plain_text": "All data and no numbers. <prefix>{Hidden_within_numbers}",
+            "contain_flag": true,
+            "file_name": null
+        }
+    ]
+}
