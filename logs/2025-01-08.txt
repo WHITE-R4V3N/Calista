@@ -1,0 +1,189 @@
+*CALISTA AI STARTED*
+
+File edited at 11:04:01.975455 of 2025-01-08
+
+Network is done loading cipher model. Final loss is 0.0064945975606774346.
+
+Network is done loading flag identification model. Final loss is 0.00014003433018357306.
+
+Network is done loading command generating model. Final loss is 0.07742311266779933.
+
+*USER INTERACTION*
+
+User has entered:
+Q1RGe1lBWX0=
+
+Normalized user prompt:
+[[0.64       0.19767442 0.58139535 0.43820225 0.7752809  0.19101124
+  1.02702703 0.37362637 0.61111111 0.62921348 0.17777778 0.5
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [0](caesar cipher)
+
+Cipher text to plain text:
+Q1RGe1lBWX0= -> hixvcsno
+
+Flag Model Prediction: [0]
+
+*USER INTERACTION*
+
+User has entered:
+quit
+
+*CALISTA AI STARTED*
+
+File edited at 11:05:13.463152 of 2025-01-08
+
+Network is done loading cipher model. Final loss is 0.006476436110887398.
+
+Network is done loading flag identification model. Final loss is 0.00010986554728599737.
+
+Network is done loading command generating model. Final loss is 0.2774207203744604.
+
+*USER INTERACTION*
+
+User has entered:
+Q1RGe1lBWX0=
+
+Normalized user prompt:
+[[0.64       0.19767442 0.58139535 0.43820225 0.7752809  0.19101124
+  1.02702703 0.37362637 0.61111111 0.62921348 0.17777778 0.5
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [0](caesar cipher)
+
+Cipher text to plain text:
+Q1RGe1lBWX0= -> hixvcsno
+
+Flag Model Prediction: [0]
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 14:22:52.352850 of 2025-01-08
+
+Network is done loading cipher model. Final loss is 0.32260256647343594.
+
+Network is done loading flag identification model. Final loss is 9.262840567995059e-05.
+
+Network is done loading command generating model. Final loss is 0.025810920068435723.
+
+*USER INTERACTION*
+
+User has entered:
+Q1RGe1lBWX0=
+
+Normalized user prompt:
+[[0.64       0.19767442 0.58139535 0.43820225 0.7752809  0.19101124
+  1.02702703 0.37362637 0.61111111 0.62921348 0.17777778 0.5
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [2](rot13)
+
+Something went wrong with the model's prediction.
+Prediction was:
+[2](rot13)
+
+*USER INTERACTION*
+
+User has entered:
+q
+
+*CALISTA AI STARTED*
+
+File edited at 14:23:23.561848 of 2025-01-08
+
+Network is done loading cipher model. Final loss is 0.06455288187769828.
+
+Network is done loading flag identification model. Final loss is 9.335630386334752e-05.
+
+Network is done loading command generating model. Final loss is 0.277423378756065.
+
+*USER INTERACTION*
+
+User has entered:
+Q1RGe1lBWX0=
+
+Normalized user prompt:
+[[0.64       0.19767442 0.58139535 0.43820225 0.7752809  0.19101124
+  1.02702703 0.37362637 0.61111111 0.62921348 0.17777778 0.5
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [0](caesar cipher)
+
+Cipher text to plain text:
+Q1RGe1lBWX0= -> hixvcsno
+
+Flag Model Prediction: [0]
+
+*USER INTERACTION*
+
+User has entered:
+VGhpcyBpcyBhIHRlc3Q=
+
+Normalized user prompt:
+[[0.74       0.45348837 0.8372093  0.8988764  0.75280899 1.
+  0.45945946 0.87912088 0.74444444 1.         0.37777778 0.85245902
+  0.70873786 0.66666667 0.71304348 0.89256198 0.84615385 0.41463415
+  0.71681416 0.50413223 0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.        ]]
+
+Model Prediction: [4](base64)
+
+Cipher text to plain text:
+VGhpcyBpcyBhIHRlc3Q= -> This is a test
+
+Flag Model Prediction: [4]
+
+*USER INTERACTION*
+
+User has entered:
+q
+

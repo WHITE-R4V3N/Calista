@@ -13,8 +13,8 @@ from models_obj import *
 from settings import *
 from logs.logger import *
 
-nn_visualizer = True
-version = 'v 1.0.10'
+nn_visualizer = False
+version = 'v 2.0.0'
 
 logo = f'''
 \n
