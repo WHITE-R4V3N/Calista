@@ -1,0 +1,21 @@
+{
+    "nmap": [
+        {
+            "inputs": {
+                "question": "What service is running on port 22 at 10.10.10.10"
+            },
+            "outputs": {
+                "command": "nmap 10.10.10.10 -p 22"
+            }
+        },
+
+        {
+            "inputs": {
+                "question": "Scan 192.168.1.82 for vulnerabilities."
+            },
+            "outputs": {
+                "command": "nmap -sV 10.10.10.10"
+            }
+        }
+    ]
+}
