@@ -12,10 +12,10 @@ class DataTokenizer:
     def __init__(self):
         self.word_index = defaultdict(lambda: len(self.word_index))
         self.max_length = 0
-        self.data_files = []
+        self.data = []
 
     def add_data_file(self, file_data):
-        self.data_files.append(file_data)
+        self.data.append(file_data)
 
     # Convert each letter or number to its ASCII value
     def char_tokenize(self, text):
@@ -33,16 +33,17 @@ class DataTokenizer:
     
     # Parses the inputs and outputs from the data file given
     def parse_files(self):
-        # How can I pull the dictionary values from the JSON data??
-        # That way I do not need to hard code anything for parsing files.
-        # Should I just convert the data into a dictionary from json after
-        # reading it from a file?
-        caesar_cipher = [item for item in [entry for entry in self.data_file['caesar_cipher']]]
+        preparsed_data = []
 
+        for data in self.data:
+            for key in data:
+                for item in data[key]:
+                    preparsed_data.append(item)
+        
         id_value = 0
         parsed_data = {}
 
-        for item in caesar_cipher:
+        for item in preparsed_data:
             parsed_data[id_value] = [item['inputs'], item['outputs']]
             id_value += 1
 

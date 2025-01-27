@@ -36,8 +36,11 @@ parsed_files = ''
 #-----------------------------------------------#
 tokenizer = DataTokenizer()
 
-tokenizer.add_data_file(json.loads(open('datasets/cryptography_data.json', 'r').read()))
-tokenizer.add_data_file(json.loads(open('datasets/command_data.json', 'r').read()))
+tokenizer.add_data_file(json.load(open('datasets/cryptography_data.json', 'r')))
+tokenizer.add_data_file(json.load(open('datasets/command_data.json', 'r')))
+
+# Parse the files
+training_data = tokenizer.parse_files()
 
 #-----------------------------------------------------------------------------#
 # Create the AI models that will be used and train them on the training data. #
