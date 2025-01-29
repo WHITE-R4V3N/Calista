@@ -42,9 +42,11 @@ tokenizer.add_data_file(json.load(open('datasets/command_data.json', 'r')))
 # Parse the files
 training_data = tokenizer.parse_files()
 
+# Now we need to tokenize each string of data
+
 #-----------------------------------------------------------------------------#
 # Create the AI models that will be used and train them on the training data. #
 #-----------------------------------------------------------------------------#
-models_obj = Models()
-models_obj.add_model(Predictive_NN(10, 128, 128, 1)) # These values will change based on the inputs and outputs length.
-# Same for the transformer NN as well.
+
+# The input sizes will depend on the size of the X data in the training data.
+predictive_obj = Predictive_NN(input_size=64, hidden_size=128, hidden2_size=128, output_size=1)
