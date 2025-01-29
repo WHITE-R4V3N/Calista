@@ -5,15 +5,8 @@ import matplotlib.pyplot as plt
 
 from settings import *
 
-class Models():
-    def __init__(self):
-        self.models = []
-
-    def add_model(self, model_obj):
-        self.models.append(model_obj)
-
 # Model for predicting what tasks should be done
-class Predictive_NN():
+class Predictive_NN:
     def __init__(self, input_size, hidden_size, hidden2_size, output_size, learning_rate=0.001):
         self.w1 = np.random.randn(input_size, hidden_size)
         self.b1 = np.zeros((1, hidden_size))
@@ -78,31 +71,102 @@ class Predictive_NN():
         
         return self.training_loss
 
-class Transformer:
-    def __init__(self, d_model, n_heads, d_ff, seq_len, learning_rate=0.001):
-        self.d_model = d_model
-        self.n_heads = n_heads
-        self.d_ff = d_ff
-        self.seq_len = seq_len
+class MultiHeadAttention:
+    def __init__(self, embed_size, num_heads, learning_rate):
+        self.embed_size = embed_size
+        self.num_heads = num_heads
+        self.head_dim = embed_size // num_heads
         self.learning_rate = learning_rate
 
-        self.w_q = [np.random.randn(d_model // n_heads, d_model // n_heads) for _ in range(n_heads)]
-        self.w_k = [np.random.randn(d_model // n_heads, d_model // n_heads) for _ in range(n_heads)]
-        self.w_v = [np.random.randn(d_model // n_heads, d_model // n_heads) for _ in range(n_heads)]
+        assert (
+            self.head_dim * num_heads == embed_size
+        ), "Embedding size must be divisible by number of heads."
 
-        self.w_o = np.random.randn(d_model, d_model)
+        self.w_q = np.random.randn(embed_size, embed_size) * 0.01
+        self.w_k = np.random.randn(embed_size, embed_size) * 0.01
+        self.w_v = np.random.randn(embed_size, embed_size) * 0.01
+        self.w_o = np.random.randn(embed_size, embed_size) * 0.01
 
-        self.w1 = np.random.randn(d_model, d_ff)
-        self.w2 = np.random.randn(d_ff, d_model)
+    def forward(self, q, k, v):
+        Q = np.dot(q, self.w_q)
+        K = np.dot(k, self.w_k)
+        V = np.dot(v, self.w_v)
 
-    def scaled_dot_product_attention(self, Q, K, V):
-        scores = np.dot(Q, K.T) / np.sqrt(Q.shape[-1])
-        weights = np.exp(scores) / np.sum(np.exp(scores), axis=-1, keepdims=True)
+        Q = Q.reshape(Q.shape[0], -1, self.num_heads, self.head_dim).transpose(0, 2, 1, 3)
+        K = K.reshape(K.shape[0], -1, self.num_heads, self.head_dim).transpose(0, 2, 1, 3)
+        V = V.reshape(V.shape[0], -1, self.num_heads, self.head_dim).transpose(0, 2, 1, 3)
 
-        return np.dot(weights, V)
+        scores = np.mutmul(Q, K.transpose(0, 1, 3, 2)) / np.sqrt(self.head_dim)
+        attention = np.exp(scores - np.max(scores, axis=-1, keepdims=True))
+        attention /= attention.sum(axis=-1, keepdims=True)
+        output = np.matmul(attention, V)
 
-    def multi_head_attention(self, X):
-        pass
+        output = output.transpose(0, 2, 1, 3).reshape(output.shape[0], -1, self.embed_size)
+
+        return np.dot(output, self.w_o), attention
+    
+    def backward(self, d_output, learning_rate):
+        self.w_q -= learning_rate * d_output
+        self.w_k -= learning_rate * d_output
+        self.w_v -= learning_rate * d_output
+        self.w_o -= learning_rate * d_output
+    
+class TransformerBlock:
+    def __init__(self, embed_size, num_heads, feedforward_dim):
+        self.attention = MultiHeadAttention(embed_size, num_heads)
+        self.feedforward = np.random.randn(embed_size, feedforward_dim) * 0.01
+        self.ff_o = np.random.randn(feedforward_dim, embed_size) * 0.01
+
+    def forward(self, X):
+        a_o, a_w = self.attention.forward(X, X, X)
+        X = X + a_o
+
+        ff_o = np.maximum(0, np.dot(X, self.feedforward))
+        ff_o = np.dot(ff_o, self.ff_o)
+        X = X + ff_o
+
+        return X, a_w
+    
+    def backward(self, d_output, learning_rate):
+        self.attention.backward(d_output, learning_rate)
+        self.feedforward -= learning_rate * d_output
+        self.ff_o -= learning_rate * d_output
+
+class Transformer:
+    def __init__(self, vocab_size, embed_size, num_heads, num_layers, feedforward_dim):
+        self.embed_size = embed_size
+        self.embedding = np.random.randn(vocab_size, embed_size) * 0.01
+        self.positional_encoding = np.random.randn(1000, embed_size) * 0.01
+
+        self.layers = [
+            TransformerBlock(embed_size, num_heads, feedforward_dim)
+            for _ in range(num_layers)
+        ]
+
+    def forward(self, X):
+        X = self.embedding[X] + self.positional_encoding[:X.shape[1]]
+
+        attention_weights_list = []
+
+        for layer in self.layers:
+            X, attention_weights = layer.forward(X)
+            attention_weights_list.append(attention_weights)
+
+        return X, attention_weights_list
+    
+    def backward(self, d_output, learning_rate):
+        for layer in reversed(self.layers):
+            layer.backward(d_output, learning_rate)
+
+def generate_text(transformer, seed, length, vocab_size):
+    generated = list(seed)
+
+    for _ in range(length):
+        logits, _ = transformer.forward(np.array([generated]))
+        next_token = np.argmax(logits[0, -1])
+        generated.append(next_token)
+    
+    return generated
 
 # Runs the AI model 1000 times to test network loss and accuracy
 def nn_thousand_test(model_obj):
@@ -118,3 +182,22 @@ def nn_thousand_test(model_obj):
 # Used to visualize the neural network
 def visualize_models(model_obj):
     pass
+
+
+# Variables to be used
+vocab_size = 100
+embed_size = 32
+num_heads = 4
+num_layers = 2
+feedforward_dim = 64
+learning_rate = 0.001
+
+transformer = Transformer(vocab_size, embed_size, num_heads, num_layers, feedforward_dim)
+
+# Example of predictive model output and input combined as seed
+predicted_tokens = [5, 12]
+usr_input_tokens = [20, 8]
+seed = predicted_tokens + usr_input_tokens
+
+output = generate_text(transformer, seed, length=10, vocab_size=vocab_size)
+print(f'Generated commands: \n{output}') # Will need to be converted back from tokenizer
