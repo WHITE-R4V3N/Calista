@@ -23,8 +23,6 @@ class DataTokenizer:
     
     # Pads the X input for uniform data size
     def pad_input(self, data_pad):
-        self.max_length = max(len(seq) for seq in data_pad)
-
         return [seq + [0] * (self.max_length - len(seq)) for seq in data_pad]
     
     # Normalizes the values (creates a decimal 0 = 0 and 1 = 65535)

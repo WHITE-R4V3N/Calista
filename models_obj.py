@@ -96,7 +96,7 @@ class MultiHeadAttention:
         K = K.reshape(K.shape[0], -1, self.num_heads, self.head_dim).transpose(0, 2, 1, 3)
         V = V.reshape(V.shape[0], -1, self.num_heads, self.head_dim).transpose(0, 2, 1, 3)
 
-        scores = np.mutmul(Q, K.transpose(0, 1, 3, 2)) / np.sqrt(self.head_dim)
+        scores = np.matmul(Q, K.transpose(0, 1, 3, 2)) / np.sqrt(self.head_dim)
         attention = np.exp(scores - np.max(scores, axis=-1, keepdims=True))
         attention /= attention.sum(axis=-1, keepdims=True)
         output = np.matmul(attention, V)
@@ -113,7 +113,7 @@ class MultiHeadAttention:
     
 class TransformerBlock:
     def __init__(self, embed_size, num_heads, feedforward_dim):
-        self.attention = MultiHeadAttention(embed_size, num_heads)
+        self.attention = MultiHeadAttention(embed_size, num_heads, 0.001)
         self.feedforward = np.random.randn(embed_size, feedforward_dim) * 0.01
         self.ff_o = np.random.randn(feedforward_dim, embed_size) * 0.01
 
@@ -168,6 +168,32 @@ def generate_text(transformer, seed, length, vocab_size):
     
     return generated
 
+def cross_entropy_loss(predictions, targets):
+    predictions = np.exp(predictions - np.max(predictions, axis=-1, keepdims=True))
+    predictions /= predictions.sum(axis=-1, keepdims=True)
+
+    loss = -np.sum(np.log(predictions[np.arange(len(targets)), targets] + 1e-9)) / len(targets)
+    return loss
+
+def train(transformer, data, epochs, learning_rate, vocab_size):
+    for epoch in range(epochs):
+        total_loss = 0
+
+        for sample in data:
+            input_tokens = np.array(sample['input'])
+            target_tokens = np.array(sample['target'])
+
+            # Forward pass
+            logits, _ = transformer.forward(input_tokens.reshape(1, -1))
+
+            loss  = cross_entropy_loss(logits[0], target_tokens)
+            total_loss += loss
+
+            dummy_grad = logits - np.eye(vocab_size)[target_tokens]
+            transformer.backward(dummy_grad, learning_rate)
+
+        print(f'Epoch {epoch+1}/epochs, Loss: {total_loss / len(data)}')
+
 # Runs the AI model 1000 times to test network loss and accuracy
 def nn_thousand_test(model_obj):
     counter = 0
@@ -183,21 +209,16 @@ def nn_thousand_test(model_obj):
 def visualize_models(model_obj):
     pass
 
+# Basically what I need to do is create the training data now. Finish tokenizing the data and normalize the data.
+# Then pass the tokenized user input to the Predictive model. Here it will determine what tasks to run or compile
+# and any additional information needed.
 
-# Variables to be used
-vocab_size = 100
-embed_size = 32
-num_heads = 4
-num_layers = 2
-feedforward_dim = 64
-learning_rate = 0.001
+# After the prediction is normalized and concatenated to the user input tokens and passed to the transformer. This
+# will generate commands (or let the user know what they can do but this is more complex).
 
-transformer = Transformer(vocab_size, embed_size, num_heads, num_layers, feedforward_dim)
+# I also need to create the 1000 test function to test the Neural Networks 1000 times to gt a picture of the accuracy
+# of the neural network. Sum up the network loss and create a visual similar to Git's push and pull. Except the more green
+# the more accurate that instance was. Sum all instances and divide by 1000. This will give the loss over all iterations.
 
-# Example of predictive model output and input combined as seed
-predicted_tokens = [5, 12]
-usr_input_tokens = [20, 8]
-seed = predicted_tokens + usr_input_tokens
-
-output = generate_text(transformer, seed, length=10, vocab_size=vocab_size)
-print(f'Generated commands: \n{output}') # Will need to be converted back from tokenizer
+# Finally create two objects that can be used to visualize the network. This will be important to give a visual for
+# what is happening in the network.
