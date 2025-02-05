@@ -67,7 +67,7 @@ class Predictive_NN:
             if epoch % 100 == 0:
                 self.training_loss.append(np.mean((y - output) ** 2))
 
-            printProgressBar(0, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
+            printProgressBar(0, epoch, prefix='PROGRESS:', suffix='Complete', length=50)
         
         return self.training_loss
 
@@ -144,6 +144,11 @@ class Transformer:
         ]
 
     def forward(self, X):
+        # Debugging
+        print(f'X dtype: {X.dtype}')
+        print(f'X shape: {X.shape}')
+        print(f'X values: \n{X[:5]}\n')
+
         X = self.embedding[X] + self.positional_encoding[:X.shape[1]]
 
         attention_weights_list = []
@@ -158,6 +163,34 @@ class Transformer:
         for layer in reversed(self.layers):
             layer.backward(d_output, learning_rate)
 
+    def cross_entropy_loss(predictions, targets):
+        predictions = np.exp(predictions - np.max(predictions, axis=-1, keepdims=True))
+        predictions /= predictions.sum(axis=-1, keepdims=True)
+
+        loss = -np.sum(np.log(predictions[np.arange(len(targets)), targets] + 1e-9)) / len(targets)
+        return loss
+
+    def train(self, X, y, epochs, learning_rate, vocab_size):
+        printProgressBar(0, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
+        for epoch in range(epochs):
+            total_loss = 0
+
+        
+            input_tokens = np.array(X)
+            target_tokens = np.array(y)
+
+            # Forward pass
+            logits, _ = self.forward(input_tokens.reshape(1, -1))
+
+            loss  = self.cross_entropy_loss(logits[0], target_tokens)
+            total_loss += loss
+
+            dummy_grad = logits - np.eye(vocab_size)[target_tokens]
+            self.backward(dummy_grad, learning_rate)
+
+            #print(f'Epoch {epoch+1}/epochs, Loss: {total_loss / len(X)}')
+            printProgressBar(0, epoch, prefix='PROGRESS:', suffix='Complete', length=50)
+
 def generate_text(transformer, seed, length, vocab_size):
     generated = list(seed)
 
@@ -167,32 +200,6 @@ def generate_text(transformer, seed, length, vocab_size):
         generated.append(next_token)
     
     return generated
-
-def cross_entropy_loss(predictions, targets):
-    predictions = np.exp(predictions - np.max(predictions, axis=-1, keepdims=True))
-    predictions /= predictions.sum(axis=-1, keepdims=True)
-
-    loss = -np.sum(np.log(predictions[np.arange(len(targets)), targets] + 1e-9)) / len(targets)
-    return loss
-
-def train(transformer, data, epochs, learning_rate, vocab_size):
-    for epoch in range(epochs):
-        total_loss = 0
-
-        for sample in data:
-            input_tokens = np.array(sample['input'])
-            target_tokens = np.array(sample['target'])
-
-            # Forward pass
-            logits, _ = transformer.forward(input_tokens.reshape(1, -1))
-
-            loss  = cross_entropy_loss(logits[0], target_tokens)
-            total_loss += loss
-
-            dummy_grad = logits - np.eye(vocab_size)[target_tokens]
-            transformer.backward(dummy_grad, learning_rate)
-
-        print(f'Epoch {epoch+1}/epochs, Loss: {total_loss / len(data)}')
 
 # Runs the AI model 1000 times to test network loss and accuracy
 def nn_thousand_test(model_obj):
@@ -208,17 +215,3 @@ def nn_thousand_test(model_obj):
 # Used to visualize the neural network
 def visualize_models(model_obj):
     pass
-
-# Basically what I need to do is create the training data now. Finish tokenizing the data and normalize the data.
-# Then pass the tokenized user input to the Predictive model. Here it will determine what tasks to run or compile
-# and any additional information needed.
-
-# After the prediction is normalized and concatenated to the user input tokens and passed to the transformer. This
-# will generate commands (or let the user know what they can do but this is more complex).
-
-# I also need to create the 1000 test function to test the Neural Networks 1000 times to gt a picture of the accuracy
-# of the neural network. Sum up the network loss and create a visual similar to Git's push and pull. Except the more green
-# the more accurate that instance was. Sum all instances and divide by 1000. This will give the loss over all iterations.
-
-# Finally create two objects that can be used to visualize the network. This will be important to give a visual for
-# what is happening in the network.

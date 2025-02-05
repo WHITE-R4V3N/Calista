@@ -58,10 +58,13 @@ class DataTokenizer:
 
             tokenized_data.append(tokenizer.char_tokenize(x_string))
 
+        ''' Used to not pad the y output
         if x_or_y == 0:
             padded_data = tokenizer.pad_input(tokenized_data)
         else:
             padded_data = tokenized_data
+        '''
+        padded_data = self.pad_input(tokenized_data)
 
         # Can be generalized to just return normalized_data
         normalized_data = []

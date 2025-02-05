@@ -46,9 +46,6 @@ training_data = tokenizer.parse_files()
 norm_x = tokenizer.tokenize_pad_normalize(tokenizer, training_data, 0)
 norm_y = tokenizer.tokenize_pad_normalize(tokenizer, training_data, 1)
 
-for i in norm_x:
-    print(f'Input Size: {len(i)}')
-
 # Output needs to be one-hot encoded. Or better yet it can be a fixed length and we pad the output
 
 #-----------------------------------------------------------------------------#
@@ -56,15 +53,27 @@ for i in norm_x:
 #-----------------------------------------------------------------------------#
 
 # The input sizes will depend on the size of the X data in the training data.
-predictive_obj = Predictive_NN(input_size=353, hidden_size=1024, hidden2_size=1024, output_size=1)
-transformer_obj = Transformer(vocab_size=100, embed_size=32, num_heads=4, num_layers=2, feedforward_dim=64)
+predictive_obj = Predictive_NN(input_size=353, hidden_size=1024, hidden2_size=1024, output_size=2)
+transformer_obj = Transformer(vocab_size=500, embed_size=32, num_heads=4, num_layers=2, feedforward_dim=64)
 
-# Need to create the input tokens here
+# Create a for loop for each X input and y input.
+# Run Predictive network
+# Save output
+# Create seed of predictive network output and usr_input
+
 predicted_tokens = [5, 12] # Should be generated after each input from the user.
+X_predicted_tokens = predictive_obj.forward(norm_x[1])
+print(f'Predictive Model output: \n{X_predicted_tokens}\n')
+#usr_input_tokens = norm_x[1]
 usr_input_tokens = [20, 8]
-seed = predicted_tokens + usr_input_tokens # What we are feeding into the transformer object
 
-output = generate_text(transformer_obj, seed, length=10, vocab_size=100)
-print(f'\nGenerated commands: \n{output}')
+seed = np.concatenate((predicted_tokens, usr_input_tokens))
+#seed = np.concatenate((predicted_tokens[0], usr_input_tokens)) # What we are feeding into the transformer object
+
+#output = generate_text(transformer_obj, seed, length=len(norm_y[0]), vocab_size=500)
+print(f'Transformer Model Steps:')
+output = generate_text(transformer_obj, seed, length=len(norm_y[0]), vocab_size=500)
+print(f'Seed: \n{list(seed)}\n')
+print(f'Generated Transformer Output: \n{output}')
 
 print(logo)
