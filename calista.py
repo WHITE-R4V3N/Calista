@@ -56,13 +56,20 @@ norm_y = tokenizer.tokenize_pad_normalize(tokenizer, training_data, 1)
 predictive_obj = Predictive_NN(input_size=353, hidden_size=1024, hidden2_size=1024, output_size=2)
 transformer_obj = Transformer(vocab_size=500, embed_size=32, num_heads=4, num_layers=2, feedforward_dim=64)
 
-# Create a for loop for each X input and y input.
-# Run Predictive network
-# Save output
-# Create seed of predictive network output and usr_input
+X_predicted_tokens = predictive_obj.forward(norm_x[1])
+# Need to create a map to the specific tasks that the model predicts.
+# Any value within a limit close to 1 will be ran. Any value less than limit will be
+# valued at 0 and will not run. The specific task to run is based on the position of
+# the values within the models output. The limit is hard coded but we can also create
+# a value that gets adjusted based on the models accuracy of the tasks performed.
+# Find places to create values within the models to train and adjust based on accuracy
+# of all the models. Step by step we will define and create the network we desire.
+
+# Almost need two different expected outputs. One specifically for the predictive model
+# and the other for the expected output from the transformer model.
+
 
 predicted_tokens = [5, 12] # Should be generated after each input from the user.
-X_predicted_tokens = predictive_obj.forward(norm_x[1])
 print(f'Predictive Model output: \n{X_predicted_tokens}\n')
 #usr_input_tokens = norm_x[1]
 usr_input_tokens = [20, 8]
@@ -75,5 +82,6 @@ print(f'Transformer Model Steps:')
 output = generate_text(transformer_obj, seed, length=len(norm_y[0]), vocab_size=500)
 print(f'Seed: \n{list(seed)}\n')
 print(f'Generated Transformer Output: \n{output}')
+print(f'Predictive Model Output: \n{X_predicted_tokens}')
 
 print(logo)
