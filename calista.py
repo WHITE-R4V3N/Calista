@@ -31,6 +31,9 @@ logo = f'''
 
 parsed_files = ''
 
+# Create a log file
+create_file()
+
 #-----------------------------------------------#
 # Create the tokenizer and load the data files. #
 #-----------------------------------------------#
@@ -39,12 +42,19 @@ tokenizer = DataTokenizer()
 tokenizer.add_data_file(json.load(open('datasets/cryptography_data.json', 'r')))
 tokenizer.add_data_file(json.load(open('datasets/command_data.json', 'r')))
 
+append_data(f'Tokenizer:\n{tokenizer}')
+
 # Parse the files
 training_data = tokenizer.parse_files()
+
+append_data(f'Training Data:\n{training_data}')
 
 # Tokenize, Pad and Normalize the training data
 norm_x = tokenizer.tokenize_pad_normalize(tokenizer, training_data, 0)
 norm_y = tokenizer.tokenize_pad_normalize(tokenizer, training_data, 1)
+
+append_data(f'Normalized X:\n{norm_x}')
+append_data(f'Normalized y:\n{norm_y}')
 
 # Output needs to be one-hot encoded. Or better yet it can be a fixed length and we pad the output
 
@@ -56,32 +66,31 @@ norm_y = tokenizer.tokenize_pad_normalize(tokenizer, training_data, 1)
 predictive_obj = Predictive_NN(input_size=353, hidden_size=1024, hidden2_size=1024, output_size=2)
 transformer_obj = Transformer(vocab_size=500, embed_size=32, num_heads=4, num_layers=2, feedforward_dim=64)
 
+append_data(f'Predictive Object:\n{predictive_obj}')
+append_data(f'Transformer Object:\n{transformer_obj}')
+
 X_predicted_tokens = predictive_obj.forward(norm_x[1])
-# Need to create a map to the specific tasks that the model predicts.
-# Any value within a limit close to 1 will be ran. Any value less than limit will be
-# valued at 0 and will not run. The specific task to run is based on the position of
-# the values within the models output. The limit is hard coded but we can also create
-# a value that gets adjusted based on the models accuracy of the tasks performed.
-# Find places to create values within the models to train and adjust based on accuracy
-# of all the models. Step by step we will define and create the network we desire.
 
-# Almost need two different expected outputs. One specifically for the predictive model
-# and the other for the expected output from the transformer model.
-
+append_data(f'X predictive tokens:\n{X_predicted_tokens}')
 
 predicted_tokens = [5, 12] # Should be generated after each input from the user.
 print(f'Predictive Model output: \n{X_predicted_tokens}\n')
+predicted_tokens = [round(tokens) for tokens in X_predicted_tokens[0]]
 #usr_input_tokens = norm_x[1]
 usr_input_tokens = [20, 8]
+
+append_data(f'User input tokens:\n{usr_input_tokens}')
 
 seed = np.concatenate((predicted_tokens, usr_input_tokens))
 #seed = np.concatenate((predicted_tokens[0], usr_input_tokens)) # What we are feeding into the transformer object
 
+append_data(f'Seed: \n{seed}')
+
 #output = generate_text(transformer_obj, seed, length=len(norm_y[0]), vocab_size=500)
-print(f'Transformer Model Steps:')
-output = generate_text(transformer_obj, seed, length=len(norm_y[0]), vocab_size=500)
+output = generate_text(transformer_obj, seed, length=10, vocab_size=500)
 print(f'Seed: \n{list(seed)}\n')
 print(f'Generated Transformer Output: \n{output}')
-print(f'Predictive Model Output: \n{X_predicted_tokens}')
 
-print(logo)
+append_data(f'Transformer output tokens:\n{output}')
+
+#print(logo)

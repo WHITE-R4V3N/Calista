@@ -15,5 +15,5 @@ def create_file():
 
 def append_data(data):
     log = open(f'./logs/{x[0]}.txt', 'a')
-    log.write(f'{data}\n')
+    log.write(f'{'-'*40}\n{data}\n')
     log.close

@@ -145,9 +145,9 @@ class Transformer:
 
     def forward(self, X):
         # Debugging
-        print(f'X dtype: {X.dtype}')
-        print(f'X shape: {X.shape}')
-        print(f'X values: \n{X[:5]}\n')
+        #print(f'X dtype: {X.dtype}')
+        #print(f'X shape: {X.shape}')
+        #print(f'X values: \n{X[:5]}\n')
 
         X = self.embedding[X] + self.positional_encoding[:X.shape[1]]
 
