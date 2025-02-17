@@ -3,109 +3,143 @@
         {
             "inputs": {
                 "cipher_text": "Khoor Zruog",
-                "key_value": 3,
                 "question": "The text looks like a familiar roman leader. Khoor Zruog",
-                "file_download": false,
                 "hints": [],
                 "difficulty": 1,
                 "file_name": null
             },
 
             "outputs": {
-                "plain_text": "Hello World",
-                "contain_flag": false
+                "transformer": {
+                    "command": "python3 caesar_cipher.py 3 'Khoor Zruog'"
+                },
+                "predictive": {
+                    "cryptography": "caesar_cipher",
+                    "key_shift": 3
+                },
+                "plain_text": "Hello World"
             }
         },
 
         {
             "inputs": {
                 "cipher_text": "Ebiil Tloia",
-                "key_value": -3,
                 "question": "Things look like they have shifted backwards.",
-                "file_download": true,
                 "hints": [],
                 "difficulty": 1,
                 "file_name": "test3.txt"
             },
 
             "outputs": {
-                "plain_text": "Hello World",
-                "contain_flag": false
+                "transformer": {
+                    "command": "python3 caesar_cipher.py -3 'Ebiil Tloia'"
+                },
+                "predictive": {
+                    "cryptography": "caesar_cipher",
+                    "key_shift": -3,
+                    "file_download": true,
+                    "read_file": true
+                },
+                "plain_text": "Hello World"
             }
         },
 
         {   
             "inputs": {
                 "cipher_text": "<yanorg>{cq1b_15_4_ou4p}",
-                "key_value": 9,
                 "question": "There is a secret hidden within!",
-                "file_download": true,
                 "hints": [],
                 "difficulty": 1,
                 "file_name": "test2.txt"
             },
 
             "outputs": {
-                "plain_text": "<prefix>{th1s_15_4_fl4g}",
-                "contain_flag": true
+                "transformer": {
+                    "command": "python3 caesar_cipher.py 9 '<yanorg>{cq1b_15_4_ou4p}'"
+                },
+                "predictive": {
+                    "cryptography": "caesar_cipher",
+                    "key_shift": 9,
+                    "contains_flag": true,
+                    "file_download": true,
+                    "read_file": true
+                },
+                "plain_text": "<prefix>{th1s_15_4_fl4g}"
             }
         },
 
         {   
             "inputs": {
                 "cipher_text": "<cersvk>{LNL_lbh_sbhaq_vg}",
-                "key_value": 13,
                 "question": "What was the encoded message?",
-                "file_download": false,
                 "hints": [],
                 "difficulty": 1,
                 "file_name": null
             },
 
             "outputs": {
-                "plain_text": "<prefix>{YAY_you_found_it}",
-                "contain_flag": true
+                "transformer": {
+                    "command":"python3 caesar_cipher.py 13 '<cersvk>{LNL_lbh_sbhaq_vg}'"
+                },
+                "predictive": {
+                    "cryptography": "caesar_cipher",
+                    "key_shift": 13,
+                    "contains_flag": true,
+                    "file_download": true
+                },
+                "plain_text": "<prefix>{YAY_you_found_it}"
             }
         },
 
         {
             "inputs": {
                 "cipher_text": "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. <uwjknc>{F_jshtiji_kqfl_bfx_stb_ktzsi}",
-                "key_value": 13,
                 "question": "Was there a flag encoded in the text?",
-                "file_download": true,
                 "hints": ["The cipher text from the file contains the secret message within the plain text."],
                 "difficulty": 1,
                 "file_name": "test1.txt"
             },
 
             "outputs": {
-                "plain_text": "<prefix>{A_encoded_flag_was_now_found}",
-                "contain_flag": true
+                "transformer": {
+                    "command": "python3 caesar_cipher.py 13 '<uwjknc>{F_jshtiji_kqfl_bfx_stb_ktzsi}'"
+                },
+                "predictive": {
+                    "cryptography": "caesar_cipher",
+                    "key_shift": 13,
+                    "contains_flag": true,
+                    "file_download": true,
+                    "read_file": true
+                },
+                "plain_text": "<prefix>{A_encoded_flag_was_now_found}"
             }
         },
 
         {
             "inputs": {
                 "cipher_text": "R jdrcc kvok tfekrzezex r wcrx rj jlty: <givwzo>{R_wcrx_nzkyze_kvok}",
-                "key_value": 17,
                 "question": "Plain text in a webpage has been ciphered?",
-                "file_download": false,
                 "hints": [],
                 "difficulty": 1,
                 "file_name": null
             },
 
             "outputs": {
-                "plain_text": "A small text containing a flag as such: <prefix>{A_flag_within_text}",
-                "contain_flag": true
+                "transformer": {
+                    "command": "python3 caesar_cipher.py 17 '<givwzo>{R_wcrx_nzkyze_kvok}'"
+                },
+                "predictive": {
+                    "cryptography": "caesar_cipher",
+                    "key_shift": 17,
+                    "contains_flag": true
+                },
+                "plain_text": "A small text containing a flag as such: <prefix>{A_flag_within_text}"
             }
         },
 
         {
             "inputs": {
                 "cipher_text": "Zpv bsf zpvs fjo! Vohsbuvmbuft",
-                "key_value": -1,
                 "question": "Reverse each letter shift.",
                 "file_download": false,
                 "hints": [],
@@ -114,8 +148,15 @@
             },
 
             "outputs": {
-                "plain_text": "You are your own! Congratulations",
-                "contain_flag": false
+                "transformer": {
+                    "command": "python3 caesar_cipher.py -1 'Zpv bsf zpvs fjo! Vohsbuvmbuft'"
+                },
+                "predictive": {
+                    "cryptography": "caesar_cipher",
+                    "key_shift": -1,
+                    "contains_flag": false
+                },
+                "plain_text": "You are your own! Congratulations"
             }
         }
     ],
@@ -124,7 +165,6 @@
         {   
             "inputs": {
                 "cipher_text": "QSBzbWFsbCB0ZXh0IGNvbnRhaW5pbmcgYSBmbGFnIGFzIHN1Y2g6IDxwcmVmaXg+e0FfZmxhZ193aXRoaW5fdGV4dH0=",
-                "key_value": null,
                 "question": "Plain text in a webpage has been ciphered?",
                 "file_download": false,
                 "hints": ["Pull the flag from the text after decoding the message."],
@@ -133,59 +173,75 @@
             },
 
             "outputs": {
-                "plain_text": "A small text containing a flag as such: <prefix>{A_flag_within_text}",
-                "contain_flag": true
+                "transformer": {
+                    "command": "echo QSBzbWFsbCB0ZXh0IGNvbnRhaW5pbmcgYSBmbGFnIGFzIHN1Y2g6IDxwcmVmaXg+e0FfZmxhZ193aXRoaW5fdGV4dH0= | base64 --decode"
+                },
+                "predictive": {
+                    "cryptography": "base64",
+                    "contains_flag": true
+                },
+                "plain_text": "A small text containing a flag as such: <prefix>{A_flag_within_text}"
             }
         },
 
         {   
             "inputs": {
                 "cipher_text": "SGVsbG8gV29ybGQ=",
-                "key_value": null,
                 "question": "A small message is written down.",
-                "file_download": false,
                 "hints": [],
                 "difficulty": 1,
                 "file_name": null
             },
 
             "outputs": {
-                "plain_text": "Hello World",
-                "contain_flag": true
+                "transformer": {
+                    "command": "echo SGVsbG8gV29ybGQ= | base64 --decode"
+                },
+                "predictive": {
+                    "cryptography": "base64"
+
+                },
+                "plain_text": "Hello World"
             }
         },
 
         {
             "inputs": {
                 "cipher_text": "WW91ciBzZWNyZXQgaXMgaW4gdGhlIGNvZGU=",
-                "key_value": null,
                 "question": "Can you look deeper into base64?",
-                "file_download": false,
                 "hints": [],
                 "difficulty": 1,
                 "file_name": null
             },
 
             "outputs": {
-                "plain_text": "Your secret is in the code",
-                "contain_flag": false
+                "transformer": {
+                    "command": "echo WW91ciBzZWNyZXQgaXMgaW4gdGhlIGNvZGU= | base64 --decode"
+                },
+                "predictive": {
+                    "cryptography": "base64"
+                },
+                "plain_text": "Your secret is in the code"
             }
         },
 
         {   
             "inputs": {
                 "cipher_text": "VGhpcyBpcyBhIG1lc3NhZ2U=",
-                "key_value": null,
                 "question": "A common encoding used in emails.",
-                "file_download": false,
                 "hints": [],
                 "difficulty": 1,
                 "file_name": null
             },
 
             "outputs": {
-                "plain_text": "This is a message",
-                "contain_flag": false
+                "transformer": {
+                    "command": "echo VGhpcyBpcyBhIG1lc3NhZ2U= | base64 --decode"
+                },
+                "predictive": {
+                    "cryptography": "base64"
+                },
+                "plain_text": "This is a message"
             }
         },
 

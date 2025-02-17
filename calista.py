@@ -63,7 +63,7 @@ append_data(f'Normalized y:\n{norm_y}')
 #-----------------------------------------------------------------------------#
 
 # The input sizes will depend on the size of the X data in the training data.
-predictive_obj = Predictive_NN(input_size=353, hidden_size=1024, hidden2_size=1024, output_size=2)
+predictive_obj = Predictive_NN(input_size=345, hidden_size=1024, hidden2_size=1024, output_size=2)
 transformer_obj = Transformer(vocab_size=500, embed_size=32, num_heads=4, num_layers=2, feedforward_dim=64)
 
 append_data(f'Predictive Object:\n{predictive_obj}')
