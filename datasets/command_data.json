@@ -6,7 +6,12 @@
                 "target": "10.10.10.10"
             },
             "outputs": {
-                "command": "nmap 10.10.10.10 -p 22"
+                "transformer": {
+                    "command": "nmap 10.10.10.10 -p 22"
+                },
+                "predictive": {
+                    "recon": true
+                }
             }
         },
 
@@ -16,7 +21,12 @@
                 "target": "192.168.1.82"
             },
             "outputs": {
-                "command": "nmap -sV 10.10.10.10"
+                "transformer": {
+                    "command": "nmap -sV 10.10.10.10"
+                },
+                "predictive": {
+                    "recon": true
+                }
             }
         }
     ]

@@ -11,7 +11,7 @@
 
             "outputs": {
                 "transformer": {
-                    "command": "python3 caesar_cipher.py 3 'Khoor Zruog'"
+                    "command": "python3 scripts/caesar_cipher.py 3 'Khoor Zruog'"
                 },
                 "predictive": {
                     "cryptography": "caesar_cipher",
@@ -32,7 +32,7 @@
 
             "outputs": {
                 "transformer": {
-                    "command": "python3 caesar_cipher.py -3 'Ebiil Tloia'"
+                    "command": "python3 scripts/caesar_cipher.py -3 'Ebiil Tloia'"
                 },
                 "predictive": {
                     "cryptography": "caesar_cipher",
@@ -55,7 +55,7 @@
 
             "outputs": {
                 "transformer": {
-                    "command": "python3 caesar_cipher.py 9 '<yanorg>{cq1b_15_4_ou4p}'"
+                    "command": "python3 scripts/caesar_cipher.py 9 '<yanorg>{cq1b_15_4_ou4p}'"
                 },
                 "predictive": {
                     "cryptography": "caesar_cipher",
@@ -79,7 +79,7 @@
 
             "outputs": {
                 "transformer": {
-                    "command":"python3 caesar_cipher.py 13 '<cersvk>{LNL_lbh_sbhaq_vg}'"
+                    "command":"python3 scripts/caesar_cipher.py 13 '<cersvk>{LNL_lbh_sbhaq_vg}'"
                 },
                 "predictive": {
                     "cryptography": "caesar_cipher",
@@ -102,7 +102,7 @@
 
             "outputs": {
                 "transformer": {
-                    "command": "python3 caesar_cipher.py 13 '<uwjknc>{F_jshtiji_kqfl_bfx_stb_ktzsi}'"
+                    "command": "python3 scripts/caesar_cipher.py 13 '<uwjknc>{F_jshtiji_kqfl_bfx_stb_ktzsi}'"
                 },
                 "predictive": {
                     "cryptography": "caesar_cipher",
@@ -126,7 +126,7 @@
 
             "outputs": {
                 "transformer": {
-                    "command": "python3 caesar_cipher.py 17 '<givwzo>{R_wcrx_nzkyze_kvok}'"
+                    "command": "python3 scripts/caesar_cipher.py 17 '<givwzo>{R_wcrx_nzkyze_kvok}'"
                 },
                 "predictive": {
                     "cryptography": "caesar_cipher",
@@ -149,7 +149,7 @@
 
             "outputs": {
                 "transformer": {
-                    "command": "python3 caesar_cipher.py -1 'Zpv bsf zpvs fjo! Vohsbuvmbuft'"
+                    "command": "python3 scripts/caesar_cipher.py -1 'Zpv bsf zpvs fjo! Vohsbuvmbuft'"
                 },
                 "predictive": {
                     "cryptography": "caesar_cipher",
@@ -199,7 +199,6 @@
                 },
                 "predictive": {
                     "cryptography": "base64"
-
                 },
                 "plain_text": "Hello World"
             }
@@ -248,7 +247,6 @@
         {   
             "inputs": {
                 "cipher_text": "PHByZWZpeD57V2VsbF95b3VfbWFuYWdlZF90b19maW5kX2l0fQ==",
-                "key_value": null,
                 "question": "The base of all numbers can be different. What is ours?",
                 "file_download": true,
                 "hints": [],
@@ -257,8 +255,16 @@
             },
 
             "outputs": {
-                "plain_text": "<prefix>{Well_you_managed_to_find_it}",
-                "contain_flag": true
+                "transformer": {
+                    "command": "echo PHByZWZpeD57V2VsbF95b3VfbWFuYWdlZF90b19maW5kX2l0fQ== | base64 --decode"
+                },
+                "predictive": {
+                    "cryptography": "base64",
+                    "contains_flag": true,
+                    "file_download": true,
+                    "read_file": true
+                },
+                "plain_text": "<prefix>{Well_you_managed_to_find_it}"
             }
         }
     ],
@@ -267,51 +273,61 @@
         {   
             "inputs": {
                 "cipher_text": "8 5 12 12 15 23 15 18 12 4",
-                "key_value": null,
                 "question": "Can you convert numbers to letters?",
-                "file_download": false,
                 "hints": [],
                 "difficulty": 1,
                 "file_name": null
             },
 
             "outputs": {
-                "plain_text": "HELLO WORLD",
-                "contain_flag": false
+                "transformer": {
+                    "command": "python3 scripts/a1z26.py '8 5 12 12 15 23 15 18 12 4'"
+                },
+                "predictive": {
+                    "cryptography": "a1z26"
+                },
+                "plain_text": "HELLO WORLD"
             }
         },
 
         {   
             "inputs": {
                 "cipher_text": "20 5 19 20 9 14 7",
-                "key_value": null,
                 "question": "This is just a text example.",
-                "file_download": false,
                 "hints": [],
                 "difficulty": 1,
                 "file_name": null
             },
 
             "outputs": {
-                "plain_text": "TESTING",
-                "contain_flag": false
+                "transformer": {
+                    "command": "python3 scripts/a1z26.py '20 5 19 20 9 14 7'"
+                },
+                "predictive": {
+                    "cryptography": "a1z26"
+                },
+                "plain_text": "TESTING"
             }
         },
 
         {   
             "inputs": {
                 "cipher_text": "17 23 24 19 9 7 18 8 4 7 5 7 25 23 11 9 7 22 9 7 2 23 10 12 3 14 13 21 9 4 24 23 3 13 22 13 1 24 7 5 8 16 26 7 18 12 2 12 1 24 18 15 1 23 6 2 14 22 20 25 13 22 25 3",
-                "key_value": null,
                 "question": "A message of numbers. What does it say?",
-                "file_download": false,
                 "hints": ["What if I remove the spaces?"],
                 "difficulty": 1,
                 "file_name": null
             },
 
             "outputs": {
-                "plain_text": "All data and no numbers. <prefix>{Hidden_within_numbers}",
-                "contain_flag": true
+                "transformer": {
+                    "command": "python3 scripts/a1z26.py '17 23 24 19 9 7 18 8 4 7 5 7 25 23 11 9 7 22 9 7 2 23 10 12 3 14 13 21 9 4 24 23 3 13 22 13 1 24 7 5 8 16 26 7 18 12 2 12 1 24 18 15 1 23 6 2 14 22 20 25 13 22 25 3'"
+                },
+                "predictive": {
+                    "cryptography": "a1z26",
+                    "contains_flag": true
+                },
+                "plain_text": "All data and no numbers. <prefix>{Hidden_within_numbers}"
             }
         }
     ]

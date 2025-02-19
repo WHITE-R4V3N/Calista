@@ -49,21 +49,36 @@ class DataTokenizer:
 
         return parsed_data
     
-    def tokenize_pad_normalize(self, tokenizer, training_data, x_or_y):
-        tokenized_data = []
-        for input_output in training_data:
-            x_string = ''
-            for labels in training_data[input_output][x_or_y]: # The var changning the data changes this 0 and the 0 below to a variable instead
-                x_string += f'{training_data[input_output][x_or_y][labels]} '
-
-            tokenized_data.append(tokenizer.char_tokenize(x_string))
-
-        ''' Used to not pad the y output
+    def tokenize_data(self, tokenizer, training_data, x_or_y):
         if x_or_y == 0:
-            padded_data = tokenizer.pad_input(tokenized_data)
+            tokenized_data = []
+            for input_output in training_data:
+                d_str = ''
+                for labels in training_data[input_output][x_or_y]: # The var changning the data changes this 0 and the 0 below to a variable instead
+                    d_str += f'{training_data[input_output][x_or_y][labels]} '
+
+                tokenized_data.append(tokenizer.char_tokenize(d_str))
+            
+            return tokenized_data
         else:
-            padded_data = tokenized_data
-        '''
+            tokenized_transformer = []
+            tokenized_predictive = []
+
+            for input_output in training_data:
+                d_str = ''
+
+                for labels in training_data[input_output][1]['transformer']:
+                    d_str += f'{training_data[input_output][1]['transformer'][labels]} '
+                tokenized_transformer.append(tokenizer.char_tokenize(d_str))
+
+                d_str = ''
+                for labels in training_data[input_output][1]['predictive']:
+                    d_str += f'{training_data[input_output][1]['predictive'][labels]} '
+                tokenized_predictive.append(tokenizer.char_tokenize(d_str))
+
+            return tokenized_transformer, tokenized_predictive
+
+    def pad_normalize_data(self, tokenized_data):
         padded_data = self.pad_input(tokenized_data)
 
         # Can be generalized to just return normalized_data
@@ -73,7 +88,7 @@ class DataTokenizer:
             digi_arr = []
 
             for digi in item:
-                digi_arr.append(tokenizer.normalize_array(digi, data_max))
+                digi_arr.append(self.normalize_array(digi, data_max))
             
             normalized_data.append(digi_arr)
 
