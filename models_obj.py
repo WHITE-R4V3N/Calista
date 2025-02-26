@@ -7,7 +7,7 @@ from settings import *
 
 # Model for predicting what tasks should be done
 class Predictive_NN:
-    def __init__(self, input_size, hidden_size, hidden2_size, output_size, learning_rate=0.001):
+    def __init__(self, input_size, hidden_size, hidden2_size, output_size, learning_rate=0.01):
         self.w1 = np.random.randn(input_size, hidden_size)
         self.b1 = np.zeros((1, hidden_size))
 
@@ -46,7 +46,7 @@ class Predictive_NN:
         d_hidden2 = error_hidden2 * self.sigmoid_derivative(self.a2)
 
         error_hidden1 = d_hidden2.dot(self.w2.T)
-        d_hidden1 = error_hidden1 * self.sigmoid_derivative
+        d_hidden1 = error_hidden1 * self.sigmoid_derivative(self.a1)
 
         self.w3 += self.a2.T.dot(d_output) * self.learning_rate
         self.b3 += np.sum(d_output, axis=0, keepdims=True) * self.learning_rate
@@ -57,7 +57,7 @@ class Predictive_NN:
         self.w1 += X.T.dot(d_hidden1) * self.learning_rate
         self.b1 += np.sum(d_hidden1, axis=0, keepdims=True) * self.learning_rate
 
-    def train(self, X, y, epochs=10000):
+    def train(self, X, y, epochs=15000):
         printProgressBar(0, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
 
         for epoch in range(epochs):
@@ -67,8 +67,9 @@ class Predictive_NN:
             if epoch % 100 == 0:
                 self.training_loss.append(np.mean((y - output) ** 2))
 
-            printProgressBar(0, epoch, prefix='PROGRESS:', suffix='Complete', length=50)
+            printProgressBar(epoch+1, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
         
+        print()
         return self.training_loss
 
 class MultiHeadAttention:
@@ -135,8 +136,8 @@ class TransformerBlock:
 class Transformer:
     def __init__(self, vocab_size, embed_size, num_heads, num_layers, feedforward_dim):
         self.embed_size = embed_size
-        self.embedding = np.random.randn(vocab_size, embed_size) * 0.01
-        self.positional_encoding = np.random.randn(1000, embed_size) * 0.01
+        self.embedding = EmbeddingLayer(vocab_size, embed_size)
+        self.positional_encoding = np.random.randn(5865, embed_size) * 0.01
 
         self.layers = [
             TransformerBlock(embed_size, num_heads, feedforward_dim)
@@ -144,12 +145,7 @@ class Transformer:
         ]
 
     def forward(self, X):
-        # Debugging
-        #print(f'X dtype: {X.dtype}')
-        #print(f'X shape: {X.shape}')
-        #print(f'X values: \n{X[:5]}\n')
-
-        X = self.embedding[X] + self.positional_encoding[:X.shape[1]]
+        X = self.embedding.forward(X) + self.positional_encoding[:X.shape[1]]
 
         attention_weights_list = []
 
@@ -161,38 +157,61 @@ class Transformer:
     
     def backward(self, d_output, learning_rate):
         for layer in reversed(self.layers):
-            layer.backward(d_output, learning_rate)
+            grad_output = layer.backward(d_output, learning_rate)
 
-    def cross_entropy_loss(predictions, targets):
+        self.embedding.backward(grad_output, learning_rate)
+
+    def cross_entropy_loss(self, predictions, targets):
         predictions = np.exp(predictions - np.max(predictions, axis=-1, keepdims=True))
         predictions /= predictions.sum(axis=-1, keepdims=True)
+
+        if predictions.shape[0] != targets.shape[0]:
+            raise ValueError(f'Shape Mismatch\nprediction shape: {predictions.shape} | targets shape: {targets.shape}')
+
+        print(f'Prediction Shape: {predictions.shape}')
+        print(f'Target shape: {targets.shape}')
 
         loss = -np.sum(np.log(predictions[np.arange(len(targets)), targets] + 1e-9)) / len(targets)
         return loss
 
-    def train(self, X, y, epochs, learning_rate, vocab_size):
+    def train(self, X, y, learning_rate, vocab_size, epochs=15000):
         printProgressBar(0, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
-        for epoch in range(epochs):
-            total_loss = 0
-
         
-            input_tokens = np.array(X)
-            target_tokens = np.array(y)
+        total_loss = []
+        for epoch in range(epochs):
 
             # Forward pass
-            logits, _ = self.forward(input_tokens.reshape(1, -1))
+            logits, _ = self.forward(X)
 
-            loss  = self.cross_entropy_loss(logits[0], target_tokens)
-            total_loss += loss
+            print(f'Logits shape: {logits.shape}\n')
 
-            dummy_grad = logits - np.eye(vocab_size)[target_tokens]
+            loss  = self.cross_entropy_loss(logits[0], y)
+            total_loss.append(loss)
+
+            dummy_grad = logits - np.eye(vocab_size)[y]
             self.backward(dummy_grad, learning_rate)
+            
+            printProgressBar(epoch+1, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
 
-            #print(f'Epoch {epoch+1}/epochs, Loss: {total_loss / len(X)}')
-            printProgressBar(0, epoch, prefix='PROGRESS:', suffix='Complete', length=50)
+        return total_loss
+
+class EmbeddingLayer:
+    def __init__(self, vocab_size, embed_size):
+        self.vocab_size = vocab_size
+        self.embed_size = embed_size
+
+        self.weights = np.random.randn(vocab_size, embed_size) * 0.01
+
+    def forward(self, X):
+        return self.weights[X]
+
+    def backward(self, grad_output, learning_rate):
+        self.weights -= learning_rate * grad_output
 
 def generate_text(transformer, seed, length, vocab_size):
     generated = list(seed)
+
+    print(f'Length of generated: {len(generated)}\nGenerate')
 
     for _ in range(length):
         logits, _ = transformer.forward(np.array([generated]))

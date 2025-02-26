@@ -13,6 +13,7 @@ class DataTokenizer:
         self.word_index = defaultdict(lambda: len(self.word_index))
         self.max_length = 0
         self.data = []
+        self.corpus = {}
 
     def add_data_file(self, file_data):
         self.data.append(file_data)
@@ -60,7 +61,8 @@ class DataTokenizer:
                 tokenized_data.append(tokenizer.char_tokenize(d_str))
             
             return tokenized_data
-        else:
+        else:   # Data is equal to the training models output. For predictive we need to convert to a corpus array
+                # For the transformer model we need to do all of the steps.
             tokenized_transformer = []
             tokenized_predictive = []
 
@@ -71,10 +73,11 @@ class DataTokenizer:
                     d_str += f'{training_data[input_output][1]['transformer'][labels]} '
                 tokenized_transformer.append(tokenizer.char_tokenize(d_str))
 
-                d_str = ''
+                # For predictive d_str is more of a d_arr as we need to create a corpus rather than tokenizing and normalizing the data.
+                d_arr = {}
                 for labels in training_data[input_output][1]['predictive']:
-                    d_str += f'{training_data[input_output][1]['predictive'][labels]} '
-                tokenized_predictive.append(tokenizer.char_tokenize(d_str))
+                    d_arr[labels] = (training_data[input_output][1]['predictive'][labels])
+                tokenized_predictive.append(d_arr)
 
             return tokenized_transformer, tokenized_predictive
 
@@ -93,3 +96,27 @@ class DataTokenizer:
             normalized_data.append(digi_arr)
 
         return normalized_data
+    
+    def construct_corpus(self, y_pred_tok): # This creates a corpus for the predictive model y training data
+        position = 0
+
+        for i in range(len(y_pred_tok)):
+            for key in y_pred_tok[i]:
+                if key not in self.corpus:
+                    self.corpus[key] = position
+                    position += 1
+
+        # Now convert each y_pred_tok to corpus data or norm_predictive
+        norm_predictive = []
+
+        for j in range(len(y_pred_tok)):
+            d_arr = []
+            for key in self.corpus:
+                if key in y_pred_tok[j]:
+                    d_arr.append(1)
+                else:
+                    d_arr.append(0)
+            
+            norm_predictive.append(d_arr)
+
+        return norm_predictive
