@@ -21,7 +21,7 @@ from logs.logger import *
 from scripts.web_scrape import *
 
 nn_visualizer = False
-version = 'v 2.0.1'
+version = 'v 2.0.2'
 
 logo = f'''
 \n
@@ -88,16 +88,15 @@ if predicted_tokens == norm_predictive[1]:
 else:
     print(f'TEST PREDICTION {RED}FAILED!{RESET}')
     append_data(f'TEST PREDICTION FAILED!')
+    # Train again
 
-# Train the Transformer model           <-----------
-# Padd the tok_x before using you numpty
+# Train the Transformer model
 print(f'\nLoading Transformer Model:')
-#network_loss = transformer_obj.train(np.array(pad_tok_x), norm_transformer, 0.01, 345)
+# Add the seed to the model for the training data here, in parser, or within the actual train model. <-----------
+#network_loss = transformer_obj.train(np.array(pad_tok_x), norm_transformer, 0.01, 128)
 append_data(f'Transformer network iteration losses: \n{network_loss}')
 
 print(f'Final Transformer Network Loss: {network_loss[-1]}')
-
-time.sleep(5) #             <------ At this point now. Need to test the network once to make sure it work properly
 
 # Test Transformer model
 # Call training function
@@ -111,7 +110,12 @@ output = generate_text(transformer_obj, seed, length=len(norm_transformer[1]), v
 append_data(f'X predictive tokens:\n{X_predicted_tokens}')
 append_data(f'User input tokens:\n{usr_input_tokens}')
 append_data(f'Seed: \n{seed}')
-append_data(f'Transformer output tokens:\n{output}')
+append_data(f'Transformer output tokens:\n{output}\nOutput Shape: {np.array(output).shape}')
+
+print(f'X predictive tokens:\n{X_predicted_tokens}')
+print(f'User input tokens:\n{usr_input_tokens}')
+print(f'Seed: \n{seed}')
+print(f'Transformer output tokens:\n{output}\nOutput Shape: {np.array(output).shape}')
 
 #ctf_url = input(f'\n\n{YELLOW}Please enter the CTF challenge url here: {RESET}')
 #page = get_challeneges(ctf_url)
@@ -120,6 +124,18 @@ append_data(f'Transformer output tokens:\n{output}')
 print(logo)
 
 # Create a multiprocessing sequence to process predictive, transformer and 
-# visual the networks in real time together. This will help increase the
+# visualize the networks in real time together. This will help increase the
 # speed of Calista and lower computation times making the process much faster.
+
+# Process 1: Predictive model runs, then transformer runs
+# Process 2: Create the visual or rather update the visuals (for both models)
+
+#   or
+
+# Process 1: Predictive model training data
+# Process 2: Transformer model training data
+# Process 3: Visualize the network being trained
+
+# This will make it much faster in the training process.
+
 queue = multiprocessing.Queue()

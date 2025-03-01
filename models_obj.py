@@ -165,6 +165,13 @@ class Transformer:
         predictions = np.exp(predictions - np.max(predictions, axis=-1, keepdims=True))
         predictions /= predictions.sum(axis=-1, keepdims=True)
 
+        print(f'Predictions: \n{predictions}\nSize: {len(predictions)}')
+        print(f'Targets: \n{targets}\nSize: {len(targets)}')
+
+        # I figured out as to why the training of the transformer network was not working. It is
+        # because the fucking seed is not in the y data (targets).
+        # This is causing a shape error to be created and has taken a bit to figure out.
+
         if predictions.shape[0] != targets.shape[0]:
             raise ValueError(f'Shape Mismatch\nprediction shape: {predictions.shape} | targets shape: {targets.shape}')
 
@@ -181,11 +188,12 @@ class Transformer:
         for epoch in range(epochs):
 
             # Forward pass
-            logits, _ = self.forward(X)
+            logits, _ = self.forward(X) # seed becomes generated which in generate_text it gets passed to forward
+            # Seed consists of usr_input and predicted tokens from the predictive model
 
             print(f'Logits shape: {logits.shape}\n')
 
-            loss  = self.cross_entropy_loss(logits[0], y)
+            loss  = self.cross_entropy_loss(logits[0], np.array(y))
             total_loss.append(loss)
 
             dummy_grad = logits - np.eye(vocab_size)[y]
@@ -210,6 +218,8 @@ class EmbeddingLayer:
 
 def generate_text(transformer, seed, length, vocab_size):
     generated = list(seed)
+
+    print(f'Generated {generated}')
 
     print(f'Length of generated: {len(generated)}\nGenerate')
 
