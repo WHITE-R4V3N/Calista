@@ -57,7 +57,7 @@ norm_predictive = tokenizer.construct_corpus(tok_predictive_y)                  
 
 # The input sizes will depend on the size of the X data in the training data. And output is based on norm_predictive item length
 predictive_obj = Predictive_NN(input_size=345, hidden_size=1024, hidden2_size=1024, output_size=len(norm_predictive[0]))
-transformer_obj = Transformer(vocab_size=128, embed_size=32, num_heads=4, num_layers=2, feedforward_dim=64)
+transformer_obj = Transformer(vocab_size=512, embed_size=128, num_heads=4, num_layers=2, hidden_dim=256)
 
 # Create and add the data to the log file
 create_file()
@@ -73,7 +73,7 @@ append_data(f'Transformer Object:\n{transformer_obj}')
 # Train the predictive model
 print(f'\nLoading Predictive Model:')
 network_loss = 'NULL'
-network_loss = predictive_obj.train(np.array(norm_x), np.array(norm_predictive))        # Train the predictive network
+#network_loss = predictive_obj.train(np.array(norm_x), np.array(norm_predictive))        # Train the predictive network
 append_data(f'Predictive network iteration losses: \n{network_loss}')
 
 print(f'Final Predictive Network Loss: {network_loss[-1]}')
@@ -92,10 +92,14 @@ else:
 
 # Train the Transformer model
 print(f'\nLoading Transformer Model:')
-# Add the seed to the model for the training data here, in parser, or within the actual train model. <-----------
-#network_loss = transformer_obj.train(np.array(pad_tok_x), norm_transformer, 0.01, 128)
-append_data(f'Transformer network iteration losses: \n{network_loss}')
+transformer_x = []      # This will be the seeded X data
+for i in range(len(tok_x)):
+    transformer_x.append(np.concatenate((norm_predictive[i], pad_tok_x[i])))
 
+append_data(f'Transformer X:\n{transformer_x}')
+
+#network_loss = transformer_obj.train(np.array(list(transformer_x)), norm_transformer, 0.01, 128)       <---------
+append_data(f'Transformer network iteration losses: \n{network_loss}')
 print(f'Final Transformer Network Loss: {network_loss[-1]}')
 
 # Test Transformer model
@@ -103,7 +107,7 @@ print(f'Final Transformer Network Loss: {network_loss[-1]}')
 
 usr_input_tokens = tok_x[1]          # Not gathered yet from the user. This will become a function for processing the data.
 seed = np.concatenate((predicted_tokens, usr_input_tokens))
-output = generate_text(transformer_obj, seed, length=len(norm_transformer[1]), vocab_size=500) # Length should be adjustable for y
+output = transformer_obj.generate(seed, length=10) # Length should be adjustable for y
 
 # Check for correct token generation
 

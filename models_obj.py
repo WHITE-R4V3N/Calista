@@ -73,131 +73,118 @@ class Predictive_NN:
         return self.training_loss
 
 class MultiHeadAttention:
-    def __init__(self, embed_size, num_heads, learning_rate):
+    def __init__(self, embed_size, num_heads):
         self.embed_size = embed_size
-        self.num_heads = num_heads
+        self.heads = num_heads
         self.head_dim = embed_size // num_heads
-        self.learning_rate = learning_rate
 
-        assert (
-            self.head_dim * num_heads == embed_size
-        ), "Embedding size must be divisible by number of heads."
+        assert self.head_dim * num_heads == embed_size, "Embedding size must be evenly divisable by heads."
 
-        self.w_q = np.random.randn(embed_size, embed_size) * 0.01
-        self.w_k = np.random.randn(embed_size, embed_size) * 0.01
-        self.w_v = np.random.randn(embed_size, embed_size) * 0.01
-        self.w_o = np.random.randn(embed_size, embed_size) * 0.01
+        self.w_q = np.random.randn(embed_size, embed_size)
+        self.w_k = np.random.randn(embed_size, embed_size)
+        self.w_v = np.random.randn(embed_size, embed_size)
+        self.w_o = np.random.randn(embed_size, embed_size)
 
     def forward(self, q, k, v):
-        Q = np.dot(q, self.w_q)
-        K = np.dot(k, self.w_k)
-        V = np.dot(v, self.w_v)
+        self.q = np.dot(q, self.w_q)
+        self.k = np.dot(k, self.w_k)
+        self.v = np.dot(v, self.w_v)
 
-        Q = Q.reshape(Q.shape[0], -1, self.num_heads, self.head_dim).transpose(0, 2, 1, 3)
-        K = K.reshape(K.shape[0], -1, self.num_heads, self.head_dim).transpose(0, 2, 1, 3)
-        V = V.reshape(V.shape[0], -1, self.num_heads, self.head_dim).transpose(0, 2, 1, 3)
+        scores = np.dot(self.q, self.k.T) / np.sqrt(self.head_dim)
+        self.a_w = np.exp(scores) / np.sum(np.exp(scores), axis=-1, keepdims=True)
+        self.o = np.dot(self.a_w, self.v)
 
-        scores = np.matmul(Q, K.transpose(0, 1, 3, 2)) / np.sqrt(self.head_dim)
-        attention = np.exp(scores - np.max(scores, axis=-1, keepdims=True))
-        attention /= attention.sum(axis=-1, keepdims=True)
-        output = np.matmul(attention, V)
+        return np.dot(self.o, self.w_o)
 
-        output = output.transpose(0, 2, 1, 3).reshape(output.shape[0], -1, self.embed_size)
+    def backward(self, d_out):
+        d_v = np.dot(d_out, self.w_o.T)
+        d_w_o = np.dot(self.o.T, d_out)
 
-        return np.dot(output, self.w_o), attention
-    
-    def backward(self, d_output, learning_rate):
-        self.w_q -= learning_rate * d_output
-        self.w_k -= learning_rate * d_output
-        self.w_v -= learning_rate * d_output
-        self.w_o -= learning_rate * d_output
+        d_a = np.dot(d_v, self.v.T)
+        d_scores = d_a * self.a_w * (1 - self.a_w)
+        
+        d_q = np.dot(d_scores, self.k)
+        d_k = np.dot(d_scores.T, self.q)
+        d_v = np.dot(self.a_w.T, d_v)
+
+        self.w_q -= 0.001 * np.dot(self.q.T, d_q)
+        self.w_k -= 0.001 * np.dot(self.k.T, d_k)
+        self.w_v -= 0.001 * np.dot(self.v.T, d_v)
+        self.w_o -= 0.001 * d_w_o
     
 class TransformerBlock:
-    def __init__(self, embed_size, num_heads, feedforward_dim):
-        self.attention = MultiHeadAttention(embed_size, num_heads, 0.001)
-        self.feedforward = np.random.randn(embed_size, feedforward_dim) * 0.01
-        self.ff_o = np.random.randn(feedforward_dim, embed_size) * 0.01
+    def __init__(self, embed_size, num_heads, hidden_dim):
+        self.a = MultiHeadAttention(embed_size, num_heads)
+
+        self.w1 = np.random.randn(embed_size, hidden_dim)
+        self.w2 = np.random.randn(hidden_dim, embed_size)
 
     def forward(self, X):
-        a_o, a_w = self.attention.forward(X, X, X)
-        X = X + a_o
+        self.a_o = self.a.forward(X, X, X)
+        self.ff_o = np.dot(np.maximum(0, np.dot(self.a_o, self.w1)), self.w2)
 
-        ff_o = np.maximum(0, np.dot(X, self.feedforward))
-        ff_o = np.dot(ff_o, self.ff_o)
-        X = X + ff_o
+        return self.ff_o
 
-        return X, a_w
-    
-    def backward(self, d_output, learning_rate):
-        self.attention.backward(d_output, learning_rate)
-        self.feedforward -= learning_rate * d_output
-        self.ff_o -= learning_rate * d_output
+    def backward(self, d_out):
+        d_ff = np.dot(d_out, self.w2.T)
+
+        d_w2 = np.dot(np.maximum(0, self.a_o).T, d_out)
+        d_w1 = np.dot(self.a_o.T, d_ff)
+
+        self.w1 -= 0.001 * d_w1
+        self.w2 -= 0.001 * d_w2
+
+        self.a.backward(d_ff)
 
 class Transformer:
-    def __init__(self, vocab_size, embed_size, num_heads, num_layers, feedforward_dim):
-        self.embed_size = embed_size
+    def __init__(self, vocab_size, embed_size, num_heads, num_layers, hidden_dim):
         self.embedding = EmbeddingLayer(vocab_size, embed_size)
-        self.positional_encoding = np.random.randn(5865, embed_size) * 0.01
+        self.pos_encoding = PositionalEncoding(embed_size)
 
-        self.layers = [
-            TransformerBlock(embed_size, num_heads, feedforward_dim)
-            for _ in range(num_layers)
-        ]
+        self.layers = [TransformerBlock(embed_size, num_heads, hidden_dim) for _ in range(num_layers)]
+
+        self.fc_o = np.random.randn(embed_size, vocab_size)
 
     def forward(self, X):
-        X = self.embedding.forward(X) + self.positional_encoding[:X.shape[1]]
-
-        attention_weights_list = []
+        X = self.embedding.forward(X)
+        X = self.pos_encoding.forward(X)
 
         for layer in self.layers:
-            X, attention_weights = layer.forward(X)
-            attention_weights_list.append(attention_weights)
+            X = layer.forward(X)
+        
+        return np.dot(X, self.fc_o)
 
-        return X, attention_weights_list
-    
-    def backward(self, d_output, learning_rate):
+    def backward(self, d_out):
+        d_fc = np.dot(d_out, self.fc_o.T)
+        d_w_fc = np.dot(d_fc.T, d_out)
+
+        self.fc_o -= 0.001 * d_w_fc
+
         for layer in reversed(self.layers):
-            grad_output = layer.backward(d_output, learning_rate)
+            layer.backward(d_fc)
+        self.embedding.backward(d_fc)
 
-        self.embedding.backward(grad_output, learning_rate)
+    def generate(self, seed, length=10):
+        for _ in range(length):
+            pred = self.forward(seed)
+            n_token = np.argmax(pred, axis=-1)
 
-    def cross_entropy_loss(self, predictions, targets):
-        predictions = np.exp(predictions - np.max(predictions, axis=-1, keepdims=True))
-        predictions /= predictions.sum(axis=-1, keepdims=True)
+            print(f'Seed: \n{seed}\nLength: {len(seed)}')
+            print(f'[n_token]: \n{list(n_token)}\nLength: {len(list(n_token))}')
 
-        print(f'Predictions: \n{predictions}\nSize: {len(predictions)}')
-        print(f'Targets: \n{targets}\nSize: {len(targets)}')
+            seed = np.append(seed, list(n_token), axis=0)
+        
+        return seed
 
-        # I figured out as to why the training of the transformer network was not working. It is
-        # because the fucking seed is not in the y data (targets).
-        # This is causing a shape error to be created and has taken a bit to figure out.
-
-        if predictions.shape[0] != targets.shape[0]:
-            raise ValueError(f'Shape Mismatch\nprediction shape: {predictions.shape} | targets shape: {targets.shape}')
-
-        print(f'Prediction Shape: {predictions.shape}')
-        print(f'Target shape: {targets.shape}')
-
-        loss = -np.sum(np.log(predictions[np.arange(len(targets)), targets] + 1e-9)) / len(targets)
-        return loss
-
-    def train(self, X, y, learning_rate, vocab_size, epochs=15000):
+    def train(self, X, y, epochs=15000):
         printProgressBar(0, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
         
         total_loss = []
         for epoch in range(epochs):
+            pred = self.forward(X)
 
-            # Forward pass
-            logits, _ = self.forward(X) # seed becomes generated which in generate_text it gets passed to forward
-            # Seed consists of usr_input and predicted tokens from the predictive model
-
-            print(f'Logits shape: {logits.shape}\n')
-
-            loss  = self.cross_entropy_loss(logits[0], np.array(y))
-            total_loss.append(loss)
-
-            dummy_grad = logits - np.eye(vocab_size)[y]
-            self.backward(dummy_grad, learning_rate)
+            loss = -np.sum(y, *np.log(pred)) # Cross entropy loss
+            self.backward(pred - y)
             
             printProgressBar(epoch+1, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
 
@@ -205,16 +192,29 @@ class Transformer:
 
 class EmbeddingLayer:
     def __init__(self, vocab_size, embed_size):
-        self.vocab_size = vocab_size
-        self.embed_size = embed_size
-
-        self.weights = np.random.randn(vocab_size, embed_size) * 0.01
+        self.weights = np.random.randn(vocab_size, embed_size)
 
     def forward(self, X):
+        self.X = X
+
         return self.weights[X]
 
-    def backward(self, grad_output, learning_rate):
-        self.weights -= learning_rate * grad_output
+    def backward(self, d_out):
+        self.weights[self.X] -= 0.001 * d_out
+
+class PositionalEncoding:
+    def __init__(self, embed_size, max_len=158):
+        self.encoding = np.zeros((max_len, embed_size))
+
+        for pos in range(max_len):
+            for i in range(0, embed_size, 2):
+                self.encoding[pos, i] = np.sin(pos / (10000 ** (i / embed_size)))
+
+                if i + 1 < embed_size:
+                    self.encoding[pos, i + 1] = np.cos(pos / (10000 ** ((i + 1) / embed_size)))
+
+    def forward(self, X):
+        return X + self.encoding[:X.shape[0]]
 
 def generate_text(transformer, seed, length, vocab_size):
     generated = list(seed)
