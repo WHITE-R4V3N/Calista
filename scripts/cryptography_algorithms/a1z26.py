@@ -7,10 +7,10 @@ import sys
 
 letter_array = string.ascii_lowercase
 
-if __name__ == '__main__':
+def decrypt_a1z26(string):
     d_str = ''
 
-    for i in sys.argv[1].split(' '):                # Space should always be the delimeter for a1z26 encodings
-        d_str += f'{letter_array[int(i)-1]} '
+    for i in string:
+        d_str += f'{letter_array[int(i)-1]}'
 
-    print(d_str)                                    # Returns the decoded string by printing to the screen.
+    return d_str

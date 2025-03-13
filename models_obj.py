@@ -203,7 +203,7 @@ class EmbeddingLayer:
         self.weights[self.X] -= 0.001 * d_out
 
 class PositionalEncoding:
-    def __init__(self, embed_size, max_len=158):
+    def __init__(self, embed_size, max_len=10000):
         self.encoding = np.zeros((max_len, embed_size))
 
         for pos in range(max_len):
@@ -214,6 +214,10 @@ class PositionalEncoding:
                     self.encoding[pos, i + 1] = np.cos(pos / (10000 ** ((i + 1) / embed_size)))
 
     def forward(self, X):
+        print(f'Positional X: {len(X)}')
+        print(f'Encoding: {len(self.encoding)}')
+        print(f'Encoding X shape[0]: {len(self.encoding[:X.shape[0]])}')
+
         return X + self.encoding[:X.shape[0]]
 
 def generate_text(transformer, seed, length, vocab_size):

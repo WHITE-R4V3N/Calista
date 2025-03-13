@@ -57,7 +57,7 @@ norm_predictive = tokenizer.construct_corpus(tok_predictive_y)                  
 
 # The input sizes will depend on the size of the X data in the training data. And output is based on norm_predictive item length
 predictive_obj = Predictive_NN(input_size=345, hidden_size=1024, hidden2_size=1024, output_size=len(norm_predictive[0]))
-transformer_obj = Transformer(vocab_size=512, embed_size=128, num_heads=4, num_layers=2, hidden_dim=256)
+transformer_obj = Transformer(vocab_size=1024, embed_size=128, num_heads=4, num_layers=2, hidden_dim=256)
 
 # Create and add the data to the log file
 create_file()
@@ -68,7 +68,6 @@ append_data(f'Normalized Transformer y:\n{norm_transformer}')
 append_data(f'Normalized Predictive y:\n{norm_predictive}')
 append_data(f'Predictive Object:\n{predictive_obj}')
 append_data(f'Transformer Object:\n{transformer_obj}')
-
 
 # Train the predictive model
 print(f'\nLoading Predictive Model:')
@@ -93,7 +92,7 @@ else:
 # Train the Transformer model
 print(f'\nLoading Transformer Model:')
 transformer_x = []      # This will be the seeded X data
-for i in range(len(tok_x)):
+for i in range(len(pad_tok_x)):
     transformer_x.append(np.concatenate((norm_predictive[i], pad_tok_x[i])))
 
 append_data(f'Transformer X:\n{transformer_x}')
@@ -105,9 +104,9 @@ print(f'Final Transformer Network Loss: {network_loss[-1]}')
 # Test Transformer model
 # Call training function
 
-usr_input_tokens = tok_x[1]          # Not gathered yet from the user. This will become a function for processing the data.
+usr_input_tokens = pad_tok_x[1]          # Will need to be padded for this to work
 seed = np.concatenate((predicted_tokens, usr_input_tokens))
-output = transformer_obj.generate(seed, length=10) # Length should be adjustable for y
+output = transformer_obj.generate(seed, length=20) # Length should be adjustable for y
 
 # Check for correct token generation
 
@@ -143,3 +142,20 @@ print(logo)
 # This will make it much faster in the training process.
 
 queue = multiprocessing.Queue()
+
+''' Current error is an error within the shape
+Traceback (most recent call last):
+  File "/Users/emcgi/Desktop/Calista/calista.py", line 109, in <module>
+    output = transformer_obj.generate(seed, length=10) # Length should be adjustable for y
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/emcgi/Desktop/Calista/models_obj.py", line 169, in generate
+    pred = self.forward(seed)
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/emcgi/Desktop/Calista/models_obj.py", line 150, in forward
+    X = self.pos_encoding.forward(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/emcgi/Desktop/Calista/models_obj.py", line 217, in forward
+    return X + self.encoding[:X.shape[0]]
+           ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ValueError: operands could not be broadcast together with shapes (316,128) (158,128)
+'''
