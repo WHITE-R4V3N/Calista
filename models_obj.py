@@ -72,153 +72,112 @@ class Predictive_NN:
         print()
         return self.training_loss
 
-class MultiHeadAttention:
-    def __init__(self, embed_size, num_heads):
-        self.embed_size = embed_size
-        self.heads = num_heads
-        self.head_dim = embed_size // num_heads
-
-        assert self.head_dim * num_heads == embed_size, "Embedding size must be evenly divisable by heads."
-
-        self.w_q = np.random.randn(embed_size, embed_size)
-        self.w_k = np.random.randn(embed_size, embed_size)
-        self.w_v = np.random.randn(embed_size, embed_size)
-        self.w_o = np.random.randn(embed_size, embed_size)
-
-    def forward(self, q, k, v):
-        self.q = np.dot(q, self.w_q)
-        self.k = np.dot(k, self.w_k)
-        self.v = np.dot(v, self.w_v)
-
-        scores = np.dot(self.q, self.k.T) / np.sqrt(self.head_dim)
-        self.a_w = np.exp(scores) / np.sum(np.exp(scores), axis=-1, keepdims=True)
-        self.o = np.dot(self.a_w, self.v)
-
-        return np.dot(self.o, self.w_o)
-
-    def backward(self, d_out):
-        d_v = np.dot(d_out, self.w_o.T)
-        d_w_o = np.dot(self.o.T, d_out)
-
-        d_a = np.dot(d_v, self.v.T)
-        d_scores = d_a * self.a_w * (1 - self.a_w)
-        
-        d_q = np.dot(d_scores, self.k)
-        d_k = np.dot(d_scores.T, self.q)
-        d_v = np.dot(self.a_w.T, d_v)
-
-        self.w_q -= 0.001 * np.dot(self.q.T, d_q)
-        self.w_k -= 0.001 * np.dot(self.k.T, d_k)
-        self.w_v -= 0.001 * np.dot(self.v.T, d_v)
-        self.w_o -= 0.001 * d_w_o
-    
-class TransformerBlock:
-    def __init__(self, embed_size, num_heads, hidden_dim):
-        self.a = MultiHeadAttention(embed_size, num_heads)
-
-        self.w1 = np.random.randn(embed_size, hidden_dim)
-        self.w2 = np.random.randn(hidden_dim, embed_size)
-
-    def forward(self, X):
-        self.a_o = self.a.forward(X, X, X)
-        self.ff_o = np.dot(np.maximum(0, np.dot(self.a_o, self.w1)), self.w2)
-
-        return self.ff_o
-
-    def backward(self, d_out):
-        d_ff = np.dot(d_out, self.w2.T)
-
-        d_w2 = np.dot(np.maximum(0, self.a_o).T, d_out)
-        d_w1 = np.dot(self.a_o.T, d_ff)
-
-        self.w1 -= 0.001 * d_w1
-        self.w2 -= 0.001 * d_w2
-
-        self.a.backward(d_ff)
-
 class Transformer:
-    def __init__(self, vocab_size, embed_size, num_heads, num_layers, hidden_dim):
-        self.embedding = EmbeddingLayer(vocab_size, embed_size)
-        self.pos_encoding = PositionalEncoding(embed_size)
+    def __init__(self, vocab_size, d_model, seq_len, num_heads, learning_rate):
+        self.vocab_size = vocab_size
+        self.d_model = d_model
+        self.seq_len = seq_len
+        self.num_heads = num_heads
+        self.learning_rate = learning_rate
 
-        self.layers = [TransformerBlock(embed_size, num_heads, hidden_dim) for _ in range(num_layers)]
+        self.embedding = np.random.randn(vocab_size, d_model) / np.sqrt(d_model)
+        self.positional_encoding = self.create_positional_encoding(seq_len, d_model)
 
-        self.fc_o = np.random.randn(embed_size, vocab_size)
+        self.wq = np.random.randn(num_heads, d_model, d_model // num_heads)
+        self.wk = np.random.randn(num_heads, d_model, d_model // num_heads)
+        self.wv = np.random.randn(num_heads, d_model, d_model // num_heads)
 
+        self.wo = np.random.randn(num_heads * (d_model // num_heads), d_model)
+        self.w1 = np.random.randn(d_model, 4 * d_model)
+        self.w2 = np.random.randn(4 * d_model, d_model)
+
+    def create_positional_encoding(self, seq_len, d_model):
+        pos_enc = np.zeros((seq_len, d_model))
+
+        for pos in range(seq_len):
+            for i in range(0, d_model, 2):
+                pos_enc[pos, i] = np.sin(pos /(10000 ** (i / d_model)))
+
+                if i + 1 < d_model:
+                    pos_enc[pos, i + 1] = np.cos(pos / (10000 ** (i / d_model)))
+        
+        return pos_enc
+    
+    def embed_input(self, X):
+        return self.embedding[X] + self.positional_encoding[: len(X)]
+    
+    def multi_head_attention(self, X):
+        batch_size, seq_len, d_model = X
+
+        q = np.dot(X, self.wq)
+        k = np.dot(X, self.wk)
+        v = np.dot(X, self.wv)
+
+        scores = np.einsum('nhqd,nhkd->nhqk', q, k) / np.sqrt(d_model)
+        a_w = np.exp(scores) / np.sum(np.exp(scores), axis=-1, keepdims=True)
+        context = np.einsum('nhqk,nhvd->nhqd', a_w, v)
+        context = context.reshape(batch_size, seq_len, -1)
+        o = np.dot(context, self.wo)
+
+        return o, a_w
+    
+    def feed_forward(self, X):
+        return np.dot(np.maximum(0, np.dot(X, self.w1)), self.w2)
+    
     def forward(self, X):
-        X = self.embedding.forward(X)
-        X = self.pos_encoding.forward(X)
+        X = self.embed_input(X)
+        a_o, a_w = self.multi_head_attention(X)
 
-        for layer in self.layers:
-            X = layer.forward(X)
-        
-        return np.dot(X, self.fc_o)
+        X = a_o + X
+        X = self.feed_forward(X) + X
 
-    def backward(self, d_out):
-        d_fc = np.dot(d_out, self.fc_o.T)
-        d_w_fc = np.dot(d_fc.T, d_out)
+        return X, a_w
+    
+    def backward(self, X, grad_output):
+        grad_w2 = np.dot(self.feed_forward(X).T, grad_output)
+        grad_hidden = np.dot(grad_output, self.w2.T)
+        grad_w1 = np.dot(X.T, np.maximum(0, grad_hidden))
+        grad_a = np.dot(grad_output, self.wq.T)
 
-        self.fc_o -= 0.001 * d_w_fc
+        self.w2 -= self.learning_rate * grad_w2
+        self.w1 -= self.learning_rate * grad_w1
+        self.wq -= self.learning_rate * grad_a
+        self.wk -= self.learning_rate * grad_a
+        self.wv -= self.learning_rate * grad_a
+        self.wo -= self.learning_rate * grad_a
 
-        for layer in reversed(self.layers):
-            layer.backward(d_fc)
-        self.embedding.backward(d_fc)
+    def generate_command(self, seed_input, max_length=20):
+        command = [seed_input]
 
-    def generate(self, seed, length=10):
-        for _ in range(length):
-            pred = self.forward(seed)
-            n_token = np.argmax(pred, axis=-1)
+        for _ in range(max_length - 1):
+            input_seq = np.array(command).reshape(1, len(command), self.d_model)
+            output, _ = self.forward(input_seq)
+            
+            next_token = np.argmax(output[:, -1, :])
+            command.append(next_token)
 
-            print(f'Seed: \n{seed}\nLength: {len(seed)}')
-            print(f'[n_token]: \n{list(n_token)}\nLength: {len(list(n_token))}')
+            if next_token == 0: # Assuming 0 is the end token for now. We will need to change and update this to a different token value.
+                break
 
-            seed = np.append(seed, list(n_token), axis=0)
-        
-        return seed
-
+        return command
+    
     def train(self, X, y, epochs=15000):
         printProgressBar(0, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
-        
-        total_loss = []
-        for epoch in range(epochs):
-            pred = self.forward(X)
 
-            loss = -np.sum(y, *np.log(pred)) # Cross entropy loss
-            self.backward(pred - y)
+        for epoch in range(epochs):
+            loss_array = []
+
+            for i in range(len(X)):
+                output, _ = self.forward(X)
+                loss = np.mean((output - y) ** 2)   # Mean squared Error Loss
+
+                grad_output = 2 * (output - y) / y.size
+                self.backward(X, grad_output)
+                loss_array.append[loss/len(X)]
             
             printProgressBar(epoch+1, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
 
-        return total_loss
-
-class EmbeddingLayer:
-    def __init__(self, vocab_size, embed_size):
-        self.weights = np.random.randn(vocab_size, embed_size)
-
-    def forward(self, X):
-        self.X = X
-
-        return self.weights[X]
-
-    def backward(self, d_out):
-        self.weights[self.X] -= 0.001 * d_out
-
-class PositionalEncoding:
-    def __init__(self, embed_size, max_len=10000):
-        self.encoding = np.zeros((max_len, embed_size))
-
-        for pos in range(max_len):
-            for i in range(0, embed_size, 2):
-                self.encoding[pos, i] = np.sin(pos / (10000 ** (i / embed_size)))
-
-                if i + 1 < embed_size:
-                    self.encoding[pos, i + 1] = np.cos(pos / (10000 ** ((i + 1) / embed_size)))
-
-    def forward(self, X):
-        print(f'Positional X: {len(X)}')
-        print(f'Encoding: {len(self.encoding)}')
-        print(f'Encoding X shape[0]: {len(self.encoding[:X.shape[0]])}')
-
-        return X + self.encoding[:X.shape[0]]
+        return loss_array
 
 def generate_text(transformer, seed, length, vocab_size):
     generated = list(seed)

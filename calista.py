@@ -57,7 +57,7 @@ norm_predictive = tokenizer.construct_corpus(tok_predictive_y)                  
 
 # The input sizes will depend on the size of the X data in the training data. And output is based on norm_predictive item length
 predictive_obj = Predictive_NN(input_size=345, hidden_size=1024, hidden2_size=1024, output_size=len(norm_predictive[0]))
-transformer_obj = Transformer(vocab_size=1024, embed_size=128, num_heads=4, num_layers=2, hidden_dim=256)
+transformer_obj = Transformer(vocab_size=1000, d_model=64, seq_len=10, num_heads=8, learning_rate=0.01)
 
 # Create and add the data to the log file
 create_file()
@@ -71,20 +71,24 @@ append_data(f'Transformer Object:\n{transformer_obj}')
 
 # Train the predictive model
 print(f'\nLoading Predictive Model:')
-network_loss = 'NULL'
-#network_loss = predictive_obj.train(np.array(norm_x), np.array(norm_predictive))        # Train the predictive network
-append_data(f'Predictive network iteration losses: \n{network_loss}')
+training_continue = True
 
-print(f'Final Predictive Network Loss: {network_loss[-1]}')
+while training_continue:
+  network_loss = 'NULL'
+  network_loss = predictive_obj.train(np.array(norm_x), np.array(norm_predictive))        # Train the predictive network
+  append_data(f'Predictive network iteration losses: \n{network_loss}')
 
-# Test Predictive model
-X_predicted_tokens = predictive_obj.forward(norm_x[1])
-predicted_tokens = [round(tokens) for tokens in X_predicted_tokens[0]]
+  print(f'Final Predictive Network Loss: {network_loss[-1]}')
 
-if predicted_tokens == norm_predictive[1]:
+  # Test Predictive model
+  X_predicted_tokens = predictive_obj.forward(norm_x[1])
+  predicted_tokens = [round(tokens) for tokens in X_predicted_tokens[0]]
+
+  if predicted_tokens == norm_predictive[1]:
     print(f'TEST PREDICTION {GREEN}SUCCESS!{RESET}')
     append_data(f'TEST PREDICTION SUCCESS!')
-else:
+    training_continue = False
+  else:
     print(f'TEST PREDICTION {RED}FAILED!{RESET}')
     append_data(f'TEST PREDICTION FAILED!')
     # Train again
@@ -93,11 +97,11 @@ else:
 print(f'\nLoading Transformer Model:')
 transformer_x = []      # This will be the seeded X data
 for i in range(len(pad_tok_x)):
-    transformer_x.append(np.concatenate((norm_predictive[i], pad_tok_x[i])))
+  transformer_x.append(np.concatenate((norm_predictive[i], pad_tok_x[i])))
 
 append_data(f'Transformer X:\n{transformer_x}')
 
-#network_loss = transformer_obj.train(np.array(list(transformer_x)), norm_transformer, 0.01, 128)       <---------
+#network_loss = transformer_obj.train(np.array(list(transformer_x)), norm_transformer)
 append_data(f'Transformer network iteration losses: \n{network_loss}')
 print(f'Final Transformer Network Loss: {network_loss[-1]}')
 
@@ -106,7 +110,7 @@ print(f'Final Transformer Network Loss: {network_loss[-1]}')
 
 usr_input_tokens = pad_tok_x[1]          # Will need to be padded for this to work
 seed = np.concatenate((predicted_tokens, usr_input_tokens))
-output = transformer_obj.generate(seed, length=20) # Length should be adjustable for y
+output = transformer_obj.generate_command(seed) # Length should be adjustable for y
 
 # Check for correct token generation
 
@@ -114,11 +118,6 @@ append_data(f'X predictive tokens:\n{X_predicted_tokens}')
 append_data(f'User input tokens:\n{usr_input_tokens}')
 append_data(f'Seed: \n{seed}')
 append_data(f'Transformer output tokens:\n{output}\nOutput Shape: {np.array(output).shape}')
-
-print(f'X predictive tokens:\n{X_predicted_tokens}')
-print(f'User input tokens:\n{usr_input_tokens}')
-print(f'Seed: \n{seed}')
-print(f'Transformer output tokens:\n{output}\nOutput Shape: {np.array(output).shape}')
 
 #ctf_url = input(f'\n\n{YELLOW}Please enter the CTF challenge url here: {RESET}')
 #page = get_challeneges(ctf_url)
@@ -142,20 +141,3 @@ print(logo)
 # This will make it much faster in the training process.
 
 queue = multiprocessing.Queue()
-
-''' Current error is an error within the shape
-Traceback (most recent call last):
-  File "/Users/emcgi/Desktop/Calista/calista.py", line 109, in <module>
-    output = transformer_obj.generate(seed, length=10) # Length should be adjustable for y
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/emcgi/Desktop/Calista/models_obj.py", line 169, in generate
-    pred = self.forward(seed)
-           ^^^^^^^^^^^^^^^^^^
-  File "/Users/emcgi/Desktop/Calista/models_obj.py", line 150, in forward
-    X = self.pos_encoding.forward(X)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/emcgi/Desktop/Calista/models_obj.py", line 217, in forward
-    return X + self.encoding[:X.shape[0]]
-           ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ValueError: operands could not be broadcast together with shapes (316,128) (158,128)
-'''
