@@ -107,7 +107,9 @@ class Transformer:
         return self.embedding[X] + self.positional_encoding[: len(X)]
     
     def multi_head_attention(self, X):
-        batch_size, seq_len, d_model = X
+        print(X)
+        print(X.shape)
+        batch_size, seq_len, d_model = X.shape
 
         q = np.dot(X, self.wq)
         k = np.dot(X, self.wk)

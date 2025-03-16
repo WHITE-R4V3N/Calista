@@ -73,25 +73,25 @@ append_data(f'Transformer Object:\n{transformer_obj}')
 print(f'\nLoading Predictive Model:')
 training_continue = True
 
-while training_continue:
-  network_loss = 'NULL'
-  network_loss = predictive_obj.train(np.array(norm_x), np.array(norm_predictive))        # Train the predictive network
-  append_data(f'Predictive network iteration losses: \n{network_loss}')
+#while training_continue:
+network_loss = 'NULL'
+network_loss = predictive_obj.train(np.array(norm_x), np.array(norm_predictive))        # Train the predictive network
+append_data(f'Predictive network iteration losses: \n{network_loss}')
 
-  print(f'Final Predictive Network Loss: {network_loss[-1]}')
+print(f'Final Predictive Network Loss: {network_loss[-1]}')
 
-  # Test Predictive model
-  X_predicted_tokens = predictive_obj.forward(norm_x[1])
-  predicted_tokens = [round(tokens) for tokens in X_predicted_tokens[0]]
+# Test Predictive model
+X_predicted_tokens = predictive_obj.forward(norm_x[1])
+predicted_tokens = [round(tokens) for tokens in X_predicted_tokens[0]]
 
-  if predicted_tokens == norm_predictive[1]:
-    print(f'TEST PREDICTION {GREEN}SUCCESS!{RESET}')
-    append_data(f'TEST PREDICTION SUCCESS!')
-    training_continue = False
-  else:
-    print(f'TEST PREDICTION {RED}FAILED!{RESET}')
-    append_data(f'TEST PREDICTION FAILED!')
-    # Train again
+if predicted_tokens == norm_predictive[1]:
+  print(f'TEST PREDICTION {GREEN}SUCCESS!{RESET}')
+  append_data(f'TEST PREDICTION SUCCESS!')
+  training_continue = False
+else:
+  print(f'TEST PREDICTION {RED}FAILED!{RESET}')
+  append_data(f'TEST PREDICTION FAILED!')
+  # Train again
 
 # Train the Transformer model
 print(f'\nLoading Transformer Model:')
@@ -108,6 +108,7 @@ print(f'Final Transformer Network Loss: {network_loss[-1]}')
 # Test Transformer model
 # Call training function
 
+'''
 usr_input_tokens = pad_tok_x[1]          # Will need to be padded for this to work
 seed = np.concatenate((predicted_tokens, usr_input_tokens))
 output = transformer_obj.generate_command(seed) # Length should be adjustable for y
@@ -118,6 +119,11 @@ append_data(f'X predictive tokens:\n{X_predicted_tokens}')
 append_data(f'User input tokens:\n{usr_input_tokens}')
 append_data(f'Seed: \n{seed}')
 append_data(f'Transformer output tokens:\n{output}\nOutput Shape: {np.array(output).shape}')
+'''
+
+seed_input = np.random.randint(0, 1000, 64)
+generated_command = transformer_obj.generate_command(seed_input)
+print(f'Generated Command:\n{generated_command}')
 
 #ctf_url = input(f'\n\n{YELLOW}Please enter the CTF challenge url here: {RESET}')
 #page = get_challeneges(ctf_url)
