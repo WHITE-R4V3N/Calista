@@ -75,7 +75,7 @@ training_continue = True
 
 #while training_continue:
 network_loss = 'NULL'
-network_loss = predictive_obj.train(np.array(norm_x), np.array(norm_predictive))        # Train the predictive network
+#network_loss = predictive_obj.train(np.array(norm_x), np.array(norm_predictive))        # Train the predictive network
 append_data(f'Predictive network iteration losses: \n{network_loss}')
 
 print(f'Final Predictive Network Loss: {network_loss[-1]}')

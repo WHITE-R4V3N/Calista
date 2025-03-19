@@ -107,8 +107,6 @@ class Transformer:
         return self.embedding[X] + self.positional_encoding[: len(X)]
     
     def multi_head_attention(self, X):
-        print(X)
-        print(X.shape)
         batch_size, seq_len, d_model = X.shape
 
         q = np.dot(X, self.wq)
@@ -128,6 +126,7 @@ class Transformer:
     
     def forward(self, X):
         X = self.embed_input(X)
+        print(f'X Shape Forward: {X.shape}')
         a_o, a_w = self.multi_head_attention(X)
 
         X = a_o + X
@@ -149,10 +148,14 @@ class Transformer:
         self.wo -= self.learning_rate * grad_a
 
     def generate_command(self, seed_input, max_length=20):
-        command = [seed_input]
+        print(f'Seed Shape: {seed_input.shape}\nSeed: \n{seed_input}')
+        embedded_seed = self.embed_input(np.array([seed_input]))
+        command = [embedded_seed]
+        print(f'Command Shape: {np.array(command).shape}\nCommand: \n{command[0][0][0]}')
 
         for _ in range(max_length - 1):
-            input_seq = np.array(command).reshape(1, len(command), self.d_model)
+            input_seq = np.array(command).reshape(1, len(command[0][0][0]), self.d_model)
+            print(f'Input Seq Shape: {input_seq.shape}')
             output, _ = self.forward(input_seq)
             
             next_token = np.argmax(output[:, -1, :])
@@ -180,20 +183,6 @@ class Transformer:
             printProgressBar(epoch+1, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
 
         return loss_array
-
-def generate_text(transformer, seed, length, vocab_size):
-    generated = list(seed)
-
-    print(f'Generated {generated}')
-
-    print(f'Length of generated: {len(generated)}\nGenerate')
-
-    for _ in range(length):
-        logits, _ = transformer.forward(np.array([generated]))
-        next_token = np.argmax(logits[0, -1])
-        generated.append(next_token)
-    
-    return generated
 
 # Runs the AI model 1000 times to test network loss and accuracy
 def nn_thousand_test(model_obj):
