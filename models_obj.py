@@ -104,6 +104,7 @@ class Transformer:
         return pos_enc
     
     def embed_input(self, X):
+        print(f'Embedding X: \n{self.embedding[X]}\nPositional Encoding: \n{self.positional_encoding[: len(X)]}')
         return self.embedding[X] + self.positional_encoding[: len(X)]
     
     def multi_head_attention(self, X):
@@ -147,16 +148,20 @@ class Transformer:
         self.wv -= self.learning_rate * grad_a
         self.wo -= self.learning_rate * grad_a
 
-    def generate_command(self, seed_input, max_length=20):
-        print(f'Seed Shape: {seed_input.shape}\nSeed: \n{seed_input}')
+    def generate_command(self, seed_input, max_length=64):
         embedded_seed = self.embed_input(np.array([seed_input]))
         command = [embedded_seed]
-        print(f'Command Shape: {np.array(command).shape}\nCommand: \n{command[0][0][0]}')
 
         for _ in range(max_length - 1):
             input_seq = np.array(command).reshape(1, len(command[0][0][0]), self.d_model)
-            print(f'Input Seq Shape: {input_seq.shape}')
-            output, _ = self.forward(input_seq)
+
+            # This may not be needed or will be edited to better reflect the true values needed here
+            int_input_seq = []
+            for item in input_seq[0][0]:
+                int_input_seq.append(int(item*100))
+
+            print(f'Input Seq: {input_seq}')
+            output, _ = self.forward(int_input_seq)
             
             next_token = np.argmax(output[:, -1, :])
             command.append(next_token)

@@ -147,3 +147,15 @@ print(logo)
 # This will make it much faster in the training process.
 
 queue = multiprocessing.Queue()
+
+# Create the queue.
+# Add the predictive model training to the created queue
+# Add the transformer model training to the created queue
+# Create the visuals for the model(s) and display them updating in real time
+# Start the multiprocessing queue to speed up the training process and visually
+# display if the settings for visuals is turned on
+
+# When a user enters a prompt do the following:
+# Add the predictive model to the queue
+# Add the transformer model to the queue
+# Update the visual for both the models in real time to show the output of them.
