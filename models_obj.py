@@ -72,122 +72,83 @@ class Predictive_NN:
         print()
         return self.training_loss
 
-class Transformer:
-    def __init__(self, vocab_size, d_model, seq_len, num_heads, learning_rate):
-        self.vocab_size = vocab_size
-        self.d_model = d_model
-        self.seq_len = seq_len
-        self.num_heads = num_heads
-        self.learning_rate = learning_rate
+def softmax(x, axis=1):
+    x = x - np.max(x, axis=axis, keepdims=True)
+    e_x = np.exp(x)
 
-        self.embedding = np.random.randn(vocab_size, d_model) / np.sqrt(d_model)
-        self.positional_encoding = self.create_positional_encoding(seq_len, d_model)
+    return e_x / np.sum(e_x, axis=axis, keepdims=True)
 
-        self.wq = np.random.randn(num_heads, d_model, d_model // num_heads)
-        self.wk = np.random.randn(num_heads, d_model, d_model // num_heads)
-        self.wv = np.random.randn(num_heads, d_model, d_model // num_heads)
+def relu(x):
+    return np.maximum(0, x)
 
-        self.wo = np.random.randn(num_heads * (d_model // num_heads), d_model)
-        self.w1 = np.random.randn(d_model, 4 * d_model)
-        self.w2 = np.random.randn(4 * d_model, d_model)
+def relu_derivative(x):
+    return (x > 0).astype(np.float32)
 
-    def create_positional_encoding(self, seq_len, d_model):
-        pos_enc = np.zeros((seq_len, d_model))
+class LayerNorm:
+    def __init__(self, dim, eps=1e-5):
+        self.eps = eps
+        self.gamma = np.ones((1, 1, dim))
+        self.beta = np.ones((1, 1, dim))
 
-        for pos in range(seq_len):
-            for i in range(0, d_model, 2):
-                pos_enc[pos, i] = np.sin(pos /(10000 ** (i / d_model)))
+    def forward(self, x):
+        self.mean = x.mean(-1, keepdims=True)
+        self.var = x.var(-1, keepdims=True)
+        self.norm = (x - self.mean) / np.sqrt(self.var + self.eps)
 
-                if i + 1 < d_model:
-                    pos_enc[pos, i + 1] = np.cos(pos / (10000 ** (i / d_model)))
-        
-        return pos_enc
+        return self.gamma * self.norm + self.beta
     
-    def embed_input(self, X):
-        print(f'Embedding X: \n{self.embedding[X]}\nPositional Encoding: \n{self.positional_encoding[: len(X)]}')
-        return self.embedding[X] + self.positional_encoding[: len(X)]
+    def backward(self, dout):
+        N, L, D = dout.shape
+        x_mu = self.norm
+        std_inv = 1. / np.sqrt(self.var + self.eps)
+
+        dx_norm = dout * self.gamma
+        dvar = np.sum(dx_norm * (x_mu * -0.5) * std_inv**3, axis=1, keepdims=True)
+        dmean = np.sum(-dx_norm * std_inv, axis=1, keepdims=True) + dvar * np.mean(-2. * x_mu, axis=-1, keepdims=True)
+
+        dx = dx_norm * std_inv + dvar * 2 * x_mu / D + dmean / D
+        self.dgamma = np.sum(dout * self.norm, axis=(0, 1), keepdims=True)
+        self.dbeta = np.sum(dout, axis=(0, 1), keepdims=True)
+
+        return dx
     
-    def multi_head_attention(self, X):
-        batch_size, seq_len, d_model = X.shape
+class MultiHeadSelfAttention:
+    def __init__(self, embed_size, heads):
+        self.heads = heads
+        self.embed_size = embed_size
+        self.head_dim = embed_size // heads
 
-        q = np.dot(X, self.wq)
-        k = np.dot(X, self.wk)
-        v = np.dot(X, self.wv)
+        self.wq = np.random.randn(embed_size, embed_size) / np.sqrt(embed_size)
+        self.wk = np.random.randn(embed_size, embed_size) / np.sqrt(embed_size)
+        self.wv = np.random.randn(embed_size, embed_size) / np.sqrt(embed_size)
+        self.wo = np.random.randn(embed_size, embed_size) / np.sqrt(embed_size)
 
-        scores = np.einsum('nhqd,nhkd->nhqk', q, k) / np.sqrt(d_model)
-        a_w = np.exp(scores) / np.sum(np.exp(scores), axis=-1, keepdims=True)
-        context = np.einsum('nhqk,nhvd->nhqd', a_w, v)
-        context = context.reshape(batch_size, seq_len, -1)
-        o = np.dot(context, self.wo)
+    def split_heads(self, x):
+        B, T, D = x.shape
 
-        return o, a_w
+        return x.reshape(B, T, self.heads, self.head_dim).transpose(0, 2, 1, 3)
     
-    def feed_forward(self, X):
-        return np.dot(np.maximum(0, np.dot(X, self.w1)), self.w2)
+    def combine_heads(self, x):
+        B, H, T, D = x.shape
+
+        return x.transpose(0, 2, 1, 3).reshape(B, T, H * D)
     
-    def forward(self, X):
-        X = self.embed_input(X)
-        print(f'X Shape Forward: {X.shape}')
-        a_o, a_w = self.multi_head_attention(X)
+    def forward(self, x):
+        self.x = x
+        B, T, D = x.shape
 
-        X = a_o + X
-        X = self.feed_forward(X) + X
+        self.q = self.split_heads(x @ self.wq)
+        self.k = self.split_heads(x @ self.wk)
+        self.v = self.split_heads(x @ self.wv)
 
-        return X, a_w
+        scores = self.q @ self.k.transpose(0, 1, 3, 2) / np.sqrt(self.head_dim)
+        self.attn = softmax(scores, axis=-1)
+        self.context = self.attn @ self.v
+
+        out = self.combine_heads(self.context) @ self.wo
+        return out
     
-    def backward(self, X, grad_output):
-        grad_w2 = np.dot(self.feed_forward(X).T, grad_output)
-        grad_hidden = np.dot(grad_output, self.w2.T)
-        grad_w1 = np.dot(X.T, np.maximum(0, grad_hidden))
-        grad_a = np.dot(grad_output, self.wq.T)
-
-        self.w2 -= self.learning_rate * grad_w2
-        self.w1 -= self.learning_rate * grad_w1
-        self.wq -= self.learning_rate * grad_a
-        self.wk -= self.learning_rate * grad_a
-        self.wv -= self.learning_rate * grad_a
-        self.wo -= self.learning_rate * grad_a
-
-    def generate_command(self, seed_input, max_length=64):
-        embedded_seed = self.embed_input(np.array([seed_input]))
-        command = [embedded_seed]
-
-        for _ in range(max_length - 1):
-            input_seq = np.array(command).reshape(1, len(command[0][0][0]), self.d_model)
-
-            # This may not be needed or will be edited to better reflect the true values needed here
-            int_input_seq = []
-            for item in input_seq[0][0]:
-                int_input_seq.append(int(item*100))
-
-            print(f'Input Seq: {input_seq}')
-            output, _ = self.forward(int_input_seq)
-            
-            next_token = np.argmax(output[:, -1, :])
-            command.append(next_token)
-
-            if next_token == 0: # Assuming 0 is the end token for now. We will need to change and update this to a different token value.
-                break
-
-        return command
     
-    def train(self, X, y, epochs=15000):
-        printProgressBar(0, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
-
-        for epoch in range(epochs):
-            loss_array = []
-
-            for i in range(len(X)):
-                output, _ = self.forward(X)
-                loss = np.mean((output - y) ** 2)   # Mean squared Error Loss
-
-                grad_output = 2 * (output - y) / y.size
-                self.backward(X, grad_output)
-                loss_array.append[loss/len(X)]
-            
-            printProgressBar(epoch+1, epochs, prefix='PROGRESS:', suffix='Complete', length=50)
-
-        return loss_array
 
 # Runs the AI model 1000 times to test network loss and accuracy
 def nn_thousand_test(model_obj):
