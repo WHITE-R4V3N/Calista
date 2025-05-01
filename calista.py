@@ -12,8 +12,10 @@
 
 from model import *
 
+# -------------------------------
+# Global Variables
+# -------------------------------
 version = 'v 3.0.0'
-
 logo = f'''
 \n
 \t\t\t   ___      _ _     _        
@@ -26,5 +28,58 @@ logo = f'''
 
 {RED}[DISCLAIMER]{RESET} Calista is a capstone project and only to be used for ethical purposes!
 '''
+
+# -------------------------------
+# Objects
+# -------------------------------
+tokenizer = Tokenizer() # Has a function to create and build the vocab for the model.
+model = Transformer(d_model=32, num_heads=2, d_ff=64, src_vocab_size=7, tgt_vocab_size=7, max_seq_len=8)
+#                                                       len of vocab      len of vocab    len of commands
+
+# -------------------------------
+# Setup tokenizer and model
+# -------------------------------
+example_dataset = [
+    ("list files", "ls"),
+    ("change directory to home", "cd ~"),
+    ("make a directory called test", "mkdir test"),
+    ("remove file data.txt", "rm data.txt"),
+    ("show current directory", "pwd"),
+    ("display contents of file", "cat file.txt"),
+    ("search for text in file", "grep 'text' file.txt"),
+    ("copy file a to b", "cp a b"),
+    ("move file x to folder y", "mv x y"),
+    ("create empty file named log", "touch log")
+]
+
+dataset, X, y = tokenizer.parse_datasets(example_dataset)
+tokenizer.build_vocab(dataset)
+
+# Need to encode the X and y before sending it to be used as training data. <------ !!!!!!!!!!!!!!!!
+temp_X = []
+for i in X:
+    temp_X.append(tokenizer.encode(i, 8))
+    #                                max length of sequence 8
+X = np.array(temp_X)
+
+temp_y = []
+for j in y:
+    temp_y.append(tokenizer.encode(j, 8))
+    #                                max length of sequence 8
+y = np.array(temp_y)
+
+train(model, X, y, epochs=5)
+
+# -------------------------------
+# Test the model on new input
+# -------------------------------
+test_input = "show current directory"
+test_ids = np.array(tokenizer.encode(test_input))
+dummy_tgt = np.array([[1] [0] * (8 - 1)])
+#                               max sequence length 8
+
+pred_logits = model.forward(test_ids, dummy_tgt)
+pred_command = np.argmax(pred_logits[0], axis=-1)
+print(f"Generated Command: {tokenizer.decode(pred_command)}")
 
 print(logo)

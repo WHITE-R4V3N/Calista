@@ -6,6 +6,7 @@
 
 import numpy as np
 from settings import *
+from tokenizer import Tokenizer
 from layers import EncoderLayer, DecoderLayer
 
 class Transformer:

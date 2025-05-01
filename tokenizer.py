@@ -4,8 +4,8 @@
 
 class Tokenizer:
     def __init__(self):
-        self.word2idx = {"<PAD>": 0, "<SOS>": 1, "<EOS>": 2, "<UNK>": 3}
-        self.idx2word = {0: "<PAD>", 1: "<SOS>", 2: "<EOS>", 3: "<UNK>"}
+        self.word2idx = {"<pad>": 0, "<sos>": 1, "<eos>": 2, "<unk>": 3}
+        self.idx2word = {0: "<pad>", 1: "<sos>", 2: "<eos>", 3: "<unk>"}
 
     def build_vocab(self, texts):
         for text in texts:
@@ -16,11 +16,24 @@ class Tokenizer:
                 self.idx2word[idx] = word
 
     def encode(self, text, max_len):
-        tokens = [self.word2idx.get(w, self.word2idx["<UNK>"]) for w in text.lower().split()]
-        tokens = [self.word2idx["<SOS>"]] + tokens + [self.word2idx["<EOS>"]]
+        tokens = [self.word2idx.get(w, self.word2idx["<unk>"]) for w in text.lower().split()]
+        tokens = [self.word2idx["<sos>"]] + tokens + [self.word2idx["<eos>"]]
 
-        return tokens[:max_len] + [self.word2idx["<PAD>"]] * (max_len - len(tokens))
+        return tokens[:max_len] + [self.word2idx["<pad>"]] * (max_len - len(tokens))
     
     def decode(self, token_ids):
-        words = [self.idx2word.get(tid, "<UNK>") for tid in token_ids]
-        return " ".join(w for w in words if w not in ("<PAD>", "<SOS>", "<EOS>"))
+        words = [self.idx2word.get(tid, "<unk>") for tid in token_ids]
+        return " ".join(w for w in words if w not in ("<pad>", "<sos>", "<eos>"))
+    
+    def parse_datasets(self, data):
+        dataset_data = []
+        inputs, outputs = [], []
+
+        for src, tgt in data:
+            dataset_data.append(src)
+            dataset_data.append(tgt)
+
+            inputs.append(src)
+            outputs.append(tgt)
+
+        return dataset_data, inputs, outputs
