@@ -29,16 +29,13 @@ logo = f'''
 {RED}[DISCLAIMER]{RESET} Calista is a capstone project and only to be used for ethical purposes!
 '''
 
-# -------------------------------
-# Objects
-# -------------------------------
-tokenizer = Tokenizer() # Has a function to create and build the vocab for the model.
-model = Transformer(d_model=32, num_heads=2, d_ff=64, src_vocab_size=7, tgt_vocab_size=7, max_seq_len=8)
-#                                                       len of vocab      len of vocab    len of commands
+max_seq_len = 8
 
 # -------------------------------
-# Setup tokenizer and model
+# Objects and tokenizer setup
 # -------------------------------
+tokenizer = Tokenizer() # Has a function to create and build the vocab for the model.
+
 example_dataset = [
     ("list files", "ls"),
     ("change directory to home", "cd ~"),
@@ -55,16 +52,21 @@ example_dataset = [
 dataset, X, y = tokenizer.parse_datasets(example_dataset)
 tokenizer.build_vocab(dataset)
 
-# Need to encode the X and y before sending it to be used as training data. <------ !!!!!!!!!!!!!!!!
+model = Transformer(d_model=16, num_heads=2, d_ff=32, src_vocab_size=len(tokenizer.word2idx), tgt_vocab_size=len(tokenizer.word2idx), max_seq_len=max_seq_len)
+#                                                       len of vocab                                len of vocab                      len of commands
+
+# -------------------------------
+# Setup dataset and model
+# -------------------------------
 temp_X = []
 for i in X:
-    temp_X.append(tokenizer.encode(i, 8))
+    temp_X.append(tokenizer.encode(i, max_seq_len))
     #                                max length of sequence 8
 X = np.array(temp_X)
 
 temp_y = []
 for j in y:
-    temp_y.append(tokenizer.encode(j, 8))
+    temp_y.append(tokenizer.encode(j, max_seq_len))
     #                                max length of sequence 8
 y = np.array(temp_y)
 
@@ -75,7 +77,7 @@ train(model, X, y, epochs=5)
 # -------------------------------
 test_input = "show current directory"
 test_ids = np.array(tokenizer.encode(test_input))
-dummy_tgt = np.array([[1] [0] * (8 - 1)])
+dummy_tgt = np.array([[1] [0] * (max_seq_len - 1)])
 #                               max sequence length 8
 
 pred_logits = model.forward(test_ids, dummy_tgt)

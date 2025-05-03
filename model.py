@@ -24,8 +24,9 @@ class Transformer:
     def forward(self, src, tgt, src_mask=None, tgt_mask=None):
         batch_size, src_len = src.shape
         _, tgt_len = tgt.shape
-        src_embed = self.src_embedding[src] + self.pos_embedding[:src_len]
-        tgt_embed = self.tgt_embedding[tgt] + self.pos_embedding[:tgt_len]
+
+        src_embed = self.src_embedding[batch_size] + self.pos_embedding[:src_len]
+        tgt_embed = self.tgt_embedding[batch_size] + self.pos_embedding[:tgt_len]
 
         enc_output = self.encoder_layer.forward(src_embed, src_mask)
         dec_output = self.decoder_layer.forward(tgt_embed, enc_output, src_mask, tgt_mask)
@@ -60,10 +61,12 @@ def cross_entropy_loss(logits, targets):
     return loss, d_logits
 
 def train(model, data, targets, epochs=10, lr=1e-3):
+    printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
     for epoch in range(epochs):
         logits = model.forward(data, targets)
         loss, d_logits = cross_entropy_loss(logits.reshape(-1, logits.shape[-1]), targets)
 
         grads = model.backward(d_logits.reshape(logits.shape))
 
+        printProgressBar(epoch + 1, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
         print(f"Epoch: {epoch + 1}, Loss: {loss:.4f}")

@@ -93,7 +93,9 @@ class MultiHeadAttention:
         self.a = ScaledDotProductAttention()
 
     def split_heads(self, X):
-        batch_size, seq_len, d_model = X.shape
+        print(f"X Shape: \n{X.shape}")
+        batch_size, seq_len = X.shape
+        #batch_size, seq_len, d_model = X.shape # There is a shape error here in the code. No 3 values returned and shape error when only 2
         X = X.reshape(batch_size, seq_len, self.num_heads, self.d_k)
 
         return X.transpose(0, 2, 1, 3)
