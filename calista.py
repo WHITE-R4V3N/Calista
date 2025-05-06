@@ -52,8 +52,9 @@ example_dataset = [
 dataset, X, y = tokenizer.parse_datasets(example_dataset)
 tokenizer.build_vocab(dataset)
 
-model = Transformer(d_model=16, num_heads=2, d_ff=32, src_vocab_size=len(tokenizer.word2idx), tgt_vocab_size=len(tokenizer.word2idx), max_seq_len=max_seq_len)
+model = Transformer(d_model=32, num_heads=2, d_ff=64, src_vocab_size=len(tokenizer.word2idx)+1, tgt_vocab_size=len(tokenizer.word2idx)+1, max_seq_len=max_seq_len)
 #                                                       len of vocab                                len of vocab                      len of commands
+print(f"[model] {model}")
 
 # -------------------------------
 # Setup dataset and model
@@ -70,13 +71,16 @@ for j in y:
     #                                max length of sequence 8
 y = np.array(temp_y)
 
+print(f'[X parsed] \n{X}')
+print(f'[y parsed] \n{y}')
+
 train(model, X, y, epochs=5)
 
 # -------------------------------
 # Test the model on new input
 # -------------------------------
 test_input = "show current directory"
-test_ids = np.array(tokenizer.encode(test_input))
+test_ids = np.array(tokenizer.encode(test_input, max_seq_len))
 dummy_tgt = np.array([[1] [0] * (max_seq_len - 1)])
 #                               max sequence length 8
 

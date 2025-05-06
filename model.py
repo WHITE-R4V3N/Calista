@@ -11,6 +11,10 @@ from layers import EncoderLayer, DecoderLayer
 
 class Transformer:
     def __init__(self, d_model, num_heads, d_ff, src_vocab_size, tgt_vocab_size, max_seq_len):
+        self.d_model = d_model
+        self.num_heads = num_heads
+        self.d_k = d_model // num_heads
+
         self.encoder_layer = EncoderLayer(d_model, num_heads, d_ff)
         self.decoder_layer = DecoderLayer(d_model, num_heads, d_ff)
 
@@ -23,10 +27,23 @@ class Transformer:
 
     def forward(self, src, tgt, src_mask=None, tgt_mask=None):
         batch_size, src_len = src.shape
+        print(f'[src] \n{src}\n[src.shape] {src.shape}')
         _, tgt_len = tgt.shape
+        print(f'[tgt] \n{tgt}\n[tgt.shape] {tgt.shape}')
 
-        src_embed = self.src_embedding[batch_size] + self.pos_embedding[:src_len]
-        tgt_embed = self.tgt_embedding[batch_size] + self.pos_embedding[:tgt_len]
+        #src_embed = self.src_embedding[batch_size] + self.pos_embedding[:src_len]
+        #src_embed = self.src_embedding[src_len] + self.pos_embedding[:src_len]
+        #tgt_embed = self.tgt_embedding[batch_size] + self.pos_embedding[:tgt_len]
+        #tgt_embed = self.tgt_embedding[tgt_len] + self.pos_embedding[:tgt_len]
+
+        src_embed = np.take(self.src_embedding, src, axis=0) + self.pos_embedding[:src_len]
+        tgt_embed = np.take(self.tgt_embedding, tgt, axis=0) + self.pos_embedding[:tgt_len]
+
+        print(f'[src_embed] \n{src_embed}\n[src_embed.shape] {src_embed.shape}')
+        print(f'[tgt_embed] \n{tgt_embed}\n[tgt_embed.shape] {tgt_embed.shape}')
+
+        assert src_embed.shape == (batch_size, src_len, self.d_model), f"Expected src_embed shape (batch, seq_len, d_model), got {src_embed.shape}"
+        assert tgt_embed.shape == (batch_size, tgt_len, self.d_model), f"Expected tgt_embed shape (batch, seq_len, d_model), got {tgt_embed.shape}"
 
         enc_output = self.encoder_layer.forward(src_embed, src_mask)
         dec_output = self.decoder_layer.forward(tgt_embed, enc_output, src_mask, tgt_mask)
@@ -61,12 +78,13 @@ def cross_entropy_loss(logits, targets):
     return loss, d_logits
 
 def train(model, data, targets, epochs=10, lr=1e-3):
-    printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
+    #printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
     for epoch in range(epochs):
         logits = model.forward(data, targets)
+        print(f'[logits] \n {logits} \n[logits.shape] {logits.shape}')
         loss, d_logits = cross_entropy_loss(logits.reshape(-1, logits.shape[-1]), targets)
 
         grads = model.backward(d_logits.reshape(logits.shape))
 
-        printProgressBar(epoch + 1, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
+        #printProgressBar(epoch + 1, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
         print(f"Epoch: {epoch + 1}, Loss: {loss:.4f}")
