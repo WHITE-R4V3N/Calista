@@ -36,6 +36,9 @@ class Transformer:
         #tgt_embed = self.tgt_embedding[batch_size] + self.pos_embedding[:tgt_len]
         #tgt_embed = self.tgt_embedding[tgt_len] + self.pos_embedding[:tgt_len]
 
+        print(f'[src_embedding.shape] {self.src_embedding.shape}\n[src.shape] {src.shape}\n[src_len] {src_len}\n')
+        print(f'[tgt_embedding.shape] {self.tgt_embedding.shape}\n[tgt.shape] {tgt.shape}\n[tgt_len] {tgt_len}\n')
+
         src_embed = np.take(self.src_embedding, src, axis=0) + self.pos_embedding[:src_len]
         tgt_embed = np.take(self.tgt_embedding, tgt, axis=0) + self.pos_embedding[:tgt_len]
 
