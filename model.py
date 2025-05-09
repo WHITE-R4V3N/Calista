@@ -36,13 +36,13 @@ class Transformer:
         #tgt_embed = self.tgt_embedding[batch_size] + self.pos_embedding[:tgt_len]
         #tgt_embed = self.tgt_embedding[tgt_len] + self.pos_embedding[:tgt_len]
 
-        print(f'[src_embedding.shape] {self.src_embedding.shape}\n[src.shape] {src.shape}\n[src_len] {src_len}\n')
+        print(f'\n[src_embedding.shape] {self.src_embedding.shape}\n[src.shape] {src.shape}\n[src_len] {src_len}\n')
         print(f'[tgt_embedding.shape] {self.tgt_embedding.shape}\n[tgt.shape] {tgt.shape}\n[tgt_len] {tgt_len}\n')
 
         src_embed = np.take(self.src_embedding, src, axis=0) + self.pos_embedding[:src_len]
         tgt_embed = np.take(self.tgt_embedding, tgt, axis=0) + self.pos_embedding[:tgt_len]
 
-        print(f'[src_embed] \n{src_embed}\n[src_embed.shape] {src_embed.shape}')
+        print(f'\n[src_embed] \n{src_embed}\n[src_embed.shape] {src_embed.shape}')
         print(f'[tgt_embed] \n{tgt_embed}\n[tgt_embed.shape] {tgt_embed.shape}')
 
         assert src_embed.shape == (batch_size, src_len, self.d_model), f"Expected src_embed shape (batch, seq_len, d_model), got {src_embed.shape}"

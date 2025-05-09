@@ -71,7 +71,7 @@ for j in y:
     #                                max length of sequence 8
 y = np.array(temp_y)
 
-print(f'[X parsed] \n{X}')
+print(f'\n[X parsed] \n{X}')
 print(f'[y parsed] \n{y}')
 
 train(model, X, y, epochs=5)
