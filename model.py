@@ -1,93 +1,363 @@
-# Author:       Emma Gillespie
-# Date:         2025-04-30
-# Description:  This is where the main transformer model will be. It integrates the transformer model
-#               architecture capable of generating shell commands based on task descriptions. (This can
-#               be generated based on a predictive feed forward model).
+#   Author:         Emma Gillespie
+#   Date:           2025-06-14
+#   Description:    This is the file that houses the model for the capstone project.
+#                   This boasts a feedforward network that will use one-hot encoding
+#                   to determine what the user is asking.
 
+#----------------
+#    IMPORTS    |
+#----------------
 import numpy as np
-from settings import *
-from tokenizer import Tokenizer
-from layers import EncoderLayer, DecoderLayer
+import matplotlib.pyplot as plt
 
+import shlex
+import subprocess
+
+from common import *
+
+#------------------------------------------------------------
+#   A feedforward network with an additional hidden layer   |
+#------------------------------------------------------------
+class FeedForwardNetwork:
+    def __init__(self, input_size, hidden_size, hidden2_size, output_size, learning_rate=0.01, debug=True):
+        # Model Param's
+        self.debug = debug
+        
+        self.w1 = np.random.randn(input_size, hidden_size)
+        self.b1 = np.zeros((1, hidden_size))
+        
+        self.w2 = np.random.randn(hidden_size, hidden2_size)
+        self.b2 = np.zeros((1, hidden2_size))
+
+        self.w3 = np.random.randn(hidden2_size, output_size)
+        self.b3 = np.zeros((1, output_size))
+
+        self.learning_rate = learning_rate
+
+    def sigmoid(self, z):
+        return 1 / (1 + np.exp(-z))
+    
+    def sigmoid_derivative(self, z):
+        return z * (1 - z)
+    
+    def forward(self, X):
+        self.z1 = np.dot(X, self.w1) + self.b1
+        self.a1 = self.sigmoid(self.z1)
+
+        self.z2 = np.dot(self.a1, self.w2) + self.b2
+        self.a2 = self.sigmoid(self.z2)
+
+        self.z3 = np.dot(self.a2, self.w3) + self.b3
+        self.a3 = self.sigmoid(self.z3)
+
+        return self.a3
+    
+    def backward(self, X, y, output):
+        error = y - output
+        d_output = error * self.sigmoid_derivative(output)
+
+        error_hidden = d_output.dot(self.w3.T)
+        d_hidden2 = error_hidden * self.sigmoid_derivative(self.a2)
+        d_hidden = d_hidden2 * self.sigmoid_derivative(self.a1)
+
+        self.w3 += self.a2.T.dot(d_output) * self.learning_rate
+        self.b3 += np.sum(d_output, axis=0, keepdims=True) * self.learning_rate
+
+        self.w2 += self.a1.T.dot(d_hidden2) * self.learning_rate
+        self.b2 += np.sum(d_hidden2, axis=0, keepdims=True) * self.learning_rate
+
+        self.w1 += X.T.dot(d_hidden) * self.learning_rate
+        self.b1 += np.sum(d_hidden, axis=0, keepdims=True) * self.learning_rate
+
+    def train(self, X, y, epochs=1200):
+        printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
+        self.loss_history = []
+        for epoch in range(epochs):
+            output = self.forward(X)
+            self.backward(X, y, output)
+
+            loss = np.mean((y - output) ** 2)
+            self.loss_history.append(loss)
+
+            printProgressBar(epoch + 1, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
+
+        if self.debug == True:
+            self.plot_loss()
+            self.show_hidden_weights()
+        
+        return loss
+
+    def predict(self, X):
+        output = self.forward(X)
+
+        return np.argmax(output, axis=1)
+    
+    def plot_loss(self):
+        # Show training loss over epochs
+        plt.plot(self.loss_history)
+        plt.title("Feed Forward Training Loss")
+        plt.xlabel("Epoch")
+        plt.ylabel("Loss")
+        plt.grid(True)
+        plt.show()
+
+    def show_hidden_weights(self):
+        # Show hidden weights for last forward pass
+        if hasattr(self, 'w2'):
+            plt.imshow(self.w2, cmap='viridis')
+            plt.title("Hidden Weights")
+            plt.xlabel("Hidden")
+            plt.ylabel("Hidden 2")
+            plt.colorbar()
+            plt.show()
+    
+    def compute_confidence_score(self, pred):
+        return max(max(pred/len(pred)))
+    
 class Transformer:
-    def __init__(self, d_model, num_heads, d_ff, src_vocab_size, tgt_vocab_size, max_seq_len):
+    def __init__(self, input_size, output_size, d_model=64, max_length=32, learning_rate=0.001, debug=True):
+        # Model Param's
         self.d_model = d_model
-        self.num_heads = num_heads
-        self.d_k = d_model // num_heads
+        self.output_size = output_size
+        self.input_size = input_size
+        self.max_length = max_length
+        self.learning_rate = learning_rate
+        self.debug = debug
 
-        self.encoder_layer = EncoderLayer(d_model, num_heads, d_ff)
-        self.decoder_layer = DecoderLayer(d_model, num_heads, d_ff)
+        # Word embeddings (vocab_size, d_model)
+        self.embeddings = np.random.randn(input_size, d_model) * self.learning_rate
 
-        self.src_embedding = np.random.randn(src_vocab_size, d_model) / np.sqrt(d_model)
-        self.tgt_embedding = np.random.randn(tgt_vocab_size, d_model) / np.sqrt(d_model)
+        # Positional encodings (max_length, d_model)
+        self.positional_encoding = self._init_positional_encoding(max_length, d_model)
 
-        self.pos_embedding = np.random.randn(max_seq_len, d_model) / np.sqrt(d_model)
+        # Attention projection weights
+        self.w_q = np.random.randn(d_model, d_model) * self.learning_rate
+        self.w_k = np.random.randn(d_model, d_model) * self.learning_rate
+        self.w_v = np.random.randn(d_model, d_model) * self.learning_rate
+        self.w_o = np.random.randn(d_model, d_model) * self.learning_rate
 
-        self.output_projection = np.random.randn(d_model, tgt_vocab_size) / np.sqrt(d_model)
+        # Final output projection (d_model, vocab_size)
+        self.fc_out = np.random.randn(d_model, output_size) * self.learning_rate
 
-    def forward(self, src, tgt, src_mask=None, tgt_mask=None):
-        batch_size, src_len = src.shape
-        print(f'[src] \n{src}\n[src.shape] {src.shape}')
-        _, tgt_len = tgt.shape
-        print(f'[tgt] \n{tgt}\n[tgt.shape] {tgt.shape}')
+    def _init_positional_encoding(self, max_length, d_model):
+        # Sinusoidal positional encoding
+        pos = np.arange(max_length)[:, np.newaxis]
+        i = np.arange(d_model)[np.newaxis, :]
 
-        #src_embed = self.src_embedding[batch_size] + self.pos_embedding[:src_len]
-        #src_embed = self.src_embedding[src_len] + self.pos_embedding[:src_len]
-        #tgt_embed = self.tgt_embedding[batch_size] + self.pos_embedding[:tgt_len]
-        #tgt_embed = self.tgt_embedding[tgt_len] + self.pos_embedding[:tgt_len]
+        angle_rates = 1 / np.power(10000, (2 * (i//2)) / np.float32(d_model))
 
-        print(f'\n[src_embedding.shape] {self.src_embedding.shape}\n[src.shape] {src.shape}\n[src_len] {src_len}\n')
-        print(f'[tgt_embedding.shape] {self.tgt_embedding.shape}\n[tgt.shape] {tgt.shape}\n[tgt_len] {tgt_len}\n')
+        pos_encoding = pos * angle_rates
+        pos_encoding[:, 0::2] = np.sin(pos_encoding[:, 0::2])
+        pos_encoding[:, 1::2] = np.cos(pos_encoding[:, 1::2])
 
-        src_embed = np.take(self.src_embedding, src, axis=0) + self.pos_embedding[:src_len]
-        tgt_embed = np.take(self.tgt_embedding, tgt, axis=0) + self.pos_embedding[:tgt_len]
+        return pos_encoding
 
-        print(f'\n[src_embed] \n{src_embed}\n[src_embed.shape] {src_embed.shape}')
-        print(f'[tgt_embed] \n{tgt_embed}\n[tgt_embed.shape] {tgt_embed.shape}')
+    def softmax(self, x):
+        # Prevent overflow
+        x = np.clip(x, -500, 500)
 
-        assert src_embed.shape == (batch_size, src_len, self.d_model), f"Expected src_embed shape (batch, seq_len, d_model), got {src_embed.shape}"
-        assert tgt_embed.shape == (batch_size, tgt_len, self.d_model), f"Expected tgt_embed shape (batch, seq_len, d_model), got {tgt_embed.shape}"
+        # Standard softmax function
+        e_x = np.exp(x - np.max(x))
+        sum_e_x = np.sum(e_x, axis=-1, keepdims=True)
 
-        enc_output = self.encoder_layer.forward(src_embed, src_mask)
-        dec_output = self.decoder_layer.forward(tgt_embed, enc_output, src_mask, tgt_mask)
-
-        logits = np.matmul(dec_output, self.output_projection)
-        return logits
+        # Avoid division by zero (this is to fix a runtime warning)
+        sum_e_x[sum_e_x == 0] = 1e-9
+        return e_x / sum_e_x
     
-    def backward(self, d_logits):
-        d_dec_output = np.matmul(d_logits, self.output_projection)
-        d_output_proj = np.matmul(self.decoder_layer.norm3.out.reshape(-1, d_logits.shape[-1]).T, d_logits.reshape(-1, d_logits.shape[-1]))
+    def scaled_dot_product(self, Q, K, V):
+        # Compute attention weights and output
+        d_k = Q.shape[-1]
+        scores = np.dot(Q, K.T) / np.sqrt(d_k)
+        weights = self.softmax(scores)
 
-        decoder_grads = self.decoder_layer.backward(d_dec_output)
-        encoder_grads = self.encoder_layer.backward(decoder_grads['self_a'][0])
-
-        return decoder_grads, encoder_grads, d_output_proj
+        return np.dot(weights, V), weights
     
-def softmax(x):
-    x = x - np.max(x, axis=-1, keepdims=True)
-    exp_x = np.exp(x)
+    def forward(self, x):
+        # Embedding lookup and apply the positional encoding
+        self.x_ids = x
+        self.x = np.array([self.embeddings[token] for token in x])
+        self.x += self.positional_encoding[:len(x)]
 
-    return exp_x / np.sum(exp_x, axis=-1, keepdims=True)
+        # Attention projections
+        self.Q = self.x @ self.w_q
+        self.K = self.x @ self.w_k
+        self.V = self.x @ self.w_v
 
-def cross_entropy_loss(logits, targets):
-    probs = softmax(logits)
-    log_probs = -np.log(probs[np.arange(len(targets.flatten())), targets.flatten()] + 1e-9)
-    loss = np.mean(log_probs)
+        # Compute attention output
+        self.a_o, self.a_w = self.scaled_dot_product(self.Q, self.K, self.V)
 
-    d_logits = probs
-    d_logits[np.arange(len(targets.flatten())), targets.flatten()] -= 1
-    d_logits /= targets.shape[0]
+        # Final projection
+        self.a_op = self.a_o @ self.w_o
 
-    return loss, d_logits
+        # Mean pooling across sequence
+        self.mean_pooled = self.a_op.mean(axis=0)
 
-def train(model, data, targets, epochs=10, lr=1e-3):
-    #printProgressBar(0, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
-    for epoch in range(epochs):
-        logits = model.forward(data, targets)
-        print(f'[logits] \n {logits} \n[logits.shape] {logits.shape}')
-        loss, d_logits = cross_entropy_loss(logits.reshape(-1, logits.shape[-1]), targets)
+        # Output logits and probabilities
+        self.logits = self.mean_pooled @ self.fc_out
+        self.o = self.softmax(self.logits)
 
-        grads = model.backward(d_logits.reshape(logits.shape))
+        #if self.debug:
+        #    print(f'{GREY}[model-debug]{RESET} Logits: \n{self.logits}\n')
+        #    print(f'{GREY}[model-debug]{RESET} Softmax output: \n{self.o}\n')
 
-        #printProgressBar(epoch + 1, epochs, prefix = 'Progress:', suffix = 'Complete', length = 50)
-        print(f"Epoch: {epoch + 1}, Loss: {loss:.4f}")
+        return self.o
+    
+    def backward(self, y_ture):
+        # Compute loss gradient
+        error = self.o - y_ture
+
+        # Backpropagation through the output layer
+        d_fc_out = np.outer(self.mean_pooled, error)
+        d_mean = error @ self.fc_out.T / self.a_op.shape[0]
+
+        # Backpropagation through attention projection
+        d_a_op = np.tile(d_mean, (self.a_op.shape[0], 1))
+        d_w_o = self.a_o.T @ d_a_op
+        d_a_o = d_a_op @ self.w_o.T
+
+        # Backpropagation through attention weights
+        d_weights = d_a_o @ self.V.T
+        d_V = self.a_w.T @ d_a_o
+        d_scores = d_weights * self.a_w * (1 - self.a_w)
+        d_K = (self.Q.T @ d_scores).T
+        d_Q = d_scores @ self.K
+
+        # Backpropagation to Q, K, V weights
+        d_w_q = self.x.T @ d_Q
+        d_w_k = self.x.T @ d_K
+        d_w_v = self.x.T @ d_V
+
+        # Clip gradients to avoid explosion
+        for grad in [d_fc_out, d_w_o, d_w_q, d_w_k, d_w_v]:
+            np.clip(grad, -1.0, 1.0, out=grad)
+
+        # Gradient descent updates
+        self.fc_out -= self.learning_rate * d_fc_out
+        self.w_o -= self.learning_rate * d_w_o
+        self.w_q -= self.learning_rate * d_w_q
+        self.w_k -= self.learning_rate * d_w_k
+        self.w_v -= self.learning_rate * d_w_v
+
+    def train(self, prompts, targets, epochs=1000):
+        # Training the network by going through the backpropagation of the network
+        printProgressBar(0, epochs, prefix='Transformer Training:', suffix='Complete', length=50)
+
+        self.loss_history = []
+
+        for epoch in range(epochs):
+            loss_epoch = 0
+
+            for i in range(len(prompts)):
+                input_seq = prompts[i]
+                target_seq = targets[i]
+                out = self.forward(input_seq)
+                loss = -np.sum(target_seq * np.log(out + 1e-9)) # Cross Entropy Loss
+                loss_epoch += loss
+
+                self.backward(target_seq)
+            
+            mean_loss = loss_epoch / len(prompts)
+            self.loss_history.append(mean_loss)
+
+            printProgressBar(epoch + 1, epochs, prefix='Transformer Training:', suffix='Complete', length=50)
+        
+        if self.debug == True:
+            self.plot_loss()
+            self.show_attention_weights()
+
+        return mean_loss
+    
+    def predict(self, x):
+        # Predict the token probabilities
+        return self.forward(x)
+    
+    def generate(self, prompt, tokenizer, max_length=10):
+        # Autoregressive generation of tokens from prompt
+        context = tokenizer.encode(prompt, self.max_length)
+        generated = [tokenizer.word2idx['<sos>']]
+        #tokens = tokenizer.encode(prompt, self.max_length)
+
+        for _ in range(max_length):
+            input_seq = context + generated[-self.max_length:]
+            input_seq = input_seq[-self.max_length:]
+            out = self.forward(input_seq)
+
+            next_token = np.argmax(out)
+
+            if next_token == tokenizer.word2idx['<eos>']:
+                break
+            generated.append(next_token)
+
+        print(f'\n{GREY}[model-generate]{RESET}\n{generated}')
+        return tokenizer.decode(generated[1:])
+    
+    def generate_with_sampling(self, prompt, tokenizer, k=5, temperature=1.0, max_length=10):
+        context = tokenizer.encode(prompt, self.max_length)
+        generated  =[tokenizer.word2idx['<sos>']]
+        #tokens = tokenizer.encode(prompt, self.max_length)
+
+        for _ in range(max_length):
+            input_seq = context + generated[-self.max_length:]
+            input_seq = input_seq[-self.max_length:]
+            
+            out = self.forward(input_seq)
+            out = np.log(out + 1e-9) / temperature
+
+            probs = np.exp(out) / np.sum(np.exp(out))
+
+            top_k_indices = probs.argsort()[-k:][::-1]
+            top_k_probs = probs[top_k_indices]
+            top_k_probs /= np.sum(top_k_probs)
+
+            next_token = np.random.choice(top_k_indices, p=top_k_probs)
+
+            if next_token == tokenizer.word2idx['<eos>']:
+                break
+            generated.append(next_token)
+
+        print(f'\n{GREY}[model-generate-sampling]{RESET}\n{generated}')
+        return tokenizer.decode(generated[1:])
+    
+    def batch_generate_from_file(self, file_path, tokenizer):
+        # Add the logs.write_logs() after the call and save the results to the logs so that we know what happened
+        with open(file_path, 'r') as f:
+            prompts = f.read().splitlines()
+
+        results = {}
+        for prompt in prompts:
+            command = self.generate_with_sampling(prompt, tokenizer, k=5, temperature=0.8)
+            results[prompt] = command
+        return results
+    
+    def preview_execution(self, command_str):
+        try:
+            parts = shlex.split(command_str)
+            print(f'{YELLOW}[-]{RESET} Preview (sandboxed): {command_str}\n')
+            result = subprocess.run(parts, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=5)
+            print(f'{result.stdout.decode()[:500]}\n')
+            return True
+        except Exception as e:
+            print(f'{RED}[x]{RESET}Execution Error: {e}\n')
+            return False
+    
+    def plot_loss(self):
+        # Show training loss over epochs
+        plt.plot(self.loss_history)
+        plt.title("Transformer Training Loss")
+        plt.xlabel("Epoch")
+        plt.ylabel("Loss")
+        plt.grid(True)
+        plt.show()
+
+    def show_attention_weights(self):
+        # Show attention weights for last forward pass
+        if hasattr(self, 'a_w'):
+            plt.imshow(self.a_w, cmap='viridis')
+            plt.title("Attention Weights")
+            plt.xlabel("Key")
+            plt.ylabel("Query")
+            plt.colorbar()
+            plt.show()
+
+    def compute_confidence_score(self, pred):
+        return max(pred)
